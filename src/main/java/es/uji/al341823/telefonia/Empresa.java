@@ -41,7 +41,7 @@ public class Empresa implements IFecha {
 
     @Override
     public LocalDateTime getFecha() {
-        return null;
+        return fechaAlta;
     }
 
     public Tarifa getTarifa() {
