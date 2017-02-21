@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Created by Juanjo on 21/2/2017.
  */
-public class Empresa {
+public class Empresa implements IFecha {
 
     private String nombre;
     private String nif;
@@ -21,5 +21,30 @@ public class Empresa {
         this.email = email;
         this.fechaAlta = fechaAlta;
         this.tarifa = tarifa;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public LocalDateTime getFecha() {
+        return null;
+    }
+
+    public Tarifa getTarifa() {
+        return tarifa;
     }
 }
