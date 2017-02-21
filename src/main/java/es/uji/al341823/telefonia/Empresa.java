@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Created by Juanjo on 21/2/2017.
  */
-public class Empresa implements IFecha {
+public class Empresa implements ICliente, IFecha {
 
     private String nombre;
     private String nif;
