@@ -6,10 +6,11 @@ import java.time.LocalDateTime;
  * Created by Juanjo on 21/2/2017.
  */
 public class Particular extends Empresa {
+    private String apellidos;
 
-    public Particular(String nombre, String apellido, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+    public Particular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
         super(nombre, nif, direccion, email, fechaAlta, tarifa);
 
-        this.apellido = apellido;
+        this.apellidos = apellidos;
     }
 }
