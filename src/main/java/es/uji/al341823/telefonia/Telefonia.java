@@ -10,11 +10,7 @@ import java.time.LocalTime;
  * Created by Juanjo on 21/2/2017.
  */
 public class Telefonia {
-    public static void main(String[] args) {
-        GeneradorDatosINE generador = new GeneradorDatosINE();
-
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(generador.getNIF());
-        }
-    }
+    public static void altaCliente() {}
+    public static void bajaCliente() {}
+    public static void cambiarTarifa() {}
 }
