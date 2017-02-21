@@ -13,4 +13,13 @@ public class Empresa {
     private String email;
     private LocalDateTime fechaAlta;
     private Tarifa tarifa;
+
+    public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+        this.nombre = nombre;
+        this.nif = nif;
+        this.direccion = direccion;
+        this.email = email;
+        this.fechaAlta = fechaAlta;
+        this.tarifa = tarifa;
+    }
 }
