@@ -12,6 +12,9 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <!-- Output to jar format -->
+    <packaging>jar</packaging>
+
     <build>
         <finalName>services</finalName>
         <plugins>

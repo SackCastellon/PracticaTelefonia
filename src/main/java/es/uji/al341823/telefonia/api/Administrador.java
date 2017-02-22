@@ -5,6 +5,7 @@ import es.uji.al341823.telefonia.cliente.Llamada;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.al341823.telefonia.cliente.Cliente;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,8 +53,8 @@ public class Administrador {
 		return clientes.get(nif);
 	}
 
-	public static LinkedList<Cliente> getClientes() {
-		return (LinkedList<Cliente>) clientes.values();
+	public static Collection<Cliente> getClientes() {
+		return clientes.values();
 	}
 
 	public static void altaLlamada(String nif, Llamada llamada) {
