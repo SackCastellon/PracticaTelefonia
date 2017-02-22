@@ -1,6 +1,8 @@
 package es.uji.al341823.telefonia;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Juanjo on 21/2/2017.
@@ -13,6 +15,8 @@ public class Empresa implements IFecha {
 	private String email;
 	private LocalDateTime fechaAlta;
 	private Tarifa tarifa;
+
+	private final LinkedList<Llamada> llamadas = new LinkedList<>();
 
 	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
 		this.nombre = nombre;
@@ -44,9 +48,21 @@ public class Empresa implements IFecha {
 		return this.fechaAlta;
 	}
 
-	public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
+	public Tarifa setTarifa(Tarifa tarifa) {
+		Tarifa antiguaTarifa = this.tarifa;
+		this.tarifa = tarifa;
+		return antiguaTarifa;
+	}
 
 	public Tarifa getTarifa() {
 		return this.tarifa;
+	}
+
+	public void altaLlamada(Llamada llamada) {
+		llamadas.add(llamada);
+	}
+
+	public List<Llamada> getLlamadas() {
+		return (List<Llamada>) llamadas.clone();
 	}
 }
