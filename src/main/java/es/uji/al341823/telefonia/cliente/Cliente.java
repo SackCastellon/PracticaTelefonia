@@ -1,13 +1,17 @@
-package es.uji.al341823.telefonia;
+package es.uji.al341823.telefonia.cliente;
+
+import es.uji.al341823.telefonia.IFecha;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
- * Created by Juanjo on 21/2/2017.
+ * @author Juanjo González (al341823)
+ * @author David Agost (al341819)
+ * @since 0.1
  */
-public class Empresa implements IFecha {
+public class Cliente implements IFecha {
 
 	private String nombre;
 	private String nif;
@@ -17,8 +21,9 @@ public class Empresa implements IFecha {
 	private Tarifa tarifa;
 
 	private final LinkedList<Llamada> llamadas = new LinkedList<>();
+	private final LinkedList<Llamada> facturas = new LinkedList<>();
 
-	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+	protected Cliente(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
 		this.nombre = nombre;
 		this.nif = nif;
 		this.direccion = direccion;
@@ -48,21 +53,15 @@ public class Empresa implements IFecha {
 		return this.fechaAlta;
 	}
 
-	public Tarifa setTarifa(Tarifa tarifa) {
-		Tarifa antiguaTarifa = this.tarifa;
-		this.tarifa = tarifa;
-		return antiguaTarifa;
-	}
+	public Tarifa getTarifa() { return this.tarifa; }
 
-	public Tarifa getTarifa() {
-		return this.tarifa;
-	}
+	public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
 
 	public void altaLlamada(Llamada llamada) {
 		llamadas.add(llamada);
 	}
 
-	public List<Llamada> getLlamadas() {
-		return (List<Llamada>) llamadas.clone();
+	public LinkedList<Llamada> getLlamadas() {
+		return (LinkedList<Llamada>) llamadas.clone();
 	}
 }

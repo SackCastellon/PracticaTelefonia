@@ -1,7 +1,9 @@
-package es.uji.al341823.telefonia;
+package es.uji.al341823.telefonia.facturacion;
 
 /**
- * Created by Juanjo on 21/2/2017.
+ * @author Juanjo González (al341823)
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class Tarifa {
 	private int codigoTarifa;
