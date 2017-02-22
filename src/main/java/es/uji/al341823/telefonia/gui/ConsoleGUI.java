@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author Juanjo González (al341823)
  * @since 0.1
  */
-public class Console0GUI {
+public class ConsoleGUI {
 
 	private static Scanner in;
 
