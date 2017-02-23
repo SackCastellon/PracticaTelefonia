@@ -3,6 +3,8 @@ package es.uji.al341823.telefonia.cliente;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
@@ -21,5 +23,14 @@ public class Particular extends Cliente {
 
     public String getApellidos() {
         return apellidos;
+    }
+
+    @Override
+    public LinkedList<String> getInformacion() {
+        LinkedList<String> info = super.getInformacion();
+
+        info.add(1, "Apellidos: " + getApellidos());
+
+        return info;
     }
 }

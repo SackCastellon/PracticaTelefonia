@@ -5,6 +5,7 @@ import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
@@ -63,5 +64,18 @@ public class Cliente implements IFecha {
 
 	public LinkedList<Llamada> getLlamadas() {
 		return (LinkedList<Llamada>) llamadas.clone();
+	}
+
+	public LinkedList<String> getInformacion() {
+		LinkedList<String> info = new LinkedList<>();
+
+		info.add("Nombre: " + getNombre());
+		info.add("NIF: " + getNif());
+		info.add("Dirección: " + getDireccion().toString());
+		info.add("Email: " + getEmail());
+		info.add("Fecha: " + getFecha().toString());
+		info.add("Tarifa: " + getTarifa().toString());
+
+		return info;
 	}
 }

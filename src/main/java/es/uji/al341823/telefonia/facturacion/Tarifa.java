@@ -13,4 +13,9 @@ public class Tarifa {
 	}
 
 	public int getCodigoTarifa() { return codigoTarifa; }
+
+	@Override
+	public String toString() {
+		return "Tarifa " + codigoTarifa ;
+	}
 }
