@@ -22,15 +22,15 @@ public class Factura implements IFecha {
 	/** Fecha en la que se emitió la factura */
 	private LocalDateTime fechaEmision;
 	/** Periodo de tiempo que comprende la factura */
-	private LocalDate periodoFactuación;
+	private LocalDate periodoFactuacion;
 	/** Importe total de la factura calculado en euros (€) */
 	private int importe;
 
-	public Factura(Tarifa tarifa, LocalDateTime fechaEmision, LocalDate periodoFactuación, int importe) {
+	public Factura(Tarifa tarifa, LocalDateTime fechaEmision, LocalDate periodoFactuacion, int importe) {
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
-		this.periodoFactuación = periodoFactuación;
+		this.periodoFactuacion = periodoFactuacion;
 		this.importe = importe;
 	}
 
@@ -54,8 +54,8 @@ public class Factura implements IFecha {
 	 * Devuelve el periodo durante el cual se aplica la tarifa para calcuar el importe de la factura
 	 * @return El periodo de facturación
 	 */
-	public LocalDate getPeriodoFactuación() {
-		return periodoFactuación;
+	public LocalDate getPeriodoFactuacion() {
+		return periodoFactuacion;
 	}
 
 	/**
