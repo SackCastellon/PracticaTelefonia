@@ -1,7 +1,5 @@
 package es.uji.al341823.telefonia.gui;
 
-import es.uji.al341823.telefonia.api.Administrador;
-
 import java.util.Scanner;
 
 /**
@@ -23,8 +21,8 @@ public class ConsoleGUI {
 		int menu;
 
 		do {
-			printTitle("Menú principal");
-			menu = selectOption("Clientes", "Llamadas", "Facturas");
+			imprimeTitulo("Menú principal");
+			menu = seleccionarOpcion("Salir", "Clientes", "Llamadas", "Facturas");
 
 			switch (menu) {
 				case 1:
@@ -46,18 +44,17 @@ public class ConsoleGUI {
 		int accion;
 
 		do {
-			printTitle("Menú clientes");
-			accion = selectOption("Alta cliente", "Baja cliente", "Cambiar tarifa", "Ver datos cliente", "Lista de clientes");
+			imprimeTitulo("Menú clientes");
+			accion = seleccionarOpcion("Menú principal", "Alta cliente", "Baja cliente", "Cambiar tarifa", "Ver datos cliente", "Lista de clientes");
 
 			switch (accion) {
 				case 1:
 					//TODO
+					seleccionarOpcion("Cancelar", "Particular", "Empresa");
 					break;
 
 				case 2:
-					System.out.println("Indica el NIF del cliente");
-					String nif = in.next();
-					Administrador.bajaCliente(nif);
+					//TODO
 					break;
 
 				case 3:
@@ -83,26 +80,33 @@ public class ConsoleGUI {
 		//TODO
 	}
 
-	private static int selectOption(String... opciones) {
+	// ========================= Fin de los menús ========================= //
+
+	private static int seleccionarOpcion(String atras, String... opciones) {
 		System.out.println("Selecciona una opción (0-" + opciones.length + ")");
 		for (int i = 0; i < opciones.length; i++) {
-			System.out.println("  " + ++i + ": " + opciones[--i]);
+			System.out.println("  " + (i + 1) + ": " + opciones[i]);
 		}
-		System.out.println("  0: Salir");
+
+		System.out.println("  0: " + atras);
 
 		int seleccion;
 		do {
 			System.out.print("> ");
-			seleccion = in.nextInt();
+			try {
+				seleccion = Integer.parseInt(in.nextLine());
+			} catch (NumberFormatException e) {
+				seleccion = -1;
+			}
 		} while (seleccion > opciones.length || seleccion < 0);
 
 		return seleccion;
 	}
 
-	private static void printTitle(String titulo) {
-		for (int i = -10; i < titulo.length(); i++, System.out.print('#')) ;
-		System.out.println("\n     " + titulo);
-		for (int i = -10; i < titulo.length(); i++, System.out.print('#')) ;
+	private static void imprimeTitulo(String titulo) {
+		for (int i = -16; i < titulo.length(); i++, System.out.print('#')) ;
+		System.out.println("\n        " + titulo);
+		for (int i = -16; i < titulo.length(); i++, System.out.print('#')) ;
 		System.out.println("\n");
 	}
 }
