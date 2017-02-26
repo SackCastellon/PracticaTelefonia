@@ -65,11 +65,11 @@ public class ConsoleGUI {
 					break;
 
 				case 2:
-					//TODO
+					bajaCliente();
 					break;
 
 				case 3:
-					//TODO
+					cambiarTarifa();
 					break;
 
 				case 4:
@@ -84,11 +84,16 @@ public class ConsoleGUI {
 	}
 
 	private static void altaCliente() {
-		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Empresa");
+		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Particular Generado Aleatoriamente", "Empresa");
 
 		if (tipoCliente == 0) return;
 
 		if (tipoCliente == 1) System.out.println("Introduce los datos del particular:");
+		else if (tipoCliente == 2) {
+			//TODO Generar multiples clientes al mismo tiempo
+			Administrador.generarParticularAleatorio();
+			return;
+		}
 		else System.out.println("Introduce los datos de la empresa:");
 
 		String nombre = leerTexto("Nombre");
@@ -101,7 +106,7 @@ public class ConsoleGUI {
 		String email = leerTexto("E-mail");
 		LocalDateTime fecha = leerFecha("Fecha de alta");
 
-		//TODO
+		//FIXME
 		System.out.print(" - Tarifa: ");
 		Tarifa tarifa = new Tarifa(in.nextInt());
 
@@ -110,18 +115,50 @@ public class ConsoleGUI {
 		else Administrador.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa));
 	}
 
+	private static void bajaCliente() {
+		System.out.println("Introduce los siguientes datos del cliente:");
+		String nif = leerTexto("NIF");
+
+		if (!Administrador.bajaCliente(nif))
+			System.out.println("No existe ningún cliente con NIF " + nif);
+		else
+			System.out.println("Cliente con NIF " + nif + " eliminado");
+	}
+
+	private static void cambiarTarifa() {
+		System.out.println("Introduce los siguientes datos del cliente:");
+		String nif = leerTexto("NIF");
+
+		Cliente cliente = Administrador.getCliente(nif);
+		if (cliente == null) {
+			System.out.println("No existe ningún cliente con NIF " + nif);
+			return;
+		}
+
+		System.out.println("Introduce la nueva tarifa:");
+
+		//FIXME
+		System.out.print(" - Tarifa: ");
+		Tarifa tarifa = new Tarifa(in.nextInt());
+
+		cliente.setTarifa(tarifa);
+
+	}
+
 	private static void verDatosCliente() {
 		System.out.println("Introduce los siguientes datos del cliente:");
 		String nif = leerTexto("NIF");
 
 		Cliente cliente = Administrador.getCliente(nif);
-		if (cliente != null) {
-			System.out.println("Información del cliente con NIF " + nif + ":");
-			for (String info : cliente.getInformacion()) {
-				System.out.println(" - " + info);
-			}
-		} else
-			System.out.println("El cliente no existe");
+		if (cliente == null) {
+			System.out.println("No existe ningún cliente con NIF " + nif);
+			return;
+		}
+
+		System.out.println("Información del cliente con NIF " + nif + ":");
+		for (String info : cliente.getInformacion()) {
+			System.out.println(" - " + info);
+		}
 	}
 
 	private static void verDatosTodosClientes() {
