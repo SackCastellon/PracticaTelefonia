@@ -9,7 +9,6 @@ import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -90,8 +89,18 @@ public class ConsoleGUI {
 
 		if (tipoCliente == 1) System.out.println("Introduce los datos del particular:");
 		else if (tipoCliente == 2) {
-			//TODO Generar multiples clientes al mismo tiempo
-			Administrador.generarParticularAleatorio();
+			//FIXME Hacer mas bonito
+			System.out.println("Cuantos praticulares aleatorios quieres generar?");
+			int i = 0;
+			do {
+				try {
+					System.out.print("> ");
+					i = in.nextInt();
+				} catch (Exception e) {
+					continue;
+				}
+			} while (i < 1 || i > 1000);
+			Administrador.generarParticularesAleatorios(i);
 			return;
 		}
 		else System.out.println("Introduce los datos de la empresa:");

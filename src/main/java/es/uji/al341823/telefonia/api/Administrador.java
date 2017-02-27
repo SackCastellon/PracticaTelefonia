@@ -87,21 +87,24 @@ public class Administrador {
 		return null; //TODO
 	}
 
-	public static void generarParticularAleatorio() {
+	public static void generarParticularesAleatorios(int cantidad) {
 		GeneradorDatosINE gen = new GeneradorDatosINE();
 		Random rand = new Random();
 
-		String nombre = gen.getNombre();
-		String apellidos = gen.getApellido();
-		String nif = gen.getNIF();
+		for (int i = 0; i < cantidad; i++) {
 
-		String provincia = gen.getProvincia();
-		Direccion direccion = new Direccion(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
+			String nombre = gen.getNombre();
+			String apellidos = gen.getApellido();
+			String nif = gen.getNIF();
 
-		String email = nombre.toLowerCase() + "@example.com";
-		LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-		Tarifa tarifa = new Tarifa(1);
+			String provincia = gen.getProvincia();
+			Direccion direccion = new Direccion(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
 
-		altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
+			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
+			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
+			Tarifa tarifa = new Tarifa(1);
+
+			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
+		}
 	}
 }
