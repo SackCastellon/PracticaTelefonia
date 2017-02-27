@@ -298,4 +298,9 @@ public class ConsoleGUI {
 
 		return fecha;
 	}
+
+	// TODO
+	private static void limpiarPantalla() {
+		System.out.print("\033[2J\033[H");
+	}
 }
