@@ -2,7 +2,6 @@ package es.uji.al341823.telefonia.facturacion;
 
 import es.uji.al341823.telefonia.IFecha;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,15 +17,23 @@ public class Factura implements IFecha {
 	/** Codigo identificativo unico de la factura */
 	private final int codigo;
 	/** La tarifa usada para calcular la factura */
-	private Tarifa tarifa;
+	private final Tarifa tarifa;
 	/** Fecha en la que se emitió la factura */
-	private LocalDateTime fechaEmision;
-	/** Periodo de tiempo que comprende la factura */
-	private LocalDate periodoFactuacion;
+	private final LocalDateTime fechaEmision;
+	/** Periodo de tiempo que comprende la factura en dias */
+	private final int periodoFactuacion;
 	/** Importe total de la factura calculado en euros (€) */
-	private int importe;
+	private final float importe;
 
-	public Factura(Tarifa tarifa, LocalDateTime fechaEmision, LocalDate periodoFactuacion, int importe) {
+	/**
+	 * Crea una factura con un codigo de identificación unico
+	 *
+	 * @param tarifa            Tarifa de la factura
+	 * @param fechaEmision      Fecha de emisión de la factura
+	 * @param periodoFactuacion Periodo en dias de facturacion
+	 * @param importe           Importe total al que asciende la
+	 */
+	public Factura(Tarifa tarifa, LocalDateTime fechaEmision, int periodoFactuacion, float importe) {
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
@@ -36,6 +43,7 @@ public class Factura implements IFecha {
 
 	/**
 	 * Devuelve el codigo identificativo unico de la factura
+	 *
 	 * @return Codigo identificativo
 	 */
 	public int getCodigo() {
@@ -44,6 +52,7 @@ public class Factura implements IFecha {
 
 	/**
 	 * Devuelve la tarifa usada para calcular la factura
+	 *
 	 * @return La taifa de la factura
 	 */
 	public Tarifa getTarifa() {
@@ -51,23 +60,26 @@ public class Factura implements IFecha {
 	}
 
 	/**
-	 * Devuelve el periodo durante el cual se aplica la tarifa para calcuar el importe de la factura
+	 * Devuelve el periodo en días durante el cual se aplica la tarifa para calcuar el importe de la factura
+	 *
 	 * @return El periodo de facturación
 	 */
-	public LocalDate getPeriodoFactuacion() {
+	public int getPeriodoFactuacion() {
 		return periodoFactuacion;
 	}
 
 	/**
 	 * Devuelve el importe total de la factura calculado en euros (€)
+	 *
 	 * @return Importe de la factura
 	 */
-	public int getImporte() {
+	public float getImporte() {
 		return importe;
 	}
 
 	/**
 	 * Devuelve el dia y la hora a la que se emitión la factura
+	 *
 	 * @return El dia y la hora de emisión de la factura
 	 */
 	@Override
