@@ -5,8 +5,6 @@ import es.uji.al341823.telefonia.cliente.Particular;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

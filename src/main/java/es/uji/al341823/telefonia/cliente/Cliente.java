@@ -5,7 +5,6 @@ import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
