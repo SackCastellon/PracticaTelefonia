@@ -7,6 +7,7 @@ package es.uji.al341823.telefonia.facturacion;
  */
 public class Tarifa {
 	private int codigoTarifa;
+	private int precio;
 
 	public Tarifa(int codigoTarifa) {
 		this.codigoTarifa = codigoTarifa;

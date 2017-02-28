@@ -348,14 +348,17 @@ public class ConsoleGUI {
 	}
 
 	private static LocalDateTime leerFecha(String mensaje) {
-		System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss): ");
+		System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | hoy): ");
 
 		LocalDateTime fecha = null;
 
 		do {
 			try {
-				String s = in.nextLine().replaceAll("( )+", "T");
-				fecha = LocalDateTime.parse(s);
+				String s = in.nextLine();
+				if (s.equalsIgnoreCase("hoy"))
+					fecha = LocalDateTime.now();
+				else
+					fecha = LocalDateTime.parse(s.replaceAll("( )+", "T"));
 			} catch (Exception e) {
 				System.out.println("Error en el formato de la fecha");
 				System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss): ");

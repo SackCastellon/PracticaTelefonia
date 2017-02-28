@@ -41,6 +41,10 @@ public class Cliente implements IFecha {
 		this.tarifa = tarifa;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public String getNombre() {
 		return this.nombre;
 	}
