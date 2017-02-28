@@ -11,7 +11,6 @@ import es.uji.www.GeneradorDatosINE;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -54,32 +53,72 @@ public class Administrador {
 		return false;
 	}
 
+	/**
+	 * Cambia la tarifa del cliente con el NIF dado a la tarifa dada
+	 *
+	 * @param nif         NIF de cliente
+	 * @param nuevaTarifa Nueva tarifa
+	 */
 	public static void cambiarTarifa(String nif, Tarifa nuevaTarifa) {
 		if (clientes.containsKey(nif))
 			clientes.get(nif).setTarifa(nuevaTarifa);
 	}
 
+	/**
+	 * Devuelve el cliente cuyo NIF es igual al dado
+	 *
+	 * @param nif NIF del cliente
+	 *
+	 * @return El cliente con ese NIF
+	 */
 	public static Cliente getCliente(String nif) {
 		return clientes.get(nif);
 	}
 
+	/**
+	 * Devuelve una lista con todos los cliente actuales
+	 *
+	 * @return Lista de clientes
+	 */
 	public static Collection<Cliente> getClientes() {
 		return clientes.values();
 	}
 
+	/**
+	 * Da de alta una llamada para el cliente con el NIF especificado
+	 *
+	 * @param nif     NIF del cliente
+	 * @param llamada La llamada
+	 */
 	public static void altaLlamada(String nif, Llamada llamada) {
 		if (clientes.containsKey(nif))
 			clientes.get(nif).altaLlamada(llamada);
 	}
 
-	public static List<Llamada> getLlamadas(String nif) {
+	/**
+	 * Devuelve la lista dellamadas del cliente con el NIF especificado
+	 *
+	 * @param nif NIF del cliente
+	 *
+	 * @return Lista de llamadas
+	 */
+	public static Collection<Llamada> getLlamadas(String nif) {
 		if (!clientes.containsKey(nif))
 			return null;
 
 		return clientes.get(nif).getLlamadas();
 	}
 
+	/**
+	 * Emite una factura para el cliente con el NIF especificado
+	 *
+	 * @param nif
+	 *
+	 * @return
+	 */
 	public static Factura emitirFactura(String nif) {
+		if (exixteCliente(nif))
+			getCliente(nif).emitirFactura();
 		return null; //TODO
 	}
 
@@ -87,6 +126,11 @@ public class Administrador {
 		return null; //TODO
 	}
 
+	/**
+	 * Genera un cierto número de clientes particulare de forma aleatoria y los da de alta
+	 *
+	 * @param cantidad Cantidad de cliente a generar
+	 */
 	public static void generarParticularesAleatorios(int cantidad) {
 		GeneradorDatosINE gen = new GeneradorDatosINE();
 		Random rand = new Random();
@@ -106,5 +150,16 @@ public class Administrador {
 
 			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
 		}
+	}
+
+	/**
+	 * Comprueba si existe un cliente con el NIF especificado
+	 *
+	 * @param nif NIF a comprobar
+	 *
+	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
+	 */
+	public static boolean exixteCliente(String nif) {
+		return clientes.containsKey(nif);
 	}
 }

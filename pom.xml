@@ -36,7 +36,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>es.uji.al341823.telefonia.gui.ConsoleGUI</mainClass>
+                            <mainClass>es.uji.al341823.telefonia.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

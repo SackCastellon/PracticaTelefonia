@@ -2,7 +2,9 @@ package es.uji.al341823.telefonia.facturacion;
 
 import es.uji.al341823.telefonia.IFecha;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
 
 /**
  * @author Juanjo González (al341823)
@@ -21,24 +23,16 @@ public class Factura implements IFecha {
 	/** Fecha en la que se emitió la factura */
 	private final LocalDateTime fechaEmision;
 	/** Periodo de tiempo que comprende la factura en dias */
-	private final int periodoFactuacion;
+	private final long periodoFactuacion;
 	/** Importe total de la factura calculado en euros (€) */
 	private final float importe;
 
-	/**
-	 * Crea una factura con un codigo de identificación unico
-	 *
-	 * @param tarifa            Tarifa de la factura
-	 * @param fechaEmision      Fecha de emisión de la factura
-	 * @param periodoFactuacion Periodo en dias de facturacion
-	 * @param importe           Importe total al que asciende la
-	 */
-	public Factura(Tarifa tarifa, LocalDateTime fechaEmision, int periodoFactuacion, float importe) {
+	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) {
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
-		this.periodoFactuacion = periodoFactuacion;
-		this.importe = importe;
+		this.periodoFactuacion = Duration.between(fechaEmision, fechaUltimaEmision).toDays();
+		this.importe = tarifa.getPrecio() * duracionLlamadas;
 	}
 
 	/**
@@ -64,9 +58,9 @@ public class Factura implements IFecha {
 	 *
 	 * @return El periodo de facturación
 	 */
-	public int getPeriodoFactuacion() {
+	/*public int getPeriodoFactuacion() {
 		return periodoFactuacion;
-	}
+	}*/
 
 	/**
 	 * Devuelve el importe total de la factura calculado en euros (€)

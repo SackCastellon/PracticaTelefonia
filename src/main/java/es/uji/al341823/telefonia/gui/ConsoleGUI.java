@@ -2,12 +2,10 @@ package es.uji.al341823.telefonia.gui;
 
 import es.uji.al341823.telefonia.api.Administrador;
 import es.uji.al341823.telefonia.cliente.*;
-import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -20,7 +18,7 @@ public class ConsoleGUI {
 	private static Scanner in;
 
 	/**
-	 * Inicializa la interfaz por linea de comandos y muestra el menú principal
+	 * Inicializa la interfaz por linea de comandos, el Scanner para leer la entrada del usuario y muestra el menú principal
 	 */
 	public static void iniciar() {
 		in = new Scanner(System.in);
@@ -31,7 +29,7 @@ public class ConsoleGUI {
 	// ========================= Menús ========================= //
 
 	/**
-	 * Muestra el meú principal hasta que se seleccione un sub-menú o se decida salir del programa
+	 * Muestra el menú principal hasta que se seleccione un sub-menú o se decida salir del programa
 	 */
 	private static void menuPrincipal() {
 		int menu;
@@ -101,9 +99,7 @@ public class ConsoleGUI {
 				try {
 					System.out.print("> ");
 					i = in.nextInt();
-				} catch (Exception e) {
-					continue;
-				}
+				} catch (Exception e) {}
 			} while (i < 1 || i > 1000);
 			Administrador.generarParticularesAleatorios(i);
 			return;
@@ -118,14 +114,12 @@ public class ConsoleGUI {
 		Direccion direccion = leerDireccion("Dirección");
 		String email = leerTexto("E-mail");
 		LocalDateTime fecha = leerFecha("Fecha de alta");
-
-		//FIXME
-		System.out.print(" - Tarifa: ");
-		Tarifa tarifa = new Tarifa(in.nextInt());
+		Tarifa tarifa = new Tarifa((int) leerNumero("Tarifa"));
 
 		if (tipoCliente == 1)
 			Administrador.altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
-		else Administrador.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa));
+		else
+			Administrador.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa));
 	}
 
 	private static void bajaCliente() {
@@ -142,8 +136,7 @@ public class ConsoleGUI {
 		System.out.println("Introduce los siguientes datos del cliente:");
 		String nif = leerTexto("NIF");
 
-		Cliente cliente = Administrador.getCliente(nif);
-		if (cliente == null) {
+		if (!Administrador.exixteCliente(nif)) {
 			System.out.println("No existe ningún cliente con NIF " + nif);
 			return;
 		}
@@ -154,7 +147,7 @@ public class ConsoleGUI {
 		System.out.print(" - Tarifa: ");
 		Tarifa tarifa = new Tarifa(in.nextInt());
 
-		cliente.setTarifa(tarifa);
+		Administrador.cambiarTarifa(nif, tarifa);
 
 	}
 
@@ -169,9 +162,7 @@ public class ConsoleGUI {
 		}
 
 		System.out.println("Información del cliente con NIF " + nif + ":");
-		for (String info : cliente.getInformacion()) {
-			System.out.println(" - " + info);
-		}
+		System.out.println(cliente.getInformacion());
 	}
 
 	private static void verDatosTodosClientes() {
@@ -184,9 +175,7 @@ public class ConsoleGUI {
 		}
 
 		for (Cliente cliente : clientes) {
-			for (String info : cliente.getInformacion()) {
-				System.out.println(" - " + info);
-			}
+			System.out.println(cliente.getInformacion());
 			System.out.println();
 		}
 	}
@@ -214,8 +203,7 @@ public class ConsoleGUI {
 		System.out.println("Introduce los siguientes datos del cliente:");
 		String nif = leerTexto("NIF");
 
-		Cliente cliente = Administrador.getCliente(nif);
-		if (cliente == null) {
+		if (!Administrador.exixteCliente(nif)) {
 			System.out.println("No existe ningún cliente con NIF " + nif);
 			return;
 		}
@@ -228,7 +216,7 @@ public class ConsoleGUI {
 		int duracion = (int) leerNumero("Duracion de la llamada en segundos");
 
 		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
-		cliente.altaLlamada(llamada);
+		Administrador.altaLlamada(nif, llamada);
 	}
 
 	private static void verLlamadasCliente() {
@@ -243,7 +231,12 @@ public class ConsoleGUI {
 
 		System.out.println("Lista de llamadas del cliente con NIF " + nif + ":");
 
-		LinkedList<Llamada> llamadas = cliente.getLlamadas();
+		Collection<Llamada> llamadas = cliente.getLlamadas();
+
+		if (llamadas.isEmpty()) {
+			System.out.println("El cliente con NIF " + nif + " no ha realizado ningúna llamada");
+			return;
+		}
 
 		for (Llamada llamada : llamadas) {
 			System.out.print(" - Llamada de " + llamada.getDuracionLlamada() + "seg. del " + llamada.getNumeroOrigen() + " al " + llamada.getNumeroDestino() + " el dia " + llamada.getFecha());
@@ -280,7 +273,7 @@ public class ConsoleGUI {
 	// ========================= Utilidades ========================= //
 
 	private static void imprimeTitulo(String titulo) {
-		System.out.println("\n");
+		System.out.println('\n');
 		for (int i = -16; i < titulo.length(); i++) System.out.print('#');
 		System.out.println("\n        " + titulo);
 		for (int i = -16; i < titulo.length(); i++) System.out.print('#');
@@ -348,20 +341,21 @@ public class ConsoleGUI {
 	}
 
 	private static LocalDateTime leerFecha(String mensaje) {
-		System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | hoy): ");
+		String hoy = "hoy";
+		System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | " + hoy + "): ");
 
 		LocalDateTime fecha = null;
 
 		do {
 			try {
 				String s = in.nextLine();
-				if (s.equalsIgnoreCase("hoy"))
+				if (s.equalsIgnoreCase(hoy))
 					fecha = LocalDateTime.now();
 				else
 					fecha = LocalDateTime.parse(s.replaceAll("( )+", "T"));
 			} catch (Exception e) {
 				System.out.println("Error en el formato de la fecha");
-				System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss): ");
+				System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | hoy): ");
 			}
 		} while (fecha == null);
 

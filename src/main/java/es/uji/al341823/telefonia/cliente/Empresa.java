@@ -11,6 +11,14 @@ import java.time.LocalDateTime;
  */
 public class Empresa extends Cliente {
 
+	/**
+	 * @param nombre    Nombre de la empresa
+	 * @param nif       NIF de la empresa
+	 * @param direccion Direcciónde de la empresa
+	 * @param email     Email de la empresa
+	 * @param fechaAlta Fecha se alta de la empresa
+	 * @param tarifa    Tarifa contratada por la empresa
+	 */
 	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifa);
 	}
