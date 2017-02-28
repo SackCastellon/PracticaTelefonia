@@ -1,7 +1,6 @@
 # IntelliJ
 *.iml
 .idea/
-target/
 
 # Eclipse
 .classpath
@@ -9,4 +8,5 @@ target/
 .settings/
 
 # Builds
+target/*
 !target/*.jar
