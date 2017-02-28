@@ -93,14 +93,8 @@ public class ConsoleGUI {
 		if (tipoCliente == 1) System.out.println("Introduce los datos del particular:");
 		else if (tipoCliente == 2) {
 			//FIXME Hacer mas bonito
-			System.out.println("Cuantos praticulares aleatorios quieres generar?");
-			int i = 0;
-			do {
-				try {
-					System.out.print("> ");
-					i = in.nextInt();
-				} catch (Exception e) {}
-			} while (i < 1 || i > 1000);
+			System.out.println("Introduce los siguientes datos:");
+			int i = (int) leerNumero("Numero de particlulares a generar");
 			Administrador.generarParticularesAleatorios(i);
 			return;
 		} else System.out.println("Introduce los datos de la empresa:");

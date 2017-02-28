@@ -1,11 +1,10 @@
-import es.uji.al341823.telefonia.api.Administrador;
-import es.uji.al341823.telefonia.cliente.Cliente;
 import es.uji.al341823.telefonia.cliente.Direccion;
+import es.uji.al341823.telefonia.cliente.Llamada;
 import es.uji.al341823.telefonia.cliente.Particular;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
-import es.uji.al341823.telefonia.cliente.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -17,94 +16,116 @@ import java.util.Random;
  */
 public class ParticularTest {
 
-    private final static GeneradorDatosINE generador = new GeneradorDatosINE();
-    private final static Random rand = new Random();
-    String nombre = generador.getNombre();
-    String apellidos = generador.getApellido() + ' ' + generador.getApellido();
-    String NIF = generador.getNIF();
-    String prov = generador.getProvincia();
-    String email = nombre + "@uji.es";
-    LocalDateTime fecha=LocalDateTime.now();
-    Tarifa tarifa= new Tarifa(rand.nextInt(5));
-    Direccion direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
-    private final static LinkedList<Llamada> llamadas = new LinkedList<>();
-    private final static LinkedList<String> info = new LinkedList<>();
+	private static GeneradorDatosINE generador;
+	private static Random rand;
+	private static String nombre;
+	private static String apellidos;
+	private static String NIF;
+	private static String prov;
+	private static String email;
+	private static LocalDateTime fecha;
+	private static Tarifa tarifa;
+	private static Direccion direccion;
+	private static LinkedList<Llamada> llamadas;
+	private static LinkedList<String> info;
+	private static Particular cliente;
 
 
-    Particular cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
+	@BeforeClass
+	public static void first() {
+		generador = new GeneradorDatosINE();
+		rand = new Random();
 
-    @Test
-    public void getNombreTest(){
-        Assert.assertEquals(nombre,cliente.getNombre());
-    }
+		nombre = generador.getNombre();
+		apellidos = generador.getApellido() + ' ' + generador.getApellido();
+		NIF = generador.getNIF();
+		prov = generador.getProvincia();
+		email = nombre + "@uji.es";
+		fecha = LocalDateTime.now();
+		tarifa = new Tarifa(rand.nextInt(5));
+		direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
 
-    @Test
-    public void getNifTest(){
-        Assert.assertEquals(NIF,cliente.getNif());
-    }
+		llamadas = new LinkedList<>();
+		info = new LinkedList<>();
 
-    @Test
-    public void getDireccionTest(){
-        Assert.assertEquals(direccion,cliente.getDireccion());
-    }
+		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
+	}
 
-    @Test
-    public void getEmailTest(){
-        Assert.assertEquals(email,cliente.getEmail());
-    }
+	@Test
+	public void getNombreTest() {
+		Assert.assertEquals(nombre, cliente.getNombre());
+	}
 
-    @Test
-    public void getFechaTest(){
-        Assert.assertEquals(fecha,cliente.getFecha());
-    }
+	@Test
+	public void getNifTest() {
+		Assert.assertEquals(NIF, cliente.getNif());
+	}
 
-    @Test
-    public void getTarifaTest(){
-        Assert.assertEquals(tarifa,cliente.getTarifa());
-    }
+	@Test
+	public void getDireccionTest() {
+		Assert.assertEquals(direccion, cliente.getDireccion());
+	}
 
-    @Test
-    public void setTarifaTest(){
-        Tarifa tarifaNueva= new Tarifa(rand.nextInt(5));
-        cliente.setTarifa(tarifaNueva);
-        Assert.assertEquals(tarifaNueva,cliente.getTarifa());
-    }
+	@Test
+	public void getEmailTest() {
+		Assert.assertEquals(email, cliente.getEmail());
+	}
 
-    @Test
-    public void altaLlamadaTest(){
-        for (int i = 0; i < 100; i++) {
-            Llamada llamada= new Llamada(Integer.toString(rand.nextInt(5)),Integer.toString(rand.nextInt(5)),fecha,rand.nextInt(5));
-            llamadas.add(llamada);
-            cliente.altaLlamada(llamada);
-        }
-        Assert.assertEquals(llamadas.size(), cliente.getLlamadas().size());
-    }
+	@Test
+	public void getFechaTest() {
+		Assert.assertEquals(fecha, cliente.getFecha());
+	}
 
-    @Test
-    public void getLlamadasTest(){
-        for (int i = 0; i < 100; i++) {
-            Llamada llamada= new Llamada(Integer.toString(rand.nextInt(5)),Integer.toString(rand.nextInt(5)),fecha,rand.nextInt(5));
-            llamadas.add(llamada);
-            cliente.altaLlamada(llamada);
-        }
-        Assert.assertEquals(llamadas, cliente.getLlamadas());
-    }
+	@Test
+	public void getTarifaTest() {
+		Assert.assertEquals(tarifa, cliente.getTarifa());
+	}
 
-    @Test
-    public void getInformacionTest(){
-        info.add("Nombre: " + nombre);
-        info.add("NIF: " + NIF);
-        info.add("Dirección: " + direccion.toString());
-        info.add("Email: " + email);
-        info.add("Fecha: " + fecha.toString());
-        info.add("Tarifa: " + tarifa.toString());
-        info.add(1, "Apellidos: " + apellidos);
-        Assert.assertEquals(info, cliente.getInformacion());
-    }
+	@Test
+	public void setTarifaTest() {
+		Tarifa tarifaNueva = new Tarifa(rand.nextInt(5));
+		cliente.setTarifa(tarifaNueva);
+		tarifa = tarifaNueva;
+		Assert.assertEquals(tarifaNueva, cliente.getTarifa());
+	}
 
-    @Test
-    public void getApellidosTest(){
-        Assert.assertEquals(apellidos,cliente.getApellidos());
-    }
+	@Test
+	public void altaLlamadaTest() {
+		for (int i = 0; i < 100; i++) {
+			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
+			llamadas.add(llamada);
+			cliente.altaLlamada(llamada);
+		}
+		Assert.assertEquals(llamadas.size(), cliente.getLlamadas().size());
+	}
+
+	@Test
+	public void getLlamadasTest() {
+		for (int i = 0; i < 100; i++) {
+			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
+			llamadas.add(llamada);
+			cliente.altaLlamada(llamada);
+		}
+		Assert.assertArrayEquals(llamadas.toArray(), cliente.getLlamadas().toArray());
+	}
+
+	// Este test no es necesario
+	/*
+	@Test
+	public void getInformacionTest() {
+		info.add("Nombre: " + nombre);
+		info.add("NIF: " + NIF);
+		info.add("Dirección: " + direccion.toString());
+		info.add("Email: " + email);
+		info.add("Fecha: " + fecha.toString());
+		info.add("Tarifa: " + tarifa.toString());
+		info.add(1, "Apellidos: " + apellidos);
+		Assert.assertEquals(info, cliente.getInformacion());
+	}*/
+
+	@Test
+	public void getApellidosTest() {
+		Assert.assertEquals(apellidos, cliente.getApellidos());
+	}
 
 }

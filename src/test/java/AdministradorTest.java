@@ -5,6 +5,7 @@ import es.uji.al341823.telefonia.cliente.Particular;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,16 @@ import java.util.Random;
  */
 public class AdministradorTest {
 
-	private final static GeneradorDatosINE generador = new GeneradorDatosINE();
-	private final static LinkedList<Cliente> clientes = new LinkedList<>();
-	private final static Random rand = new Random();
+	private static GeneradorDatosINE generador;
+	private static LinkedList<Cliente> clientes;
+	private static Random rand;
+
+	@BeforeClass
+	public static void first() {
+		generador = new GeneradorDatosINE();
+		clientes = new LinkedList<>();
+		rand = new Random();
+	}
 
 	@Test
 	public void altaClientes() {
