@@ -4,9 +4,9 @@ import es.uji.al341823.telefonia.IFecha;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author Juanjo González (al341823)
@@ -135,17 +135,31 @@ public class Cliente implements IFecha {
 
 	/**
 	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas realizadas
+	 *
+	 * @return La factura emitida
 	 */
-	public void emitirFactura() {
+	public Factura emitirFactura() {
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
-		for (Llamada llamada :	llamadas) {
+		for (Llamada llamada : llamadas) {
 			if (llamada.getFecha().isAfter(hoy))
 				duracionLlamadas += llamada.getDuracionLlamada();
 		}
 
 		Factura factura = new Factura(tarifa, ultimaFacturacion, hoy, duracionLlamadas);
+
+		facturas.add(factura);
+		return factura;
+	}
+
+	/**
+	 * Devuelve una copia de la lista de las facturas del cliente
+	 *
+	 * @return Lista de facturas
+	 */
+	public Collection<Factura> getFacturas() {
+		return (Collection<Factura>) facturas.clone();
 	}
 
 	/**
@@ -154,14 +168,14 @@ public class Cliente implements IFecha {
 	 * @return Información del cliente
 	 */
 	public String getInformacion() {
-		StringBuilder info = new StringBuilder();
+		String info = "";
 
-		info.append(" - Nombre: " + getNombre() + '\n');
-		info.append(" - NIF: " + getNif() + '\n');
-		info.append(" - Dirección: " + getDireccion().toString() + '\n');
-		info.append(" - Email: " + getEmail() + '\n');
-		info.append(" - Fecha alta: " + getFecha().toString() + '\n');
-		info.append(" - Tarifa: " + getTarifa().toString() + '\n');
+		info += " - Nombre: " + getNombre() + '\n';
+		info += " - NIF: " + getNif() + '\n';
+		info += " - Dirección: " + getDireccion().toString() + '\n';
+		info += " - Email: " + getEmail() + '\n';
+		info += " - Fecha alta: " + getFecha().toString() + '\n';
+		info += " - Tarifa: " + getTarifa().toString() + '\n';
 
 		return info.toString();
 	}

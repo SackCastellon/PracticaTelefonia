@@ -58,9 +58,9 @@ public class Factura implements IFecha {
 	 *
 	 * @return El periodo de facturación
 	 */
-	/*public int getPeriodoFactuacion() {
+	public long getPeriodoFactuacion() {
 		return periodoFactuacion;
-	}*/
+	}
 
 	/**
 	 * Devuelve el importe total de la factura calculado en euros (€)
@@ -79,5 +79,17 @@ public class Factura implements IFecha {
 	@Override
 	public LocalDateTime getFecha() {
 		return this.fechaEmision;
+	}
+
+	public String getInformacion() {
+		String info = "";
+
+		info += " - Codigo: " + getCodigo() + '\n';
+		info += " - Tarifa: " + getTarifa().toString() + '\n';
+		info += " - Fecha emisión: " + getFecha().toString() + '\n';
+		info += " - Periodo de facturación: " + getPeriodoFactuacion() + " días\n";
+		info += " - Importe: " + getImporte() + "€\n";
+
+		return info;
 	}
 }

@@ -7,28 +7,60 @@ package es.uji.al341823.telefonia.cliente;
  */
 public class Direccion {
 
+	/** Codigo postal */
 	private final int codigoPostal;
+	/** Provincia */
 	private final String provincia;
+	/** Población */
 	private final String poblacion;
 
+	/**
+	 * Crea una dirección corespondiente a los dato introducidos
+	 *
+	 * @param codigoPostal Codigo postal
+	 * @param provincia    Provincia
+	 * @param poblacion    Población
+	 */
 	public Direccion(int codigoPostal, String provincia, String poblacion) {
 		this.codigoPostal = codigoPostal;
 		this.provincia = provincia;
 		this.poblacion = poblacion;
 	}
 
+	/**
+	 * Devuelve el codigo postal de la dirección
+	 *
+	 * @return Codigo postal
+	 */
 	public int getCodigoPostal() {
 		return codigoPostal;
 	}
 
+	/**
+	 * Devulve la provincia de la dirección
+	 *
+	 * @return Provincia
+	 */
 	public String getProvincia() {
 		return provincia;
 	}
 
+	/**
+	 * Devulve la población de la dirección
+	 *
+	 * @return Población
+	 */
 	public String getPoblacion() {
 		return poblacion;
 	}
 
+	/**
+	 * Genera una dirección a partir de un <code>String</code> con el formato "<code>CP, Provincia, Población</code>"
+	 *
+	 * @param direccion Dirección en formato "<code>CP, Provincia, Población</code>"
+	 *
+	 * @return La dirección creada
+	 */
 	public static Direccion parse(String direccion) {
 		String[] campos = direccion.split(",", 3);
 

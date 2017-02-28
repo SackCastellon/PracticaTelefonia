@@ -25,15 +25,23 @@ public class Administrador {
 	/** Almacena todos los clientes que hay en el momento */
 	private static final HashMap<String, Cliente> clientes = new HashMap<>();
 
+	/** Almacena todas las facturas emitidas hasta el momento */
+	private static final HashMap<Integer, Factura> facturas = new HashMap<>();
+
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
 	 * Se entiende que un cliente ya está dado alta cuando su NIF está almacenado en el sistema
 	 *
 	 * @param cliente Nuevo cliente a dar de alta
+	 *
+	 * @return <code>true</code> si se ha añadido el cliente o <code>false</code> si el cliente ya exitia
 	 */
-	public static void altaCliente(Cliente cliente) {
-		if (!clientes.containsKey(cliente.getNif()))
-			clientes.put(cliente.getNif(), cliente);
+	public static boolean altaCliente(Cliente cliente) {
+		if (exixteCliente(cliente.getNif()))
+			return false;
+
+		clientes.put(cliente.getNif(), cliente);
+		return true;
 	}
 
 	/**
@@ -45,7 +53,7 @@ public class Administrador {
 	 * @return <code>true</code> si se ha dado de baja el cliente o <code>false</code> si el cliente no exitia
 	 */
 	public static boolean bajaCliente(String nif) {
-		if (clientes.containsKey(nif)) {
+		if (exixteCliente(nif)) {
 			clientes.remove(nif);
 			return true;
 		}
@@ -60,7 +68,7 @@ public class Administrador {
 	 * @param nuevaTarifa Nueva tarifa
 	 */
 	public static void cambiarTarifa(String nif, Tarifa nuevaTarifa) {
-		if (clientes.containsKey(nif))
+		if (exixteCliente(nif))
 			clientes.get(nif).setTarifa(nuevaTarifa);
 	}
 
@@ -91,7 +99,7 @@ public class Administrador {
 	 * @param llamada La llamada
 	 */
 	public static void altaLlamada(String nif, Llamada llamada) {
-		if (clientes.containsKey(nif))
+		if (exixteCliente(nif))
 			clientes.get(nif).altaLlamada(llamada);
 	}
 
@@ -103,27 +111,52 @@ public class Administrador {
 	 * @return Lista de llamadas
 	 */
 	public static Collection<Llamada> getLlamadas(String nif) {
-		if (!clientes.containsKey(nif))
-			return null;
+		if (exixteCliente(nif))
+			return clientes.get(nif).getLlamadas();
 
-		return clientes.get(nif).getLlamadas();
+		return null;
 	}
 
 	/**
 	 * Emite una factura para el cliente con el NIF especificado
 	 *
-	 * @param nif
+	 * @param nif NIF del cliente
 	 *
-	 * @return
+	 * @return La factura emitida
 	 */
 	public static Factura emitirFactura(String nif) {
-		if (exixteCliente(nif))
-			getCliente(nif).emitirFactura();
-		return null; //TODO
+		if (exixteCliente(nif)) {
+			Factura factura = getCliente(nif).emitirFactura();
+			facturas.put(factura.getCodigo(), factura);
+			return factura;
+		}
+
+		return null;
 	}
 
+	/**
+	 * Devuelve la factura correspondiente al codigo especificado
+	 *
+	 * @param codigo Codigo de factura
+	 *
+	 * @return La factura correspondiente
+	 */
 	public static Factura getFactura(int codigo) {
-		return null; //TODO
+		return facturas.get(codigo);
+	}
+
+	/**
+	 * Devuelve la lista de faturas del cliente correcpondiente con el NIF especificado
+	 *
+	 * @param nif NIF del cliente
+	 *
+	 * @return Lista de faturas
+	 */
+	public static Collection<Factura> getFacturas(String nif) {
+		if (exixteCliente(nif))
+			return getCliente(nif).getFacturas();
+
+		return null;
 	}
 
 	/**
