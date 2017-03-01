@@ -1,4 +1,4 @@
-package es.uji.al341823.telefonia.cliente;
+package es.uji.al341823.telefonia.llamadas;
 
 import es.uji.al341823.telefonia.IFecha;
 
@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 public class Llamada implements IFecha {
 
 	/** Numero desde el que se ha realizado la llamada */
-	private String numeroOrigen;
+	private final String numeroOrigen;
 	/** Numero al que se ha realizado la llamada */
-	private String numeroDestino;
+	private final String numeroDestino;
 	/** Fecha y hora a la que se realizó la llamada */
-	private LocalDateTime fechaLlamada;
+	private final LocalDateTime fechaLlamada;
 	/** Duración de la llamada en segundos */
-	private int duracionLlamada;
+	private final int duracionLlamada;
 
 	/**
 	 * Crea una entrada de una llamada. Está entrada puede ser almacenada en un cliente posteriormente

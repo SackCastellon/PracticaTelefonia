@@ -1,7 +1,7 @@
-import es.uji.al341823.telefonia.cliente.Direccion;
-import es.uji.al341823.telefonia.cliente.Llamada;
-import es.uji.al341823.telefonia.cliente.Particular;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.llamadas.Llamada;
+import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -16,37 +16,34 @@ import java.util.Random;
  */
 public class ParticularTest {
 
-	private static GeneradorDatosINE generador;
 	private static Random rand;
 	private static String nombre;
 	private static String apellidos;
 	private static String NIF;
-	private static String prov;
 	private static String email;
 	private static LocalDateTime fecha;
-	private static Tarifa tarifa;
-	private static Direccion direccion;
+	private static TarifaTelefonica tarifa;
+	private static DireccionPostal direccion;
 	private static LinkedList<Llamada> llamadas;
-	private static LinkedList<String> info;
 	private static Particular cliente;
 
 
 	@BeforeClass
 	public static void first() {
-		generador = new GeneradorDatosINE();
+		GeneradorDatosINE generador = new GeneradorDatosINE();
 		rand = new Random();
 
 		nombre = generador.getNombre();
 		apellidos = generador.getApellido() + ' ' + generador.getApellido();
 		NIF = generador.getNIF();
-		prov = generador.getProvincia();
+		String prov = generador.getProvincia();
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
-		tarifa = new Tarifa(rand.nextInt(5));
-		direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
+		tarifa = new TarifaTelefonica(rand.nextInt(5));
+		direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
 
 		llamadas = new LinkedList<>();
-		info = new LinkedList<>();
+		LinkedList<String> info = new LinkedList<>();
 
 		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
 	}
@@ -83,7 +80,7 @@ public class ParticularTest {
 
 	@Test
 	public void setTarifaTest() {
-		Tarifa tarifaNueva = new Tarifa(rand.nextInt(5));
+		TarifaTelefonica tarifaNueva = new TarifaTelefonica(rand.nextInt(5));
 		cliente.setTarifa(tarifaNueva);
 		tarifa = tarifaNueva;
 		Assert.assertEquals(tarifaNueva, cliente.getTarifa());

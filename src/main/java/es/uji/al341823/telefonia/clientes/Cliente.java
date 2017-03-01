@@ -1,8 +1,9 @@
-package es.uji.al341823.telefonia.cliente;
+package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.IFecha;
-import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
+import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,17 +17,17 @@ import java.util.LinkedList;
 public class Cliente implements IFecha {
 
 	/** Nombre del cliente */
-	private String nombre;
+	private final String nombre;
 	/** NIF del cliente */
 	private final String nif;
 	/** Dirección del cliente */
-	private Direccion direccion;
+	private final DireccionPostal direccion;
 	/** Email del cliente */
-	private String email;
+	private final String email;
 	/** Fecha en la que se dió de alta el cliente */
-	private LocalDateTime fechaAlta;
+	private final LocalDateTime fechaAlta;
 	/** Tarifa que tiene contratada el cliente */
-	private Tarifa tarifa;
+	private TarifaTelefonica tarifa;
 
 	/** El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación */
 	private LocalDateTime ultimaFacturacion;
@@ -34,7 +35,7 @@ public class Cliente implements IFecha {
 	/** Lista de llamadas que realizó el cliente */
 	private final LinkedList<Llamada> llamadas = new LinkedList<>();
 	/** Lista de facturas correspondientes al cliente */
-	private final LinkedList<Factura> facturas = new LinkedList<>();
+	private final LinkedList<FacturaTelefonica> facturas = new LinkedList<>();
 
 	/**
 	 * @param nombre    Nombre del cliente
@@ -44,7 +45,7 @@ public class Cliente implements IFecha {
 	 * @param fechaAlta Fecha de lata del cliente
 	 * @param tarifa    Tarifa contratada por el cliente
 	 */
-	protected Cliente(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+	protected Cliente(String nombre, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
 		this.nombre = nombre;
 		this.nif = nif;
 		this.direccion = direccion;
@@ -78,7 +79,7 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Dirección del cliente
 	 */
-	public Direccion getDireccion() {
+	public DireccionPostal getDireccion() {
 		return this.direccion;
 	}
 
@@ -106,14 +107,14 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Tarifa contratada
 	 */
-	public Tarifa getTarifa() { return this.tarifa; }
+	public TarifaTelefonica getTarifa() { return this.tarifa; }
 
 	/**
 	 * Establece la nueva tarifa que tendrá contrada el cliente
 	 *
 	 * @param tarifa Nueva tarifa
 	 */
-	public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
+	public void setTarifa(TarifaTelefonica tarifa) { this.tarifa = tarifa; }
 
 	/**
 	 * Da de alta una nueva llamada para el cliente
@@ -138,7 +139,7 @@ public class Cliente implements IFecha {
 	 *
 	 * @return La factura emitida
 	 */
-	public Factura emitirFactura() {
+	public FacturaTelefonica emitirFactura() {
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
@@ -147,7 +148,7 @@ public class Cliente implements IFecha {
 				duracionLlamadas += llamada.getDuracionLlamada();
 		}
 
-		Factura factura = new Factura(tarifa, ultimaFacturacion, hoy, duracionLlamadas);
+		FacturaTelefonica factura = new FacturaTelefonica(tarifa, ultimaFacturacion, hoy, duracionLlamadas);
 
 		ultimaFacturacion = hoy;
 
@@ -160,8 +161,8 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de facturas
 	 */
-	public Collection<Factura> getFacturas() {
-		return (Collection<Factura>) facturas.clone();
+	public Collection<FacturaTelefonica> getFacturas() {
+		return (Collection<FacturaTelefonica>) facturas.clone();
 	}
 
 	/**
@@ -179,6 +180,6 @@ public class Cliente implements IFecha {
 		info += " - Fecha alta: " + getFecha().toString() + '\n';
 		info += " - Tarifa: " + getTarifa().toString() + '\n';
 
-		return info.toString();
+		return info;
 	}
 }

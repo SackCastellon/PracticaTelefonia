@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Factura implements IFecha {
+public class FacturaTelefonica implements IFecha {
 
 	/** Se utiliza para obtener el código unico de cada factura */
 	private static int codigoUnico = 0;
@@ -18,7 +18,7 @@ public class Factura implements IFecha {
 	/** Codigo identificativo unico de la factura */
 	private final int codigo;
 	/** La tarifa usada para calcular la factura */
-	private final Tarifa tarifa;
+	private final TarifaTelefonica tarifa;
 	/** Fecha en la que se emitió la factura */
 	private final LocalDateTime fechaEmision;
 	/** Periodo de tiempo que comprende la factura en dias */
@@ -34,7 +34,7 @@ public class Factura implements IFecha {
 	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
 	 * @param duracionLlamadas   La duración total en segundos de las llamadas
 	 */
-	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) {
+	public FacturaTelefonica(TarifaTelefonica tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) {
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
@@ -56,7 +56,7 @@ public class Factura implements IFecha {
 	 *
 	 * @return La taifa de la factura
 	 */
-	public Tarifa getTarifa() {
+	public TarifaTelefonica getTarifa() {
 		return tarifa;
 	}
 

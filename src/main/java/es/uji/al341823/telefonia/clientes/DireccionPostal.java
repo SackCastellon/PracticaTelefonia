@@ -1,11 +1,11 @@
-package es.uji.al341823.telefonia.cliente;
+package es.uji.al341823.telefonia.clientes;
 
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Direccion {
+public class DireccionPostal {
 
 	/** Codigo postal */
 	private final int codigoPostal;
@@ -21,7 +21,7 @@ public class Direccion {
 	 * @param provincia    Provincia
 	 * @param poblacion    Población
 	 */
-	public Direccion(int codigoPostal, String provincia, String poblacion) {
+	public DireccionPostal(int codigoPostal, String provincia, String poblacion) {
 		this.codigoPostal = codigoPostal;
 		this.provincia = provincia;
 		this.poblacion = poblacion;
@@ -61,7 +61,7 @@ public class Direccion {
 	 *
 	 * @return La dirección creada
 	 */
-	public static Direccion parse(String direccion) {
+	public static DireccionPostal parse(String direccion) {
 		String[] campos = direccion.split(",", 3);
 
 		//Codigo Postal
@@ -73,7 +73,7 @@ public class Direccion {
 		//Poblacion
 		String poblacion = campos[2];
 
-		return new Direccion(cp, provincia, poblacion);
+		return new DireccionPostal(cp, provincia, poblacion);
 	}
 
 	@Override

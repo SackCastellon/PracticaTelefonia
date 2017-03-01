@@ -1,11 +1,11 @@
 package es.uji.al341823.telefonia.api;
 
-import es.uji.al341823.telefonia.cliente.Cliente;
-import es.uji.al341823.telefonia.cliente.Direccion;
-import es.uji.al341823.telefonia.cliente.Llamada;
-import es.uji.al341823.telefonia.cliente.Particular;
-import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
+import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 
 import java.time.LocalDateTime;
@@ -23,10 +23,10 @@ import java.util.Random;
 public class Administrador {
 
 	/** Almacena todos los clientes que hay en el momento */
-	private static final HashMap<String, Cliente> clientes = new HashMap<>();
+	private static final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
 	/** Almacena todas las facturas emitidas hasta el momento */
-	private static final HashMap<Integer, Factura> facturas = new HashMap<>();
+	private static final HashMap<Integer, FacturaTelefonica> FACTURAS = new HashMap<>();
 
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
@@ -40,7 +40,7 @@ public class Administrador {
 		if (exixteCliente(cliente.getNif()))
 			return false;
 
-		clientes.put(cliente.getNif(), cliente);
+		CLIENTES.put(cliente.getNif(), cliente);
 		return true;
 	}
 
@@ -54,7 +54,7 @@ public class Administrador {
 	 */
 	public static boolean bajaCliente(String nif) {
 		if (exixteCliente(nif)) {
-			clientes.remove(nif);
+			CLIENTES.remove(nif);
 			return true;
 		}
 
@@ -67,9 +67,9 @@ public class Administrador {
 	 * @param nif         NIF de cliente
 	 * @param nuevaTarifa Nueva tarifa
 	 */
-	public static void cambiarTarifa(String nif, Tarifa nuevaTarifa) {
+	public static void cambiarTarifa(String nif, TarifaTelefonica nuevaTarifa) {
 		if (exixteCliente(nif))
-			clientes.get(nif).setTarifa(nuevaTarifa);
+			CLIENTES.get(nif).setTarifa(nuevaTarifa);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class Administrador {
 	 * @return El cliente con ese NIF
 	 */
 	public static Cliente getCliente(String nif) {
-		return clientes.get(nif);
+		return CLIENTES.get(nif);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Administrador {
 	 * @return Lista de clientes
 	 */
 	public static Collection<Cliente> getClientes() {
-		return clientes.values();
+		return CLIENTES.values();
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Administrador {
 	 */
 	public static void altaLlamada(String nif, Llamada llamada) {
 		if (exixteCliente(nif))
-			clientes.get(nif).altaLlamada(llamada);
+			CLIENTES.get(nif).altaLlamada(llamada);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class Administrador {
 	 */
 	public static Collection<Llamada> getLlamadas(String nif) {
 		if (exixteCliente(nif))
-			return clientes.get(nif).getLlamadas();
+			return CLIENTES.get(nif).getLlamadas();
 
 		return null;
 	}
@@ -124,10 +124,10 @@ public class Administrador {
 	 *
 	 * @return La factura emitida
 	 */
-	public static Factura emitirFactura(String nif) {
+	public static FacturaTelefonica emitirFactura(String nif) {
 		if (exixteCliente(nif)) {
-			Factura factura = getCliente(nif).emitirFactura();
-			facturas.put(factura.getCodigo(), factura);
+			FacturaTelefonica factura = getCliente(nif).emitirFactura();
+			FACTURAS.put(factura.getCodigo(), factura);
 			return factura;
 		}
 
@@ -141,8 +141,8 @@ public class Administrador {
 	 *
 	 * @return La factura correspondiente
 	 */
-	public static Factura getFactura(int codigo) {
-		return facturas.get(codigo);
+	public static FacturaTelefonica getFactura(int codigo) {
+		return FACTURAS.get(codigo);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class Administrador {
 	 *
 	 * @return Lista de faturas
 	 */
-	public static Collection<Factura> getFacturas(String nif) {
+	public static Collection<FacturaTelefonica> getFacturas(String nif) {
 		if (exixteCliente(nif))
 			return getCliente(nif).getFacturas();
 
@@ -171,15 +171,15 @@ public class Administrador {
 		for (int i = 0; i < cantidad; i++) {
 
 			String nombre = gen.getNombre();
-			String apellidos = gen.getApellido();
+			String apellidos = gen.getApellido() + " " + gen.getApellido();
 			String nif = gen.getNIF();
 
 			String provincia = gen.getProvincia();
-			Direccion direccion = new Direccion(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
+			DireccionPostal direccion = new DireccionPostal(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
 
 			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
 			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-			Tarifa tarifa = new Tarifa(1);
+			TarifaTelefonica tarifa = new TarifaTelefonica(1);
 
 			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
 		}
@@ -193,6 +193,6 @@ public class Administrador {
 	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
 	 */
 	public static boolean exixteCliente(String nif) {
-		return clientes.containsKey(nif);
+		return CLIENTES.containsKey(nif);
 	}
 }

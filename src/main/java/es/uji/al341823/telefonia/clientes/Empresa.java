@@ -1,6 +1,6 @@
-package es.uji.al341823.telefonia.cliente;
+package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +19,7 @@ public class Empresa extends Cliente {
 	 * @param fechaAlta Fecha se alta de la empresa
 	 * @param tarifa    Tarifa contratada por la empresa
 	 */
-	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+	public Empresa(String nombre, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifa);
 	}
 }

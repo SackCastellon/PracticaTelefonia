@@ -1,6 +1,6 @@
-package es.uji.al341823.telefonia.cliente;
+package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Particular extends Cliente {
 
 	/** Los apellidos del cliente */
-	private String apellidos;
+	private final String apellidos;
 
 	/**
 	 * @param nombre    Nombre del particular
@@ -23,7 +23,7 @@ public class Particular extends Cliente {
 	 * @param fechaAlta Fecha de alta del particular
 	 * @param tarifa    Tarifa contratada por el particular
 	 */
-	public Particular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+	public Particular(String nombre, String apellidos, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifa);
 
 		this.apellidos = apellidos;
@@ -45,16 +45,16 @@ public class Particular extends Cliente {
 	 */
 	@Override
 	public String getInformacion() {
-		StringBuilder info = new StringBuilder();
+		String info = "";
 
-		info.append(" - Nombre: " + getNombre() + '\n');
-		info.append(" - Apellidos: " + getApellidos() + '\n');
-		info.append(" - NIF: " + getNif() + '\n');
-		info.append(" - Dirección: " + getDireccion().toString() + '\n');
-		info.append(" - Email: " + getEmail() + '\n');
-		info.append(" - Fecha alta: " + getFecha().toString() + '\n');
-		info.append(" - Tarifa: " + getTarifa().toString() + '\n');
+		info += " - Nombre: " + getNombre() + '\n';
+		info += " - Apellidos: " + getApellidos() + '\n';
+		info += " - NIF: " + getNif() + '\n';
+		info += " - Dirección: " + getDireccion().toString() + '\n';
+		info += " - Email: " + getEmail() + '\n';
+		info += " - Fecha alta: " + getFecha().toString() + '\n';
+		info += " - Tarifa: " + getTarifa().toString() + '\n';
 
-		return info.toString();
+		return info;
 	}
 }

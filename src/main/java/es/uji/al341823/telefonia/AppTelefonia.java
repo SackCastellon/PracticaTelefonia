@@ -6,7 +6,7 @@ import es.uji.al341823.telefonia.gui.ConsoleGUI;
  * @author Juanjo González (al341823)
  * @since 0.1
  */
-public class App {
+public class AppTelefonia {
 
 	/**
 	 * Metodo main, primer metodo que se llama la ejecutar el programa

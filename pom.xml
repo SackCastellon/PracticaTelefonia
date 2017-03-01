@@ -38,7 +38,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>es.uji.al341823.telefonia.App</mainClass>
+                                    <mainClass>es.uji.al341823.telefonia.AppTelefonia</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
