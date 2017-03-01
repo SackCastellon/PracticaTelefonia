@@ -170,7 +170,7 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Información del cliente
 	 */
-	public String getInformacion() {
+	public String obtenerInformacion() {
 		String info = "";
 
 		info += " - Nombre: " + getNombre() + '\n';

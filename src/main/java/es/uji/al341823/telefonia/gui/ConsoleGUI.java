@@ -178,7 +178,7 @@ public class ConsoleGUI {
 		}
 
 		System.out.println("Información del cliente con NIF " + nif + ":");
-		System.out.println(cliente.getInformacion());
+		System.out.println(cliente.obtenerInformacion());
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class ConsoleGUI {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.getInformacion());
+			System.out.println(cliente.obtenerInformacion());
 			System.out.println();
 		}
 	}
@@ -308,7 +308,7 @@ public class ConsoleGUI {
 		}
 
 		System.out.println("Información de la factura recien emitida");
-		System.out.println(factura.getInformacion());
+		System.out.println(factura.obtenerInformacion());
 	}
 
 	/**
@@ -320,7 +320,7 @@ public class ConsoleGUI {
 
 		FacturaTelefonica factura = Administrador.getFactura(cod);
 		System.out.println("Información de la factura con codigo" + cod + ":");
-		System.out.println(factura.getInformacion());
+		System.out.println(factura.obtenerInformacion());
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class ConsoleGUI {
 
 		for (FacturaTelefonica factura : facturas) {
 			System.out.println();
-			factura.getInformacion();
+			factura.obtenerInformacion();
 		}
 	}
 

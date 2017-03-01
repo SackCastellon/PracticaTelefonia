@@ -44,7 +44,7 @@ public class Particular extends Cliente {
 	 * @return Información del cliente
 	 */
 	@Override
-	public String getInformacion() {
+	public String obtenerInformacion() {
 		String info = "";
 
 		info += " - Nombre: " + getNombre() + '\n';

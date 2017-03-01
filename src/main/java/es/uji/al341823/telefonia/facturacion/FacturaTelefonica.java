@@ -93,7 +93,7 @@ public class FacturaTelefonica implements IFecha {
 	 *
 	 * @return Informació de la factura
 	 */
-	public String getInformacion() {
+	public String obtenerInformacion() {
 		String info = "";
 
 		info += " - Codigo: " + getCodigo() + '\n';
