@@ -143,11 +143,13 @@ public class Cliente implements IFecha {
 		int duracionLlamadas = 0;
 
 		for (Llamada llamada : llamadas) {
-			if (llamada.getFecha().isAfter(hoy))
+			if (llamada.getFecha().isBefore(hoy) && llamada.getFecha().isAfter(ultimaFacturacion))
 				duracionLlamadas += llamada.getDuracionLlamada();
 		}
 
 		Factura factura = new Factura(tarifa, ultimaFacturacion, hoy, duracionLlamadas);
+
+		ultimaFacturacion = hoy;
 
 		facturas.add(factura);
 		return factura;

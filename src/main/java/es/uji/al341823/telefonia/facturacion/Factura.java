@@ -4,7 +4,6 @@ import es.uji.al341823.telefonia.IFecha;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAmount;
 
 /**
  * @author Juanjo González (al341823)
@@ -27,11 +26,19 @@ public class Factura implements IFecha {
 	/** Importe total de la factura calculado en euros (€) */
 	private final float importe;
 
+	/**
+	 * Crea una tarifa a partir de los datos especificados
+	 *
+	 * @param tarifa             La tarifa que se aplica
+	 * @param fechaUltimaEmision La fecha de emisión de la ultima fsctura
+	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
+	 * @param duracionLlamadas   La duración total en segundos de las llamadas
+	 */
 	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) {
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
-		this.periodoFactuacion = Duration.between(fechaEmision, fechaUltimaEmision).toDays();
+		this.periodoFactuacion = Duration.between(fechaUltimaEmision, fechaEmision).toDays();
 		this.importe = tarifa.getPrecio() * duracionLlamadas;
 	}
 
@@ -81,6 +88,11 @@ public class Factura implements IFecha {
 		return this.fechaEmision;
 	}
 
+	/**
+	 * Devuelve un <code>String</code> con toda la información de la factura
+	 *
+	 * @return Informació de la factura
+	 */
 	public String getInformacion() {
 		String info = "";
 

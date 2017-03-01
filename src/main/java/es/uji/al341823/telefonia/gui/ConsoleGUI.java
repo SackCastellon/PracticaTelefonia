@@ -55,6 +55,9 @@ public class ConsoleGUI {
 		} while (menu != 0);
 	}
 
+	/**
+	 * Muestra el menú de clientes hasta que se seleccione un sub-menú o se decida salir del programa
+	 */
 	private static void menuClientes() {
 		int opcion;
 
@@ -86,6 +89,9 @@ public class ConsoleGUI {
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Muestra un menú para dar de alta un cliente
+	 */
 	private static void altaCliente() {
 		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Particular Generado Aleatoriamente", "Empresa");
 
@@ -124,6 +130,9 @@ public class ConsoleGUI {
 
 	}
 
+	/**
+	 * Muestra un menú para dar de baja un cliente
+	 */
 	private static void bajaCliente() {
 		String nif = leerDatoNIF();
 
@@ -133,6 +142,10 @@ public class ConsoleGUI {
 			System.out.println("Cliente con NIF " + nif + " eliminado");
 	}
 
+
+	/**
+	 * Muestra un menú para cambiar la tarifa de un cliente
+	 */
 	private static void cambiarTarifa() {
 		String nif = leerDatoNIF();
 
@@ -148,6 +161,9 @@ public class ConsoleGUI {
 		Administrador.cambiarTarifa(nif, tarifa);
 	}
 
+	/**
+	 * Muestra un menú para ver los datos de un cliente
+	 */
 	private static void verDatosCliente() {
 		String nif = leerDatoNIF();
 
@@ -161,6 +177,9 @@ public class ConsoleGUI {
 		System.out.println(cliente.getInformacion());
 	}
 
+	/**
+	 * Muestra un menú para ver los datos de todos los clientes
+	 */
 	private static void verDatosTodosClientes() {
 
 		Collection<Cliente> clientes = Administrador.getClientes();
@@ -176,6 +195,9 @@ public class ConsoleGUI {
 		}
 	}
 
+	/**
+	 * Muestra el menú de llamadas hasta que se seleccione un sub-menú o se decida salir del programa
+	 */
 	private static void menuLlamadas() {
 		int opcion;
 
@@ -195,6 +217,9 @@ public class ConsoleGUI {
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Muestra un menú para dar de alta una llamada
+	 */
 	private static void altaLlamada() {
 		String nif = leerDatoNIF();
 
@@ -214,6 +239,9 @@ public class ConsoleGUI {
 		Administrador.altaLlamada(nif, llamada);
 	}
 
+	/**
+	 * Muestra un menú para ver todas las llamadas
+	 */
 	private static void verLlamadasCliente() {
 		String nif = leerDatoNIF();
 
@@ -236,6 +264,9 @@ public class ConsoleGUI {
 		}
 	}
 
+	/**
+	 * Muestra el menú de facturas hasta que se seleccione un sub-menú o se decida salir del programa
+	 */
 	private static void menuFacturas() {
 		int opcion;
 
@@ -259,6 +290,9 @@ public class ConsoleGUI {
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Muestra un menú para emitir una factura
+	 */
 	private static void emitirFactura() {
 		String nif = leerDatoNIF();
 
@@ -273,6 +307,9 @@ public class ConsoleGUI {
 		System.out.println(factura.getInformacion());
 	}
 
+	/**
+	 * Muestra un menú para ver una factura
+	 */
 	private static void verFactura() {
 		System.out.println("Introduce los siguientes datos de la factura:");
 		int cod = leerNumero("Codigo factura");
@@ -282,6 +319,9 @@ public class ConsoleGUI {
 		System.out.println(factura.getInformacion());
 	}
 
+	/**
+	 * Muestra un menú para ver todas las facturas de un cliente
+	 */
 	private static void verFacturasCliente() {
 		String nif = leerDatoNIF();
 
@@ -305,6 +345,11 @@ public class ConsoleGUI {
 
 	// ========================= Utilidades ========================= //
 
+	/**
+	 * Imprime el titulo especificado por pantalla
+	 *
+	 * @param titulo El titulo
+	 */
 	private static void imprimeTitulo(String titulo) {
 		System.out.println('\n');
 		for (int i = -16; i < titulo.length(); i++) System.out.print('#');
