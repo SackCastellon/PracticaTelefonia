@@ -35,7 +35,7 @@ public class AdministradorTest {
 			String prov = generador.getProvincia();
 			DireccionPostal direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
 			String nombre = generador.getNombre();
-			Cliente cliente = new Particular(nombre, generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", LocalDateTime.now(), new TarifaTelefonica(rand.nextInt(5)));
+			Cliente cliente = new Particular(nombre, generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", LocalDateTime.now(), new TarifaTelefonica(rand.nextFloat()));
 
 			clientes.add(cliente);
 			Administrador.altaCliente(cliente);

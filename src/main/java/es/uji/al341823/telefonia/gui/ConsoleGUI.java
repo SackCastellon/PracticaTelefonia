@@ -105,7 +105,7 @@ public class ConsoleGUI {
 			System.out.println("Introduce los datos del particular:");
 		} else if (tipoCliente == 2) {
 			System.out.println("Introduce los siguientes datos:");
-			Administrador.generarParticularesAleatorios(leerNumero("Numero de particlulares a generar"));
+			Administrador.generarParticularesAleatorios((int) leerNumero("Numero de particlulares a generar"));
 			return;
 		} else {
 			System.out.println("Introduce los datos de la empresa:");
@@ -237,7 +237,7 @@ public class ConsoleGUI {
 		String origen = leerTexto("Numero de origen");
 		String destino = leerTexto("Numero de destino");
 		LocalDateTime fecha = leerFecha("Fecha de la llamada");
-		int duracion = leerNumero("Duracion de la llamada en segundos");
+		int duracion = (int) leerNumero("Duracion de la llamada en segundos");
 
 		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
 		Administrador.altaLlamada(nif, llamada);
@@ -316,7 +316,7 @@ public class ConsoleGUI {
 	 */
 	private static void verFactura() {
 		System.out.println("Introduce los siguientes datos de la factura:");
-		int cod = leerNumero("Codigo factura");
+		int cod = (int) leerNumero("Codigo factura");
 
 		FacturaTelefonica factura = Administrador.getFactura(cod);
 		System.out.println("Información de la factura con codigo" + cod + ":");
@@ -390,21 +390,21 @@ public class ConsoleGUI {
 		return scanner.nextLine();
 	}
 
-	private static int leerNumero(String mensaje) {
+	private static float leerNumero(String mensaje) {
 		System.out.print(" - " + mensaje + ": ");
 
-		int i = -1;
+		float f = -1;
 
 		do {
 			try {
-				i = scanner.nextInt();
+				f = scanner.nextFloat();
 			} catch (Exception e) {
 				System.out.println("Error en el formato del numero");
 				System.out.print(" - " + mensaje + ": ");
 			}
-		} while (i < 0);
+		} while (f < 0);
 
-		return i;
+		return f;
 	}
 
 	private static DireccionPostal leerDireccion(String mensaje) {

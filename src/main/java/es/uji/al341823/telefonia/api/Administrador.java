@@ -179,7 +179,7 @@ public class Administrador {
 
 			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
 			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-			TarifaTelefonica tarifa = new TarifaTelefonica(1);
+			TarifaTelefonica tarifa = new TarifaTelefonica(rand.nextFloat());
 
 			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
 		}

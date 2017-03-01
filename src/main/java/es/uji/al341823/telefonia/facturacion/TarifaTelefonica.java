@@ -7,27 +7,17 @@ package es.uji.al341823.telefonia.facturacion;
  */
 public class TarifaTelefonica {
 
-	/** Codigo de la tarifa */
-	private final int codigoTarifa;
 	/** Precio por minuto de la tarifa (€/min) */
 	private final float precio;
 
 	/**
-	 * Crea una tarifa con un codigo
+	 * Crea una tarifa con un precio determinado
 	 *
-	 * @param codigoTarifa Codigo de la tarifa
+	 * @param precio Precio de la tarifa
 	 */
-	public TarifaTelefonica(int codigoTarifa) {
-		this.codigoTarifa = codigoTarifa;
-		this.precio = 0.10f; // TODO
+	public TarifaTelefonica(float precio) {
+		this.precio = precio;
 	}
-
-	/**
-	 * Devuelve el codigo de la tarifa
-	 *
-	 * @return Codigo de la tarifa
-	 */
-	public int getCodigoTarifa() { return codigoTarifa; }
 
 	/**
 	 * Devuelve le precio por minuto de la tarifa (€/min)
@@ -40,6 +30,6 @@ public class TarifaTelefonica {
 
 	@Override
 	public String toString() {
-		return "Tarifa=" + codigoTarifa + ", Precio=" + precio;
+		return "Precio=" + precio;
 	}
 }

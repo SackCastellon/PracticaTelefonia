@@ -39,7 +39,7 @@ public class ParticularTest {
 		String prov = generador.getProvincia();
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
-		tarifa = new TarifaTelefonica(rand.nextInt(5));
+		tarifa = new TarifaTelefonica(rand.nextFloat());
 		direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
 
 		llamadas = new LinkedList<>();
@@ -80,7 +80,7 @@ public class ParticularTest {
 
 	@Test
 	public void setTarifaTest() {
-		TarifaTelefonica tarifaNueva = new TarifaTelefonica(rand.nextInt(5));
+		TarifaTelefonica tarifaNueva = new TarifaTelefonica(rand.nextFloat());
 		cliente.setTarifa(tarifaNueva);
 		tarifa = tarifaNueva;
 		Assert.assertEquals(tarifaNueva, cliente.getTarifa());
