@@ -12,7 +12,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
- * Created by al341819 on 28/02/17.
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class ParticularTest {
 	private static Random rand;

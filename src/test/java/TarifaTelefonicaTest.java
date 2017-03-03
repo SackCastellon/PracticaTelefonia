@@ -6,7 +6,8 @@ import org.junit.Test;
 import java.util.Random;
 
 /**
- * Created by al341819 on 3/03/17.
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class TarifaTelefonicaTest {
     private static Random rand;
@@ -22,5 +23,5 @@ public class TarifaTelefonicaTest {
     }
 
     @Test
-    public void getPrecioTest(){ Assert.assertEquals(precio, tarifa.getPrecio()); }
+    public void getPrecioTest(){ Assert.assertEquals(precio, tarifa.getPrecio(), 0); }
 }

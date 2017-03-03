@@ -178,7 +178,7 @@ public class Cliente implements IFecha {
 		info += " - Dirección: " + getDireccion().toString() + '\n';
 		info += " - Email: " + getEmail() + '\n';
 		info += " - Fecha alta: " + getFecha().toString() + '\n';
-		info += " - Tarifa: " + getTarifa().toString() + '\n';
+		info += " - Tarifa: " + getTarifa().getPrecio() + " €/min\n";
 
 		return info;
 	}

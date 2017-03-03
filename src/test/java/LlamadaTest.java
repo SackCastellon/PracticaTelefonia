@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
- * Created by al341819 on 3/03/17.
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class LlamadaTest {
     private static Random rand;

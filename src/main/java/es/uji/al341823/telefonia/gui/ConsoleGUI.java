@@ -97,19 +97,22 @@ public class ConsoleGUI {
 	 * Muestra un menú para dar de alta un cliente
 	 */
 	private static void altaCliente() {
-		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Particular Generado Aleatoriamente", "Empresa");
+		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Empresa");
 
 		if (tipoCliente == 0) return;
 
 		if (tipoCliente == 1) {
 			System.out.println("Introduce los datos del particular:");
-		} else if (tipoCliente == 2) {
-			System.out.println("Introduce los siguientes datos:");
-			Administrador.generarParticularesAleatorios((int) leerNumero("Numero de particlulares a generar"));
-			return;
 		} else {
 			System.out.println("Introduce los datos de la empresa:");
 		}
+
+		/*
+			// Cliente aleatorio
+			System.out.println("Introduce los siguientes datos:");
+			Administrador.generarParticularesAleatorios((int) leerNumero("Numero de particlulares a generar"));
+			return;
+		 */
 
 		String nombre = leerTexto("Nombre");
 

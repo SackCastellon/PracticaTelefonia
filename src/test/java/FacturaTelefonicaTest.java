@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
- * Created by al341819 on 3/03/17.
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class FacturaTelefonicaTest {
     private static Random rand;
@@ -26,11 +27,11 @@ public class FacturaTelefonicaTest {
     @BeforeClass
     public static void first() {
         rand = new Random();
-        codigoUnico = rand.nextInt();
+        codigoUnico = 0;
         codigo = codigoUnico++;
         tarifa = new TarifaTelefonica(rand.nextFloat());
         fechaEmision = LocalDateTime.now();
-        fechaUltimaEmision = LocalDateTime.of(2018,12,28,2,32);
+        fechaUltimaEmision = LocalDateTime.of(2016,12,28,2,32);
         periodoFactuacion = Duration.between(fechaUltimaEmision, fechaEmision).toDays();
         duracionLlamadas = rand.nextInt();
         importe = tarifa.getPrecio() * duracionLlamadas;
@@ -48,7 +49,7 @@ public class FacturaTelefonicaTest {
     public void getPeriodoFactuacionTest(){ Assert.assertEquals(periodoFactuacion, factura.getPeriodoFactuacion()); }
 
     @Test
-    public void getImporteTest(){ Assert.assertEquals(importe, factura.getImporte()); }
+    public void getImporteTest(){ Assert.assertEquals(importe, factura.getImporte(), 0); }
 
     @Test
     public void getFecha(){ Assert.assertEquals(fechaEmision, factura.getFecha()); }

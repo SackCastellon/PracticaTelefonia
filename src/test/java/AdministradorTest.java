@@ -13,7 +13,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
- * Created by Juanjo on 22/2/2017.
+ * @author David Agost (al341819)
+ * @since 0.1
  */
 public class AdministradorTest {
 
