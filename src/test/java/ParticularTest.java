@@ -15,7 +15,6 @@ import java.util.Random;
  * Created by al341819 on 28/02/17.
  */
 public class ParticularTest {
-
 	private static Random rand;
 	private static String nombre;
 	private static String apellidos;
