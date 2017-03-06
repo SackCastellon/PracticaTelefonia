@@ -7,7 +7,7 @@
 - David Agost ([al341819](mailto:al341819@uji.es "al341819@uji.es"))
 
 
-## Práctica 1
+## Práctica 1: Polimorfismo y Sobrecarga
 
 ### Enunciado
 
@@ -24,6 +24,7 @@
 ### Metodología
 
 <p align='justify'>Con respecto a las acciones que se pueden llevar a cabo en la aplicación y de las que deberá existir alguna opción de menú, para los clientes se deberá poder:</p>
+
 - Dar de alta un nuevo cliente.
 - Borrar un cliente.
 - Cambiar la tarifa de un cliente.
@@ -37,9 +38,13 @@
 - Con respecto a las facturas:
 
 <p align='justify'>Emitir una factura para un cliente, calculando el importe de la misma en función de las llamadas:</p>
+
 - Recuperar los datos de una factura a partir de su código.
 - Recuperar todas las facturas de un cliente.
 
 ### Diagrama de clases:
 
 ![Diagrama de clases](./diagrams/diagrama.png "Diagrama de clases")
+
+### Cuestionario
+
