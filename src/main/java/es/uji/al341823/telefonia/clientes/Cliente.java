@@ -161,9 +161,7 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de facturas
 	 */
-	public Collection<FacturaTelefonica> getFacturas() {
-		return (Collection<FacturaTelefonica>) facturas.clone();
-	}
+	public Collection<FacturaTelefonica> getFacturas() { return (Collection<FacturaTelefonica>) facturas.clone(); }
 
 	/**
 	 * Devuelve un <code>String</code> con toda la información del cliente

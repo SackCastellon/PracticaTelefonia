@@ -1,4 +1,6 @@
+import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
@@ -22,9 +24,13 @@ public class ParticularTest {
 	private static String NIF;
 	private static String email;
 	private static LocalDateTime fecha;
+	private static LocalDateTime fechaUltimaEmision;
 	private static TarifaTelefonica tarifa;
+	private  static LocalDateTime ultimaFacturacion;
 	private static DireccionPostal direccion;
+	private static int duracionLlamadas;
 	private static LinkedList<Llamada> llamadas;
+	private static LinkedList<FacturaTelefonica> facturas;
 	private static Particular cliente;
 
 
@@ -39,10 +45,14 @@ public class ParticularTest {
 		String prov = generador.getProvincia();
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
+		fechaUltimaEmision = LocalDateTime.of(2016,12,28,2,32);
 		tarifa = new TarifaTelefonica(rand.nextFloat());
+		ultimaFacturacion = LocalDateTime.of(2015,6,25,3,25);
 		direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
+		duracionLlamadas = rand.nextInt();
 
 		llamadas = new LinkedList<>();
+		facturas = new LinkedList<>();
 		LinkedList<String> info = new LinkedList<>();
 
 		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
@@ -104,6 +114,16 @@ public class ParticularTest {
 			cliente.altaLlamada(llamada);
 		}
 		Assert.assertArrayEquals(llamadas.toArray(), cliente.getLlamadas().toArray());
+	}
+
+	@Test
+	public void emitirFacturaTest(){
+		for (int i = 0; i < 100; i++) {
+			FacturaTelefonica factura = new FacturaTelefonica(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
+			facturas.add(factura);
+			cliente.emitirFactura();
+		}
+		Assert.assertEquals(facturas.size(), cliente.getFacturas().size());
 	}
 
 	// Este test no es necesario
