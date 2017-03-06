@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
  */
 public class Particular extends Cliente {
 
-	/** Los apellidos del cliente */
+	/**
+	 * Los apellidos del cliente
+	 */
 	private final String apellidos;
 
 	/**

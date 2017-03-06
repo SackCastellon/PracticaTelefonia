@@ -1,9 +1,8 @@
-import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.DireccionPostal;
-import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
-import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
 import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -26,7 +25,7 @@ public class ParticularTest {
 	private static LocalDateTime fecha;
 	private static LocalDateTime fechaUltimaEmision;
 	private static TarifaTelefonica tarifa;
-	private  static LocalDateTime ultimaFacturacion;
+	private static LocalDateTime ultimaFacturacion;
 	private static DireccionPostal direccion;
 	private static int duracionLlamadas;
 	private static LinkedList<Llamada> llamadas;
@@ -42,13 +41,15 @@ public class ParticularTest {
 		nombre = generador.getNombre();
 		apellidos = generador.getApellido() + ' ' + generador.getApellido();
 		NIF = generador.getNIF();
-		String prov = generador.getProvincia();
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
-		fechaUltimaEmision = LocalDateTime.of(2016,12,28,2,32);
+		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
 		tarifa = new TarifaTelefonica(rand.nextFloat());
-		ultimaFacturacion = LocalDateTime.of(2015,6,25,3,25);
+		ultimaFacturacion = LocalDateTime.of(2015, 6, 25, 3, 25);
+
+		String prov = generador.getProvincia();
 		direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
+
 		duracionLlamadas = rand.nextInt();
 
 		llamadas = new LinkedList<>();
@@ -117,7 +118,7 @@ public class ParticularTest {
 	}
 
 	@Test
-	public void emitirFacturaTest(){
+	public void emitirFacturaTest() {
 		for (int i = 0; i < 100; i++) {
 			FacturaTelefonica factura = new FacturaTelefonica(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
 			facturas.add(factura);
@@ -125,20 +126,6 @@ public class ParticularTest {
 		}
 		Assert.assertEquals(facturas.size(), cliente.getFacturas().size());
 	}
-
-	// Este test no es necesario
-	/*
-	@Test
-	public void getInformacionTest() {
-		info.add("Nombre: " + nombre);
-		info.add("NIF: " + NIF);
-		info.add("Dirección: " + direccion.toString());
-		info.add("Email: " + email);
-		info.add("Fecha: " + fecha.toString());
-		info.add("Tarifa: " + tarifa.toString());
-		info.add(1, "Apellidos: " + apellidos);
-		Assert.assertEquals(info, cliente.getInformacion());
-	}*/
 
 	@Test
 	public void getApellidosTest() {

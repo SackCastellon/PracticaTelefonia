@@ -12,18 +12,30 @@ import java.time.LocalDateTime;
  */
 public class FacturaTelefonica implements IFecha {
 
-	/** Se utiliza para obtener el código unico de cada factura */
+	/**
+	 * Se utiliza para obtener el código unico de cada factura
+	 */
 	private static int codigoUnico = 0;
 
-	/** Codigo identificativo unico de la factura */
+	/**
+	 * Codigo identificativo unico de la factura
+	 */
 	private final int codigo;
-	/** La tarifa usada para calcular la factura */
+	/**
+	 * La tarifa usada para calcular la factura
+	 */
 	private final TarifaTelefonica tarifa;
-	/** Fecha en la que se emitió la factura */
+	/**
+	 * Fecha en la que se emitió la factura
+	 */
 	private final LocalDateTime fechaEmision;
-	/** Periodo de tiempo que comprende la factura en dias */
+	/**
+	 * Periodo de tiempo que comprende la factura en dias
+	 */
 	private final long periodoFactuacion;
-	/** Importe total de la factura calculado en euros (€) */
+	/**
+	 * Importe total de la factura calculado en euros (€)
+	 */
 	private final float importe;
 
 	/**

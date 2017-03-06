@@ -16,26 +16,42 @@ import java.util.LinkedList;
  */
 public class Cliente implements IFecha {
 
-	/** Nombre del cliente */
+	/**
+	 * Nombre del cliente
+	 */
 	private final String nombre;
-	/** NIF del cliente */
+	/**
+	 * NIF del cliente
+	 */
 	private final String nif;
-	/** Dirección del cliente */
+	/**
+	 * Dirección del cliente
+	 */
 	private final DireccionPostal direccion;
-	/** Email del cliente */
+	/**
+	 * Email del cliente
+	 */
 	private final String email;
-	/** Fecha en la que se dió de alta el cliente */
+	/**
+	 * Fecha en la que se dió de alta el cliente
+	 */
 	private final LocalDateTime fechaAlta;
-	/** Tarifa que tiene contratada el cliente */
-	private TarifaTelefonica tarifa;
-
-	/** El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación */
-	private LocalDateTime ultimaFacturacion;
-
-	/** Lista de llamadas que realizó el cliente */
+	/**
+	 * Lista de llamadas que realizó el cliente
+	 */
 	private final LinkedList<Llamada> llamadas = new LinkedList<>();
-	/** Lista de facturas correspondientes al cliente */
+	/**
+	 * Lista de facturas correspondientes al cliente
+	 */
 	private final LinkedList<FacturaTelefonica> facturas = new LinkedList<>();
+	/**
+	 * Tarifa que tiene contratada el cliente
+	 */
+	private TarifaTelefonica tarifa;
+	/**
+	 * El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación
+	 */
+	private LocalDateTime ultimaFacturacion;
 
 	/**
 	 * @param nombre    Nombre del cliente
@@ -107,14 +123,18 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Tarifa contratada
 	 */
-	public TarifaTelefonica getTarifa() { return this.tarifa; }
+	public TarifaTelefonica getTarifa() {
+		return this.tarifa;
+	}
 
 	/**
 	 * Establece la nueva tarifa que tendrá contrada el cliente
 	 *
 	 * @param tarifa Nueva tarifa
 	 */
-	public void setTarifa(TarifaTelefonica tarifa) { this.tarifa = tarifa; }
+	public void setTarifa(TarifaTelefonica tarifa) {
+		this.tarifa = tarifa;
+	}
 
 	/**
 	 * Da de alta una nueva llamada para el cliente
@@ -130,12 +150,14 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de llamadas
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<Llamada> getLlamadas() {
 		return (Collection<Llamada>) llamadas.clone();
 	}
 
 	/**
-	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas realizadas
+	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas
+	 * realizadas
 	 *
 	 * @return La factura emitida
 	 */
@@ -161,7 +183,10 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de facturas
 	 */
-	public Collection<FacturaTelefonica> getFacturas() { return (Collection<FacturaTelefonica>) facturas.clone(); }
+	@SuppressWarnings("unchecked")
+	public Collection<FacturaTelefonica> getFacturas() {
+		return (Collection<FacturaTelefonica>) facturas.clone();
+	}
 
 	/**
 	 * Devuelve un <code>String</code> con toda la información del cliente

@@ -22,10 +22,14 @@ import java.util.Random;
  */
 public class Administrador {
 
-	/** Almacena todos los clientes que hay en el momento */
+	/**
+	 * Almacena todos los clientes que hay en el momento
+	 */
 	private static final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
-	/** Almacena todas las facturas emitidas hasta el momento */
+	/**
+	 * Almacena todas las facturas emitidas hasta el momento
+	 */
 	private static final HashMap<Integer, FacturaTelefonica> FACTURAS = new HashMap<>();
 
 	/**

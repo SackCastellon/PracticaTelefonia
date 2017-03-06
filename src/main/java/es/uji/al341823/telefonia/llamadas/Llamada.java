@@ -11,13 +11,21 @@ import java.time.LocalDateTime;
  */
 public class Llamada implements IFecha {
 
-	/** Numero desde el que se ha realizado la llamada */
+	/**
+	 * Numero desde el que se ha realizado la llamada
+	 */
 	private final String numeroOrigen;
-	/** Numero al que se ha realizado la llamada */
+	/**
+	 * Numero al que se ha realizado la llamada
+	 */
 	private final String numeroDestino;
-	/** Fecha y hora a la que se realizó la llamada */
+	/**
+	 * Fecha y hora a la que se realizó la llamada
+	 */
 	private final LocalDateTime fechaLlamada;
-	/** Duración de la llamada en segundos */
+	/**
+	 * Duración de la llamada en segundos
+	 */
 	private final int duracionLlamada;
 
 	/**

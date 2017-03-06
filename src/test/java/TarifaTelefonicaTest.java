@@ -10,18 +10,20 @@ import java.util.Random;
  * @since 0.1
  */
 public class TarifaTelefonicaTest {
-    private static Random rand;
-    private static float precio;
-    private static TarifaTelefonica tarifa;
+	private static Random rand;
+	private static float precio;
+	private static TarifaTelefonica tarifa;
 
-    @BeforeClass
-    public static void first() {
-        rand = new Random();
-        precio = rand.nextFloat();
+	@BeforeClass
+	public static void first() {
+		rand = new Random();
+		precio = rand.nextFloat();
 
-        tarifa = new TarifaTelefonica(precio);
-    }
+		tarifa = new TarifaTelefonica(precio);
+	}
 
-    @Test
-    public void getPrecioTest(){ Assert.assertEquals(precio, tarifa.getPrecio(), 0); }
+	@Test
+	public void getPrecioTest() {
+		Assert.assertEquals(precio, tarifa.getPrecio(), 0);
+	}
 }

@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
  */
 public interface IFecha {
 
-    LocalDateTime getFecha();
+	LocalDateTime getFecha();
 }

@@ -7,7 +7,9 @@ package es.uji.al341823.telefonia.facturacion;
  */
 public class TarifaTelefonica {
 
-	/** Precio por minuto de la tarifa (€/min) */
+	/**
+	 * Precio por minuto de la tarifa (€/min)
+	 */
 	private final float precio;
 
 	/**

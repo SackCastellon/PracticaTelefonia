@@ -7,11 +7,17 @@ package es.uji.al341823.telefonia.clientes;
  */
 public class DireccionPostal {
 
-	/** Codigo postal */
+	/**
+	 * Codigo postal
+	 */
 	private final int codigoPostal;
-	/** Provincia */
+	/**
+	 * Provincia
+	 */
 	private final String provincia;
-	/** Población */
+	/**
+	 * Población
+	 */
 	private final String poblacion;
 
 	/**
@@ -25,6 +31,29 @@ public class DireccionPostal {
 		this.codigoPostal = codigoPostal;
 		this.provincia = provincia;
 		this.poblacion = poblacion;
+	}
+
+	/**
+	 * Genera una dirección a partir de un <code>String</code> con el formato "<code>CP, Provincia, Población</code>"
+	 *
+	 * @param direccion Dirección en formato "<code>CP, Provincia, Población</code>"
+	 *
+	 * @return La dirección creada
+	 */
+	@Deprecated //TODO Eliminar, usar metodo con expresion regular en Administrador
+	public static DireccionPostal parse(String direccion) {
+		String[] campos = direccion.split(",", 3);
+
+		//Codigo Postal
+		int cp = Integer.parseInt(campos[0]);
+
+		//Provincia
+		String provincia = campos[1];
+
+		//Poblacion
+		String poblacion = campos[2];
+
+		return new DireccionPostal(cp, provincia, poblacion);
 	}
 
 	/**
@@ -52,28 +81,6 @@ public class DireccionPostal {
 	 */
 	public String getPoblacion() {
 		return poblacion;
-	}
-
-	/**
-	 * Genera una dirección a partir de un <code>String</code> con el formato "<code>CP, Provincia, Población</code>"
-	 *
-	 * @param direccion Dirección en formato "<code>CP, Provincia, Población</code>"
-	 *
-	 * @return La dirección creada
-	 */
-	public static DireccionPostal parse(String direccion) {
-		String[] campos = direccion.split(",", 3);
-
-		//Codigo Postal
-		int cp = Integer.parseInt(campos[0]);
-
-		//Provincia
-		String provincia = campos[1];
-
-		//Poblacion
-		String poblacion = campos[2];
-
-		return new DireccionPostal(cp, provincia, poblacion);
 	}
 
 	@Override

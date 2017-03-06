@@ -11,33 +11,43 @@ import java.util.Random;
  * @since 0.1
  */
 public class LlamadaTest {
-    private static Random rand;
-    private static String numeroOrigen;
-    private static String numeroDestino;
-    private static LocalDateTime fechaLlamada;
-    private static int duracionLlamada;
-    private static Llamada llamada;
 
-    @BeforeClass
-    public static void first() {
-        rand = new Random();
-        numeroOrigen = Integer.toString(rand.nextInt(5));
-        numeroDestino = Integer.toString(rand.nextInt(5));
-        fechaLlamada = LocalDateTime.now();
-        duracionLlamada = rand.nextInt(5);
+	private static Random rand;
+	private static String numeroOrigen;
+	private static String numeroDestino;
+	private static LocalDateTime fechaLlamada;
+	private static int duracionLlamada;
+	private static Llamada llamada;
 
-        llamada = new Llamada(numeroOrigen, numeroDestino, fechaLlamada, duracionLlamada);
-    }
+	@BeforeClass
+	public static void first() {
+		rand = new Random();
 
-    @Test
-    public void getNumeroOrigenTest() { Assert.assertEquals(numeroOrigen, llamada.getNumeroOrigen()); }
+		numeroOrigen = Integer.toString(rand.nextInt(5));
+		numeroDestino = Integer.toString(rand.nextInt(5));
+		fechaLlamada = LocalDateTime.now();
+		duracionLlamada = rand.nextInt(5);
 
-    @Test
-    public void getNumeroDestinoTest() { Assert.assertEquals(numeroDestino, llamada.getNumeroDestino()); }
+		llamada = new Llamada(numeroOrigen, numeroDestino, fechaLlamada, duracionLlamada);
+	}
 
-    @Test
-    public void getDuracionLlamadaTest() { Assert.assertEquals(duracionLlamada, llamada.getDuracionLlamada()); }
+	@Test
+	public void getNumeroOrigenTest() {
+		Assert.assertEquals(numeroOrigen, llamada.getNumeroOrigen());
+	}
 
-    @Test
-    public void getFechaTest() { Assert.assertEquals(fechaLlamada, llamada.getFecha()); }
+	@Test
+	public void getNumeroDestinoTest() {
+		Assert.assertEquals(numeroDestino, llamada.getNumeroDestino());
+	}
+
+	@Test
+	public void getDuracionLlamadaTest() {
+		Assert.assertEquals(duracionLlamada, llamada.getDuracionLlamada());
+	}
+
+	@Test
+	public void getFechaTest() {
+		Assert.assertEquals(fechaLlamada, llamada.getFecha());
+	}
 }
