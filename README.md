@@ -47,6 +47,8 @@
 
 ![Diagrama Simple](./diagrams/DiagramaSimple.png "Diagrama Simple")
 
+> [Ver diagrama de clases completo](./diagrams/DiagramaCompleto.png)
+
 ### Cuestionario
 
 1. ¿Cuantas clases has definido?
