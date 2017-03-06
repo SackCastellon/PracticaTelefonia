@@ -44,7 +44,7 @@
 
 ### Diagrama de clases:
 
-![Diagrama de clases](./diagrams/diagrama.png "Diagrama de clases")
+![Diagrama Simple](./diagrams/DiagramaSimple.png "Diagrama Simple")
 
 ### Cuestionario
 
