@@ -117,14 +117,14 @@ public class ConsoleGUI {
 			return;
 		 */
 
-		String nombre = leerTexto("Nombre");
+		String nombre = leerTexto("Nombre", EnumTipoDato.TEXTO);
 
 		String apellidos = null;
-		if (tipoCliente == 1) apellidos = leerTexto("Apellidos");
+		if (tipoCliente == 1) apellidos = leerTexto("Apellidos", EnumTipoDato.TEXTO);
 
-		String nif = leerTexto("NIF");
+		String nif = leerTexto("NIF", EnumTipoDato.NIF);
 		DireccionPostal direccion = leerDireccion("Dirección");
-		String email = leerTexto("E-mail");
+		String email = leerTexto("E-mail", EnumTipoDato.EMAIL);
 		LocalDateTime fecha = leerFecha("Fecha de alta");
 		TarifaTelefonica tarifa = new TarifaTelefonica(leerNumero("Tarifa"));
 
@@ -239,8 +239,8 @@ public class ConsoleGUI {
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
-		String origen = leerTexto("Numero de origen");
-		String destino = leerTexto("Numero de destino");
+		String origen = leerTexto("Numero de origen", EnumTipoDato.TELEFONO);
+		String destino = leerTexto("Numero de destino", EnumTipoDato.TELEFONO);
 		LocalDateTime fecha = leerFecha("Fecha de la llamada");
 		int duracion = (int) leerNumero("Duracion de la llamada en segundos");
 
@@ -390,8 +390,14 @@ public class ConsoleGUI {
 
 	// ========================= Leer por pantalla ========================= //
 
-	private static String leerTexto(String mensaje) {
-		System.out.print(" - " + mensaje + ": ");
+	private static String leerTexto(String mensaje, EnumTipoDato tipoDato) {
+		String line;
+
+		do {
+			System.out.print(" - " + mensaje + ": ");
+			line = scanner.nextLine();
+		} while (!line.matches(tipoDato.getFormato()));
+
 		return scanner.nextLine();
 	}
 
@@ -453,7 +459,7 @@ public class ConsoleGUI {
 
 	private static String leerDatoNIF() {
 		System.out.println("Introduce los siguientes datos del cliente:");
-		return leerTexto("NIF");
+		return leerTexto("NIF", EnumTipoDato.NIF);
 	}
 
 	// ========================= Formato de pantalla ========================= //
@@ -461,5 +467,22 @@ public class ConsoleGUI {
 	private static void limpiarPantalla() // TODO
 	{
 		System.out.print("\033[2J\033[H");
+	}
+
+	private enum EnumTipoDato {
+		TEXTO(".*"),
+		NIF("(\\d){8}[A-Z])"),
+		TELEFONO("(\\+)?(\\s|\\d)*"),
+		EMAIL("(\\w)+@(\\w)+((\\.)(\\w)+)?");
+
+		private String formato;
+
+		EnumTipoDato(String formato) {
+			this.formato = formato;
+		}
+
+		public String getFormato() {
+			return formato;
+		}
 	}
 }
