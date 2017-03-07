@@ -12,7 +12,7 @@ import es.uji.www.GeneradorDatosINE;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -170,6 +170,7 @@ public class Administrador {
 	 *
 	 * @param cantidad Cantidad de cliente a generar
 	 */
+	@Deprecated
 	public static void generarParticularesAleatorios(int cantidad) {
 		GeneradorDatosINE gen = new GeneradorDatosINE();
 		Random rand = new Random();
@@ -204,13 +205,12 @@ public class Administrador {
 
 
 	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) {
-		Iterator<T> iterator = conjunto.iterator();
+		Collection<T> extraccion = new LinkedList<>();
 
-		while (iterator.hasNext()) {
-			T next = iterator.next();
-			if (next.getFecha().isBefore(inico) || next.getFecha().isAfter(fin))
-				conjunto.remove(next);
-		}
-		return conjunto;
+		for (T elem : conjunto)
+			if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
+				extraccion.add(elem);
+
+		return extraccion;
 	}
 }
