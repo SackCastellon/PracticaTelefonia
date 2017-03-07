@@ -61,7 +61,7 @@
 
 3. ¿Cuantos paquetes has creado?
 
-	* 1
+	* 5
 
 4. ¿Cuál es el número máximo de argumentos que has utilizado en un método?
 
@@ -104,6 +104,7 @@
 
 	* `Cliente` implementa el interface `IFecha`
 	* `FacturaTelefonica` implementa el interface `IFecha`
+	* `Llamada` implementa el interface `IFecha`
 
 12. Escribe todas las clases que extiendan a otra clase y cual es.
 
