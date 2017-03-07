@@ -1,5 +1,6 @@
 package es.uji.al341823.telefonia.api;
 
+import es.uji.al341823.telefonia.IFecha;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.DireccionPostal;
 import es.uji.al341823.telefonia.clientes.Particular;
@@ -11,6 +12,7 @@ import es.uji.www.GeneradorDatosINE;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -198,5 +200,17 @@ public class Administrador {
 	 */
 	public static boolean exixteCliente(String nif) {
 		return CLIENTES.containsKey(nif);
+	}
+
+
+	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) {
+		Iterator<T> iterator = conjunto.iterator();
+
+		while (iterator.hasNext()) {
+			T next = iterator.next();
+			if (next.getFecha().isBefore(inico) || next.getFecha().isAfter(fin))
+				conjunto.remove(next);
+		}
+		return conjunto;
 	}
 }
