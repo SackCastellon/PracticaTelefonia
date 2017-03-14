@@ -4,6 +4,10 @@ import es.uji.al341823.telefonia.IFecha;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.DireccionPostal;
 import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.excepciones.ClienteNoExisteExcepcion;
+import es.uji.al341823.telefonia.excepciones.ClienteYaExisteExcepcion;
+import es.uji.al341823.telefonia.excepciones.FacturaNoExisteExcepcion;
+import es.uji.al341823.telefonia.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
 import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
 import es.uji.al341823.telefonia.llamadas.Llamada;
@@ -42,12 +46,11 @@ public class Administrador {
 	 *
 	 * @return <code>true</code> si se ha añadido el cliente o <code>false</code> si el cliente ya exitia
 	 */
-	public static boolean altaCliente(Cliente cliente) {
-		if (exixteCliente(cliente.getNif()))
-			return false;
-
+	public static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
+		if (exixteCliente(cliente.getNif())) {
+			throw new ClienteYaExisteExcepcion();
+		}
 		CLIENTES.put(cliente.getNif(), cliente);
-		return true;
 	}
 
 	/**
@@ -58,13 +61,10 @@ public class Administrador {
 	 *
 	 * @return <code>true</code> si se ha dado de baja el cliente o <code>false</code> si el cliente no exitia
 	 */
-	public static boolean bajaCliente(String nif) {
-		if (exixteCliente(nif)) {
-			CLIENTES.remove(nif);
-			return true;
-		}
-
-		return false;
+	public static void bajaCliente(String nif) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		CLIENTES.remove(nif);
 	}
 
 	/**
@@ -73,9 +73,10 @@ public class Administrador {
 	 * @param nif         NIF de cliente
 	 * @param nuevaTarifa Nueva tarifa
 	 */
-	public static void cambiarTarifa(String nif, TarifaTelefonica nuevaTarifa) {
-		if (exixteCliente(nif))
-			CLIENTES.get(nif).setTarifa(nuevaTarifa);
+	public static void cambiarTarifa(String nif, TarifaTelefonica nuevaTarifa) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		CLIENTES.get(nif).setTarifa(nuevaTarifa);
 	}
 
 	/**
@@ -85,7 +86,9 @@ public class Administrador {
 	 *
 	 * @return El cliente con ese NIF
 	 */
-	public static Cliente getCliente(String nif) {
+	public static Cliente getCliente(String nif) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
 		return CLIENTES.get(nif);
 	}
 
@@ -104,9 +107,10 @@ public class Administrador {
 	 * @param nif     NIF del cliente
 	 * @param llamada La llamada
 	 */
-	public static void altaLlamada(String nif, Llamada llamada) {
-		if (exixteCliente(nif))
-			CLIENTES.get(nif).altaLlamada(llamada);
+	public static void altaLlamada(String nif, Llamada llamada) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		CLIENTES.get(nif).altaLlamada(llamada);
 	}
 
 	/**
@@ -116,11 +120,10 @@ public class Administrador {
 	 *
 	 * @return Lista de llamadas
 	 */
-	public static Collection<Llamada> getLlamadas(String nif) {
-		if (exixteCliente(nif))
-			return CLIENTES.get(nif).getLlamadas();
-
-		return null;
+	public static Collection<Llamada> getLlamadas(String nif) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		return CLIENTES.get(nif).getLlamadas();
 	}
 
 	/**
@@ -130,14 +133,12 @@ public class Administrador {
 	 *
 	 * @return La factura emitida
 	 */
-	public static FacturaTelefonica emitirFactura(String nif) {
-		if (exixteCliente(nif)) {
-			FacturaTelefonica factura = getCliente(nif).emitirFactura();
-			FACTURAS.put(factura.getCodigo(), factura);
-			return factura;
-		}
-
-		return null;
+	public static FacturaTelefonica emitirFactura(String nif) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		FacturaTelefonica factura = getCliente(nif).emitirFactura();
+		FACTURAS.put(factura.getCodigo(), factura);
+		return factura;
 	}
 
 	/**
@@ -147,22 +148,23 @@ public class Administrador {
 	 *
 	 * @return La factura correspondiente
 	 */
-	public static FacturaTelefonica getFactura(int codigo) {
+	public static FacturaTelefonica getFactura(int codigo) throws FacturaNoExisteExcepcion{
+		if(!FACTURAS.containsKey(codigo))
+			throw new FacturaNoExisteExcepcion();
 		return FACTURAS.get(codigo);
 	}
 
 	/**
-	 * Devuelve la lista de faturas del cliente correcpondiente con el NIF especificado
+	 * Devuelve la lista de faturas del cliente correspondiente con el NIF especificado
 	 *
 	 * @param nif NIF del cliente
 	 *
 	 * @return Lista de faturas
 	 */
-	public static Collection<FacturaTelefonica> getFacturas(String nif) {
-		if (exixteCliente(nif))
-			return getCliente(nif).getFacturas();
-
-		return null;
+	public static Collection<FacturaTelefonica> getFacturas(String nif) throws  ClienteNoExisteExcepcion{
+		if (!exixteCliente(nif))
+			throw new ClienteNoExisteExcepcion();
+		return getCliente(nif).getFacturas();
 	}
 
 	/**
@@ -187,13 +189,15 @@ public class Administrador {
 	 *
 	 * @return El conjunto que se ha extraido del conjunto original
 	 */
-	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) {
+	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion{
+		if(inico.isAfter(fin))
+			throw new FechaNoValidaExcepcion();
+
 		Collection<T> extraccion = new LinkedList<>();
 
-		if (inico.isAfter(fin))
-			for (T elem : conjunto)
-				if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
-					extraccion.add(elem);
+		for (T elem : conjunto)
+			if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
+				extraccion.add(elem);
 
 		return extraccion;
 	}
@@ -207,26 +211,26 @@ public class Administrador {
 	 *
 	 * @param cantidad Cantidad de cliente a generar
 	 */
-	@Deprecated
-	public static void generarParticularesAleatorios(int cantidad) {
-		GeneradorDatosINE gen = new GeneradorDatosINE();
-		Random rand = new Random();
-
-		for (int i = 0; i < cantidad; i++) {
-
-			String nombre = gen.getNombre();
-			String apellidos = gen.getApellido() + " " + gen.getApellido();
-			String nif = gen.getNIF();
-
-			String provincia = gen.getProvincia();
-			DireccionPostal direccion = new DireccionPostal(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
-
-			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
-			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-			TarifaTelefonica tarifa = new TarifaTelefonica(rand.nextFloat());
-
-			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
-		}
-	}
+//	@Deprecated
+//	public static void generarParticularesAleatorios(int cantidad) {
+//		GeneradorDatosINE gen = new GeneradorDatosINE();
+//		Random rand = new Random();
+//
+//		for (int i = 0; i < cantidad; i++) {
+//
+//			String nombre = gen.getNombre();
+//			String apellidos = gen.getApellido() + " " + gen.getApellido();
+//			String nif = gen.getNIF();
+//
+//			String provincia = gen.getProvincia();
+//			DireccionPostal direccion = new DireccionPostal(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
+//
+//			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
+//			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
+//			TarifaTelefonica tarifa = new TarifaTelefonica(rand.nextFloat());
+//
+//			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
+//		}
+//	}
 
 }

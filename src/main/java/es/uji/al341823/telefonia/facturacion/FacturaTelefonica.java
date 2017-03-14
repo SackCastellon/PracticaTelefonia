@@ -1,6 +1,7 @@
 package es.uji.al341823.telefonia.facturacion;
 
 import es.uji.al341823.telefonia.IFecha;
+import es.uji.al341823.telefonia.excepciones.FechaNoValidaExcepcion;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -46,7 +47,9 @@ public class FacturaTelefonica implements IFecha {
 	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
 	 * @param duracionLlamadas   La duración total en segundos de las llamadas
 	 */
-	public FacturaTelefonica(TarifaTelefonica tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) {
+	public FacturaTelefonica(TarifaTelefonica tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion{
+		if(fechaEmision.isAfter(fechaUltimaEmision))
+			throw new FechaNoValidaExcepcion();
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
