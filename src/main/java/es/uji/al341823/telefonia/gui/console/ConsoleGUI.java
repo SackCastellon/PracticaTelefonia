@@ -1,6 +1,7 @@
-package es.uji.al341823.telefonia.gui;
+package es.uji.al341823.telefonia.gui.console;
 
 import es.uji.al341823.telefonia.api.Administrador;
+import es.uji.al341823.telefonia.api.EnumTipoDato;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.DireccionPostal;
 import es.uji.al341823.telefonia.clientes.Empresa;
@@ -119,11 +120,11 @@ public class ConsoleGUI {
 
 		String apellidos = null;
 
-		String nombre = leerTexto(" - Nombre:", Administrador.EnumTipoDato.TEXTO);
-		if (tipoCliente == 1) apellidos = leerTexto(" - Apellidos:", Administrador.EnumTipoDato.TEXTO);
-		String nif = leerTexto(" - NIF:", Administrador.EnumTipoDato.NIF);
+		String nombre = leerTexto(" - Nombre:", EnumTipoDato.TEXTO);
+		if (tipoCliente == 1) apellidos = leerTexto(" - Apellidos:", EnumTipoDato.TEXTO);
+		String nif = leerTexto(" - NIF:", EnumTipoDato.NIF);
 		DireccionPostal direccion = leerDireccion(" - Dirección:");
-		String email = leerTexto(" - E-mail:", Administrador.EnumTipoDato.EMAIL);
+		String email = leerTexto(" - E-mail:", EnumTipoDato.EMAIL);
 		LocalDateTime fecha = leerFecha(" - Fecha de alta:");
 		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero(" - Tarifa:"));
 
@@ -237,8 +238,8 @@ public class ConsoleGUI {
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
-		String origen = leerTexto("Numero de origen", Administrador.EnumTipoDato.TELEFONO);
-		String destino = leerTexto("Numero de destino", Administrador.EnumTipoDato.TELEFONO);
+		String origen = leerTexto("Numero de origen", EnumTipoDato.TELEFONO);
+		String destino = leerTexto("Numero de destino", EnumTipoDato.TELEFONO);
 		LocalDateTime fecha = leerFecha("Fecha de la llamada");
 		int duracion = leerEntero("Duracion de la llamada en segundos");
 
@@ -399,7 +400,7 @@ public class ConsoleGUI {
 
 	// ========================= Leer por pantalla ========================= //
 
-	private String leerTexto(String mensaje, Administrador.EnumTipoDato tipoDato) {
+	private String leerTexto(String mensaje, EnumTipoDato tipoDato) {
 
 		System.out.print(mensaje);
 		String line = scanner.nextLine();
@@ -419,7 +420,7 @@ public class ConsoleGUI {
 
 		while (i < 0) {
 			try {
-				i = Integer.parseInt(leerTexto(mensaje, Administrador.EnumTipoDato.NUME_ENTERO));
+				i = Integer.parseInt(leerTexto(mensaje, EnumTipoDato.NUME_ENTERO));
 			} catch (Exception e) {
 				i = -1;
 			}
@@ -430,7 +431,7 @@ public class ConsoleGUI {
 
 	private DireccionPostal leerDireccion(String mensaje) {
 
-		String[] str = leerTexto(mensaje, Administrador.EnumTipoDato.DIRECCION).split(", ");
+		String[] str = leerTexto(mensaje, EnumTipoDato.DIRECCION).split(", ");
 
 		return new DireccionPostal(Integer.parseInt(str[0]), str[1], str[2]);
 	}
@@ -441,7 +442,7 @@ public class ConsoleGUI {
 
 		while (date == null) {
 			try {
-				String str = leerTexto(mensaje, Administrador.EnumTipoDato.FECHA);
+				String str = leerTexto(mensaje, EnumTipoDato.FECHA);
 				if (str.equalsIgnoreCase("hoy")) date = LocalDateTime.now();
 				else date = LocalDateTime.parse(str.replace(' ', 'T'));
 			} catch (Exception e) {
@@ -454,7 +455,7 @@ public class ConsoleGUI {
 
 	private String leerDatoNIF() {
 		System.out.println("Introduce los siguientes datos del cliente:");
-		return leerTexto("NIF", Administrador.EnumTipoDato.NIF);
+		return leerTexto("NIF", EnumTipoDato.NIF);
 	}
 
 	// ========================= Formato de pantalla ========================= //
