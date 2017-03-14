@@ -32,7 +32,7 @@ public class ConsoleGUI {
 	public void iniciar() {
 		scanner = new Scanner(System.in);
 		setColor(255, 255, 255);
-		menuPrincipal();
+		menuPrincipal(); // TODO Strategy
 		System.out.print("\033[0m");
 		clearScreen();
 		scanner.close();
@@ -126,14 +126,14 @@ public class ConsoleGUI {
 		DireccionPostal direccion = leerDireccion(" - Dirección:");
 		String email = leerTexto(" - E-mail:", EnumTipoDato.EMAIL);
 		LocalDateTime fecha = leerFecha(" - Fecha de alta:");
-		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero(" - Tarifa:"));
+		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero(" - Tarifa:")); // FIXME mover 'new' a clase Administrador
 
 		boolean exito;
 
 		if (tipoCliente == 1)
-			exito = Administrador.altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
+			exito = Administrador.altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa)); // FIXME mover 'new' a clase Administrador
 		else
-			exito = Administrador.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa));
+			exito = Administrador.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa)); // FIXME mover 'new' a clase Administrador
 
 		if (!exito)
 			System.out.println("No se pudo añadir el cliente, ya existe un cliente con NIF " + nif);
@@ -165,7 +165,7 @@ public class ConsoleGUI {
 
 		System.out.println("Introduce la nueva tarifa:");
 
-		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero("Tarifa"));
+		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero("Tarifa")); // FIXME mover 'new' a clase Administrador
 
 		Administrador.cambiarTarifa(nif, tarifa);
 	}
@@ -243,7 +243,7 @@ public class ConsoleGUI {
 		LocalDateTime fecha = leerFecha("Fecha de la llamada");
 		int duracion = leerEntero("Duracion de la llamada en segundos");
 
-		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
+		Llamada llamada = new Llamada(origen, destino, fecha, duracion); // FIXME mover 'new' a clase Administrador
 		Administrador.altaLlamada(nif, llamada);
 	}
 
@@ -433,7 +433,7 @@ public class ConsoleGUI {
 
 		String[] str = leerTexto(mensaje, EnumTipoDato.DIRECCION).split(", ");
 
-		return new DireccionPostal(Integer.parseInt(str[0]), str[1], str[2]);
+		return new DireccionPostal(Integer.parseInt(str[0]), str[1], str[2]); // FIXME mover 'new' a clase Administrador
 	}
 
 	private LocalDateTime leerFecha(String mensaje) {
