@@ -166,6 +166,43 @@ public class Administrador {
 	}
 
 	/**
+	 * Comprueba si existe un cliente con el NIF especificado
+	 *
+	 * @param nif NIF a comprobar
+	 *
+	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
+	 */
+	public static boolean exixteCliente(String nif) {
+		return CLIENTES.containsKey(nif);
+	}
+
+	/**
+	 * Extrae, a partir de un conjunto de elementos que implemetan la <code>interface IFecha</code>, otro conjunto de
+	 * elementos cuyo valor <code>IFecha.getFecha()</code> esta comprendido enre las fechas especificadas
+	 *
+	 * @param conjunto Conjunto de elemetos del cual se extraen los elementos
+	 * @param inico    Fecha de incio del periodo
+	 * @param fin      Fecha de fin del periodo
+	 * @param <T>      E tipo del elementos que implementa la <code>interface IFecha</code>
+	 *
+	 * @return El conjunto que se ha extraido del conjunto original
+	 */
+	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) {
+		Collection<T> extraccion = new LinkedList<>();
+
+		if (inico.isAfter(fin))
+			for (T elem : conjunto)
+				if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
+					extraccion.add(elem);
+
+		return extraccion;
+	}
+
+	public static boolean esDatoValido(String string, EnumTipoDato tipoDato) {
+		return string.matches(tipoDato.getFormato());
+	}
+
+	/**
 	 * Genera un cierto número de clientes particulare de forma aleatoria y los da de alta
 	 *
 	 * @param cantidad Cantidad de cliente a generar
@@ -193,24 +230,25 @@ public class Administrador {
 	}
 
 	/**
-	 * Comprueba si existe un cliente con el NIF especificado
-	 *
-	 * @param nif NIF a comprobar
-	 *
-	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
+	 * Diferentes tipos de datos de entrada con sus diferentes formatos
 	 */
-	public static boolean exixteCliente(String nif) {
-		return CLIENTES.containsKey(nif);
-	}
+	public enum EnumTipoDato {
+		TEXTO(".+"),
+		NIF("[0-9]{8}[A-Z]"),
+		TELEFONO("(\\+)?(\\s|\\d)*"),
+		EMAIL("[a-zA-Z0-9]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?"),
+		FECHA("([0-9]{4}-(0[1-9]|1[012])-([12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])|hoy)"),
+		DIRECCION("[0-9]{5}, (.*), (.*)"),
+		NUME_ENTERO("[0-9]+");
 
+		private final String formato;
 
-	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) {
-		Collection<T> extraccion = new LinkedList<>();
+		EnumTipoDato(String formato) {
+			this.formato = formato;
+		}
 
-		for (T elem : conjunto)
-			if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
-				extraccion.add(elem);
-
-		return extraccion;
+		protected String getFormato() {
+			return formato;
+		}
 	}
 }

@@ -100,20 +100,14 @@ public class FacturaTelefonica implements IFecha {
 		return this.fechaEmision;
 	}
 
-	/**
-	 * Devuelve un <code>String</code> con toda la información de la factura
-	 *
-	 * @return Informació de la factura
-	 */
-	public String obtenerInformacion() {
-		String info = "";
-
-		info += " - Codigo: " + getCodigo() + '\n';
-		info += " - Tarifa: " + getTarifa().toString() + '\n';
-		info += " - Fecha emisión: " + getFecha().toString() + '\n';
-		info += " - Periodo de facturación: " + getPeriodoFactuacion() + " días\n";
-		info += " - Importe: " + getImporte() + "€\n";
-
-		return info;
+	@Override
+	public String toString() {
+		return "FacturaTelefonica{" +
+				"codigo=" + codigo +
+				", tarifa=" + tarifa +
+				", fechaEmision=" + fechaEmision +
+				", periodoFactuacion=" + periodoFactuacion +
+				", importe=" + importe +
+				'}';
 	}
 }

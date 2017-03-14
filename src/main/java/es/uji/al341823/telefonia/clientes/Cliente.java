@@ -6,7 +6,6 @@ import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -14,7 +13,7 @@ import java.util.LinkedList;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Cliente implements IFecha {
+public abstract class Cliente implements IFecha {
 
 	/**
 	 * Nombre del cliente
@@ -150,9 +149,8 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de llamadas
 	 */
-	@SuppressWarnings("unchecked")
-	public Collection<Llamada> getLlamadas() {
-		return (Collection<Llamada>) llamadas.clone();
+	public LinkedList<Llamada> getLlamadas() {
+		return new LinkedList<>(llamadas);
 	}
 
 	/**
@@ -183,9 +181,8 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Lista de facturas
 	 */
-	@SuppressWarnings("unchecked")
-	public Collection<FacturaTelefonica> getFacturas() {
-		return (Collection<FacturaTelefonica>) facturas.clone();
+	public LinkedList<FacturaTelefonica> getFacturas() {
+		return new LinkedList<>(facturas);
 	}
 
 	/**
@@ -193,16 +190,15 @@ public class Cliente implements IFecha {
 	 *
 	 * @return Información del cliente
 	 */
-	public String obtenerInformacion() {
-		String info = "";
-
-		info += " - Nombre: " + getNombre() + '\n';
-		info += " - NIF: " + getNif() + '\n';
-		info += " - Dirección: " + getDireccion().toString() + '\n';
-		info += " - Email: " + getEmail() + '\n';
-		info += " - Fecha alta: " + getFecha().toString() + '\n';
-		info += " - Tarifa: " + getTarifa().getPrecio() + " €/min\n";
-
-		return info;
+	@Override
+	public String toString() {
+		return "Cliente{" +
+				"nombre='" + nombre + '\'' +
+				", nif='" + nif + '\'' +
+				", direccion=" + direccion +
+				", email='" + email + '\'' +
+				", fechaAlta=" + fechaAlta +
+				", tarifa=" + tarifa +
+				'}';
 	}
 }

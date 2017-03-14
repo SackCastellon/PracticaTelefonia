@@ -40,23 +40,16 @@ public class Particular extends Cliente {
 		return apellidos;
 	}
 
-	/**
-	 * Devuelve un <code>String</code> con toda la información del cliente
-	 *
-	 * @return Información del cliente
-	 */
 	@Override
-	public String obtenerInformacion() {
-		String info = "";
-
-		info += " - Nombre: " + getNombre() + '\n';
-		info += " - Apellidos: " + getApellidos() + '\n';
-		info += " - NIF: " + getNif() + '\n';
-		info += " - Dirección: " + getDireccion().toString() + '\n';
-		info += " - Email: " + getEmail() + '\n';
-		info += " - Fecha alta: " + getFecha().toString() + '\n';
-		info += " - Tarifa: " + getTarifa().toString() + '\n';
-
-		return info;
+	public String toString() {
+		return "Cliente{" +
+				"nombre='" + getNombre() + '\'' +
+				", apellidos='" + apellidos + '\'' +
+				", nif='" + getNif() + '\'' +
+				", direccion=" + getDireccion() +
+				", email='" + getEmail() + '\'' +
+				", fechaAlta=" + getFecha() +
+				", tarifa=" + getTarifa() +
+				'}';
 	}
 }

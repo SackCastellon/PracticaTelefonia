@@ -15,6 +15,7 @@ public class AppTelefonia {
 	 */
 	public static void main(String[] args) {
 
-		ConsoleGUI.iniciar();
+		ConsoleGUI consoleGUI = new ConsoleGUI();
+		consoleGUI.iniciar();
 	}
 }

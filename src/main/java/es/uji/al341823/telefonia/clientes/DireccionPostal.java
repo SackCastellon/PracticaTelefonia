@@ -34,29 +34,6 @@ public class DireccionPostal {
 	}
 
 	/**
-	 * Genera una dirección a partir de un <code>String</code> con el formato "<code>CP, Provincia, Población</code>"
-	 *
-	 * @param direccion Dirección en formato "<code>CP, Provincia, Población</code>"
-	 *
-	 * @return La dirección creada
-	 */
-	@Deprecated //TODO Eliminar, usar metodo con expresion regular en Administrador
-	public static DireccionPostal parse(String direccion) {
-		String[] campos = direccion.split(",", 3);
-
-		//Codigo Postal
-		int cp = Integer.parseInt(campos[0]);
-
-		//Provincia
-		String provincia = campos[1];
-
-		//Poblacion
-		String poblacion = campos[2];
-
-		return new DireccionPostal(cp, provincia, poblacion);
-	}
-
-	/**
 	 * Devuelve el codigo postal de la dirección
 	 *
 	 * @return Codigo postal
@@ -85,6 +62,10 @@ public class DireccionPostal {
 
 	@Override
 	public String toString() {
-		return codigoPostal + ", " + provincia + ", " + poblacion;
+		return "DireccionPostal{" +
+				"codigoPostal=" + codigoPostal +
+				", provincia='" + provincia + '\'' +
+				", poblacion='" + poblacion + '\'' +
+				'}';
 	}
 }

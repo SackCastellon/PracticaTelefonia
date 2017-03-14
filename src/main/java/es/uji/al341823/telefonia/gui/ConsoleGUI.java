@@ -22,15 +22,18 @@ public class ConsoleGUI {
 	/**
 	 * <code>Scanner</code> utilizado para leer la entrada por consola
 	 */
-	private static Scanner scanner;
+	private Scanner scanner;
 
 	/**
 	 * Inicializa la interfaz por linea de comandos, el Scanner para leer la entrada del usuario y muestra el menú
 	 * principal
 	 */
-	public static void iniciar() {
+	public void iniciar() {
 		scanner = new Scanner(System.in);
+		setColor(255, 255, 255);
 		menuPrincipal();
+		System.out.print("\033[0m");
+		clearScreen();
 		scanner.close();
 	}
 
@@ -39,11 +42,11 @@ public class ConsoleGUI {
 	/**
 	 * Muestra el menú principal hasta que se seleccione un sub-menú o se decida salir del programa
 	 */
-	private static void menuPrincipal() {
+	private void menuPrincipal() {
 		int menu;
 
 		do {
-			imprimeTitulo("Menú principal");
+			imprimeTitulos("Menú principal");
 			menu = seleccionarOpcion("Salir", "Clientes", "Llamadas", "Facturas");
 
 			switch (menu) {
@@ -65,11 +68,11 @@ public class ConsoleGUI {
 	/**
 	 * Muestra el menú de clientes hasta que se seleccione un sub-menú o se decida salir del programa
 	 */
-	private static void menuClientes() {
+	private void menuClientes() {
 		int opcion;
 
 		do {
-			imprimeTitulo("Menú clientes");
+			imprimeTitulos("Menú principal", "Menú clientes");
 			opcion = seleccionarOpcion("Menú principal", "Alta cliente", "Baja cliente", "Cambiar tarifa", "Ver datos cliente", "Lista de clientes");
 
 			switch (opcion) {
@@ -99,34 +102,30 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para dar de alta un cliente
 	 */
-	private static void altaCliente() {
+	private void altaCliente() {
+
+		imprimeTitulos("Menú principal", "Menú clientes", "Alta clientes");
 		int tipoCliente = seleccionarOpcion("Cancelar", "Particular", "Empresa");
 
 		if (tipoCliente == 0) return;
-
 		if (tipoCliente == 1) {
+			imprimeTitulos("Menú principal", "Menú clientes", "Alta clientes", "Particular");
 			System.out.println("Introduce los datos del particular:");
 		} else {
+			imprimeTitulos("Menú principal", "Menú clientes", "Alta clientes", "Empresa");
 			System.out.println("Introduce los datos de la empresa:");
 		}
 
-		/*
-			// Cliente aleatorio
-			System.out.println("Introduce los siguientes datos:");
-			Administrador.generarParticularesAleatorios((int) leerNumero("Numero de particlulares a generar"));
-			return;
-		 */
-
-		String nombre = leerTexto("Nombre", EnumTipoDato.TEXTO);
 
 		String apellidos = null;
-		if (tipoCliente == 1) apellidos = leerTexto("Apellidos", EnumTipoDato.TEXTO);
 
-		String nif = leerTexto("NIF", EnumTipoDato.NIF);
-		DireccionPostal direccion = leerDireccion("Dirección");
-		String email = leerTexto("E-mail", EnumTipoDato.EMAIL);
-		LocalDateTime fecha = leerFecha("Fecha de alta");
-		TarifaTelefonica tarifa = new TarifaTelefonica(leerNumero("Tarifa"));
+		String nombre = leerTexto(" - Nombre:", Administrador.EnumTipoDato.TEXTO);
+		if (tipoCliente == 1) apellidos = leerTexto(" - Apellidos:", Administrador.EnumTipoDato.TEXTO);
+		String nif = leerTexto(" - NIF:", Administrador.EnumTipoDato.NIF);
+		DireccionPostal direccion = leerDireccion(" - Dirección:");
+		String email = leerTexto(" - E-mail:", Administrador.EnumTipoDato.EMAIL);
+		LocalDateTime fecha = leerFecha(" - Fecha de alta:");
+		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero(" - Tarifa:"));
 
 		boolean exito;
 
@@ -142,7 +141,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para dar de baja un cliente
 	 */
-	private static void bajaCliente() {
+	private void bajaCliente() {
 		String nif = leerDatoNIF();
 
 		if (!Administrador.bajaCliente(nif))
@@ -155,7 +154,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para cambiar la tarifa de un cliente
 	 */
-	private static void cambiarTarifa() {
+	private void cambiarTarifa() {
 		String nif = leerDatoNIF();
 
 		if (!Administrador.exixteCliente(nif)) {
@@ -165,7 +164,7 @@ public class ConsoleGUI {
 
 		System.out.println("Introduce la nueva tarifa:");
 
-		TarifaTelefonica tarifa = new TarifaTelefonica(leerNumero("Tarifa"));
+		TarifaTelefonica tarifa = new TarifaTelefonica(leerEntero("Tarifa"));
 
 		Administrador.cambiarTarifa(nif, tarifa);
 	}
@@ -173,7 +172,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para ver los datos de un cliente
 	 */
-	private static void verDatosCliente() {
+	private void verDatosCliente() {
 		String nif = leerDatoNIF();
 
 		Cliente cliente = Administrador.getCliente(nif);
@@ -183,13 +182,13 @@ public class ConsoleGUI {
 		}
 
 		System.out.println("Información del cliente con NIF " + nif + ":");
-		System.out.println(cliente.obtenerInformacion());
+		System.out.println(cliente);
 	}
 
 	/**
 	 * Muestra un menú para ver los datos de todos los clientes
 	 */
-	private static void verDatosTodosClientes() {
+	private void verDatosTodosClientes() {
 
 		Collection<Cliente> clientes = Administrador.getClientes();
 
@@ -199,19 +198,18 @@ public class ConsoleGUI {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.obtenerInformacion());
-			System.out.println();
+			System.out.println(cliente);
 		}
 	}
 
 	/**
 	 * Muestra el menú de llamadas hasta que se seleccione un sub-menú o se decida salir del programa
 	 */
-	private static void menuLlamadas() {
+	private void menuLlamadas() {
 		int opcion;
 
 		do {
-			imprimeTitulo("Menú llamadas");
+			imprimeTitulos("Menú principal", "Menú llamadas");
 			opcion = seleccionarOpcion("Menú principal", "Alta llamada", "Lista de llamadas");
 
 			switch (opcion) {
@@ -229,7 +227,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para dar de alta una llamada
 	 */
-	private static void altaLlamada() {
+	private void altaLlamada() {
 		String nif = leerDatoNIF();
 
 		if (!Administrador.exixteCliente(nif)) {
@@ -239,10 +237,10 @@ public class ConsoleGUI {
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
-		String origen = leerTexto("Numero de origen", EnumTipoDato.TELEFONO);
-		String destino = leerTexto("Numero de destino", EnumTipoDato.TELEFONO);
+		String origen = leerTexto("Numero de origen", Administrador.EnumTipoDato.TELEFONO);
+		String destino = leerTexto("Numero de destino", Administrador.EnumTipoDato.TELEFONO);
 		LocalDateTime fecha = leerFecha("Fecha de la llamada");
-		int duracion = (int) leerNumero("Duracion de la llamada en segundos");
+		int duracion = leerEntero("Duracion de la llamada en segundos");
 
 		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
 		Administrador.altaLlamada(nif, llamada);
@@ -251,7 +249,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para ver todas las llamadas
 	 */
-	private static void verLlamadasCliente() {
+	private void verLlamadasCliente() {
 		String nif = leerDatoNIF();
 
 		Collection<Llamada> llamadas = Administrador.getLlamadas(nif);
@@ -276,11 +274,11 @@ public class ConsoleGUI {
 	/**
 	 * Muestra el menú de facturas hasta que se seleccione un sub-menú o se decida salir del programa
 	 */
-	private static void menuFacturas() {
+	private void menuFacturas() {
 		int opcion;
 
 		do {
-			imprimeTitulo("Menú facturas");
+			imprimeTitulos("Menú principal", "Menú facturas");
 			opcion = seleccionarOpcion("Menú principal", "Emitir factura", "Recuperar datos factura", "Recuperar facturas de cliente");
 
 			switch (opcion) {
@@ -302,7 +300,7 @@ public class ConsoleGUI {
 	/**
 	 * Muestra un menú para emitir una factura
 	 */
-	private static void emitirFactura() {
+	private void emitirFactura() {
 		String nif = leerDatoNIF();
 
 		FacturaTelefonica factura = Administrador.emitirFactura(nif);
@@ -313,25 +311,25 @@ public class ConsoleGUI {
 		}
 
 		System.out.println("Información de la factura recien emitida");
-		System.out.println(factura.obtenerInformacion());
+		System.out.println(factura);
 	}
 
 	/**
 	 * Muestra un menú para ver una factura
 	 */
-	private static void verFactura() {
+	private void verFactura() {
 		System.out.println("Introduce los siguientes datos de la factura:");
-		int cod = (int) leerNumero("Codigo factura");
+		int cod = leerEntero("Codigo factura");
 
 		FacturaTelefonica factura = Administrador.getFactura(cod);
 		System.out.println("Información de la factura con codigo" + cod + ":");
-		System.out.println(factura.obtenerInformacion());
+		System.out.println(factura);
 	}
 
 	/**
 	 * Muestra un menú para ver todas las facturas de un cliente
 	 */
-	private static void verFacturasCliente() {
+	private void verFacturasCliente() {
 		String nif = leerDatoNIF();
 
 		Collection<FacturaTelefonica> facturas = Administrador.getFacturas(nif);
@@ -347,27 +345,38 @@ public class ConsoleGUI {
 		}
 
 		for (FacturaTelefonica factura : facturas) {
-			System.out.println();
-			factura.obtenerInformacion();
+			System.out.println(factura);
 		}
 	}
 
 	// ========================= Utilidades ========================= //
 
 	/**
-	 * Imprime el titulo especificado por pantalla
+	 * Imprime una lista de tituos especificado por pantalla
 	 *
-	 * @param titulo El titulo
+	 * @param titulos Una lista de titulos
 	 */
-	private static void imprimeTitulo(String titulo) {
-		System.out.println('\n');
-		for (int i = -16; i < titulo.length(); i++) System.out.print('#');
-		System.out.println("\n        " + titulo);
-		for (int i = -16; i < titulo.length(); i++) System.out.print('#');
+	private void imprimeTitulos(String... titulos) {
+		clearScreen();
+		System.out.println();
+		System.out.println("########################################");
+		System.out.println();
+		setColor(170, 170, 170);
+		for (int i = 0; i < titulos.length - 1; i++) {
+			System.out.print("                                        ".substring(0, Math.min(20, 20 - titulos[i].length() / 2)));
+			System.out.println(titulos[i]);
+		}
+
+		setColor(255, 255, 255);
+		System.out.print("                                        ".substring(0, Math.min(20, 20 - titulos[titulos.length - 1].length() / 2 - 2)));
+		System.out.println("- " + titulos[titulos.length - 1] + " -");
+
+		System.out.println();
+		System.out.println("########################################");
 		System.out.println();
 	}
 
-	private static int seleccionarOpcion(String atras, String... opciones) {
+	private int seleccionarOpcion(String atras, String... opciones) {
 		System.out.println("\nSelecciona una opción (0-" + opciones.length + ")");
 		for (int i = 0; i < opciones.length; i++) {
 			System.out.println("  " + (i + 1) + ": " + opciones[i]);
@@ -390,99 +399,78 @@ public class ConsoleGUI {
 
 	// ========================= Leer por pantalla ========================= //
 
-	private static String leerTexto(String mensaje, EnumTipoDato tipoDato) {
-		String line;
+	private String leerTexto(String mensaje, Administrador.EnumTipoDato tipoDato) {
 
-		do {
-			System.out.print(" - " + mensaje + ": ");
+		System.out.print(mensaje);
+		String line = scanner.nextLine();
+
+		while (!Administrador.esDatoValido(line, tipoDato)) {
+			clearPrevLine();
+			System.out.print(mensaje);
 			line = scanner.nextLine();
-		} while (!line.matches(tipoDato.getFormato()));
+		}
 
-		return scanner.nextLine();
+		return line;
 	}
 
-	private static float leerNumero(String mensaje) {
-		System.out.print(" - " + mensaje + ": ");
+	private int leerEntero(String mensaje) {
 
-		float f = -1;
+		int i = -1;
 
-		do {
+		while (i < 0) {
 			try {
-				f = scanner.nextFloat();
+				i = Integer.parseInt(leerTexto(mensaje, Administrador.EnumTipoDato.NUME_ENTERO));
 			} catch (Exception e) {
-				System.out.println("Error en el formato del numero");
-				System.out.print(" - " + mensaje + ": ");
+				i = -1;
 			}
-		} while (f < 0);
+		}
 
-		return f;
+		return i;
 	}
 
-	private static DireccionPostal leerDireccion(String mensaje) {
-		System.out.print(" - " + mensaje + " (CP, Provincia, Población): ");
+	private DireccionPostal leerDireccion(String mensaje) {
 
-		DireccionPostal direccion = null;
+		String[] str = leerTexto(mensaje, Administrador.EnumTipoDato.DIRECCION).split(", ");
 
-		do {
+		return new DireccionPostal(Integer.parseInt(str[0]), str[1], str[2]);
+	}
+
+	private LocalDateTime leerFecha(String mensaje) {
+
+		LocalDateTime date = null;
+
+		while (date == null) {
 			try {
-				direccion = DireccionPostal.parse(scanner.nextLine());
+				String str = leerTexto(mensaje, Administrador.EnumTipoDato.FECHA);
+				if (str.equalsIgnoreCase("hoy")) date = LocalDateTime.now();
+				else date = LocalDateTime.parse(str.replace(' ', 'T'));
 			} catch (Exception e) {
-				System.out.println("Error en el formato de la dirección");
-				System.out.print(" - " + mensaje + " (CP, Provincia, Población): ");
+				date = null;
 			}
-		} while (direccion == null);
+		}
 
-		return direccion;
+		return date;
 	}
 
-	private static LocalDateTime leerFecha(String mensaje) {
-		String hoy = "hoy";
-		System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | " + hoy + "): ");
-
-		LocalDateTime fecha = null;
-
-		do {
-			try {
-				String s = scanner.nextLine();
-				if (s.equalsIgnoreCase(hoy))
-					fecha = LocalDateTime.now();
-				else
-					fecha = LocalDateTime.parse(s.replaceAll("( )+", "T"));
-			} catch (Exception e) {
-				System.out.println("Error en el formato de la fecha");
-				System.out.print(" - " + mensaje + " (AAAA-MM-DD HH:mm:ss | hoy): ");
-			}
-		} while (fecha == null);
-
-		return fecha;
-	}
-
-	private static String leerDatoNIF() {
+	private String leerDatoNIF() {
 		System.out.println("Introduce los siguientes datos del cliente:");
-		return leerTexto("NIF", EnumTipoDato.NIF);
+		return leerTexto("NIF", Administrador.EnumTipoDato.NIF);
 	}
 
 	// ========================= Formato de pantalla ========================= //
 
-	private static void limpiarPantalla() // TODO
-	{
+	private void clearScreen() {
 		System.out.print("\033[2J\033[H");
 	}
 
-	private enum EnumTipoDato {
-		TEXTO(".*"),
-		NIF("(\\d){8}[A-Z])"),
-		TELEFONO("(\\+)?(\\s|\\d)*"),
-		EMAIL("(\\w)+@(\\w)+((\\.)(\\w)+)?");
-
-		private String formato;
-
-		EnumTipoDato(String formato) {
-			this.formato = formato;
-		}
-
-		public String getFormato() {
-			return formato;
-		}
+	private void clearPrevLine() {
+		System.out.print("\033[F\033[J");
 	}
+
+	private void setColor(int r, int g, int b) {
+		System.out.print("\033[38;2;" + r + ";" + g + ";" + b + "m");
+	}
+
+	// ========================= Tipos de datos ========================= //
+
 }
