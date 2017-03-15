@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  */
 public class Particular extends Cliente {
 
+	private static final long serialVersionUID = 6968740004850893790L;
 	/**
 	 * Los apellidos del cliente
 	 */
@@ -25,7 +26,7 @@ public class Particular extends Cliente {
 	 * @param fechaAlta Fecha de alta del particular
 	 * @param tarifa    Tarifa contratada por el particular
 	 */
-	public Particular(String nombre, String apellidos, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
+	public Particular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifa);
 
 		this.apellidos = apellidos;
@@ -37,19 +38,19 @@ public class Particular extends Cliente {
 	 * @return Apellidos del cliente
 	 */
 	public String getApellidos() {
-		return apellidos;
+		return this.apellidos;
 	}
 
 	@Override
 	public String toString() {
 		return "Cliente{" +
-				"nombre='" + getNombre() + '\'' +
-				", apellidos='" + apellidos + '\'' +
-				", nif='" + getNif() + '\'' +
-				", direccion=" + getDireccion() +
-				", email='" + getEmail() + '\'' +
-				", fechaAlta=" + getFecha() +
-				", tarifa=" + getTarifa() +
+				"nombre='" + this.getNombre() + '\'' +
+				", apellidos='" + this.apellidos + '\'' +
+				", nif='" + this.getNif() + '\'' +
+				", direccion=" + this.getDireccion() +
+				", email='" + this.getEmail() + '\'' +
+				", fechaAlta=" + this.getFecha() +
+				", tarifa=" + this.getTarifa() +
 				'}';
 	}
 }

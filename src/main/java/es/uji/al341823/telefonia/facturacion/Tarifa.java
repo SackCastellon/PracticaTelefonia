@@ -1,12 +1,15 @@
 package es.uji.al341823.telefonia.facturacion;
 
+import java.io.Serializable;
+
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class TarifaTelefonica {
+public class Tarifa implements Serializable {
 
+	private static final long serialVersionUID = 2027121994743403669L;
 	/**
 	 * Precio por minuto de la tarifa (€/min)
 	 */
@@ -17,7 +20,9 @@ public class TarifaTelefonica {
 	 *
 	 * @param precio Precio de la tarifa
 	 */
-	public TarifaTelefonica(float precio) {
+	public Tarifa(float precio) {
+		super();
+
 		this.precio = precio;
 	}
 
@@ -27,11 +32,11 @@ public class TarifaTelefonica {
 	 * @return Precio por minuto
 	 */
 	public float getPrecio() {
-		return precio;
+		return this.precio;
 	}
 
 	@Override
 	public String toString() {
-		return "Precio=" + precio;
+		return "Precio=" + this.precio;
 	}
 }

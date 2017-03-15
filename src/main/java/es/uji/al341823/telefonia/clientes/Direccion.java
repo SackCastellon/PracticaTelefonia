@@ -1,11 +1,15 @@
 package es.uji.al341823.telefonia.clientes;
 
+import java.io.Serializable;
+
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class DireccionPostal {
+public class Direccion implements Serializable {
+
+	private static final long serialVersionUID = 3611141018118208923L;
 
 	/**
 	 * Codigo postal
@@ -27,7 +31,9 @@ public class DireccionPostal {
 	 * @param provincia    Provincia
 	 * @param poblacion    Población
 	 */
-	public DireccionPostal(int codigoPostal, String provincia, String poblacion) {
+	public Direccion(int codigoPostal, String provincia, String poblacion) {
+		super();
+
 		this.codigoPostal = codigoPostal;
 		this.provincia = provincia;
 		this.poblacion = poblacion;
@@ -39,7 +45,7 @@ public class DireccionPostal {
 	 * @return Codigo postal
 	 */
 	public int getCodigoPostal() {
-		return codigoPostal;
+		return this.codigoPostal;
 	}
 
 	/**
@@ -48,7 +54,7 @@ public class DireccionPostal {
 	 * @return Provincia
 	 */
 	public String getProvincia() {
-		return provincia;
+		return this.provincia;
 	}
 
 	/**
@@ -57,15 +63,15 @@ public class DireccionPostal {
 	 * @return Población
 	 */
 	public String getPoblacion() {
-		return poblacion;
+		return this.poblacion;
 	}
 
 	@Override
 	public String toString() {
-		return "DireccionPostal{" +
-				"codigoPostal=" + codigoPostal +
-				", provincia='" + provincia + '\'' +
-				", poblacion='" + poblacion + '\'' +
+		return "Direccion{" +
+				"codigoPostal=" + this.codigoPostal +
+				", provincia='" + this.provincia + '\'' +
+				", poblacion='" + this.poblacion + '\'' +
 				'}';
 	}
 }

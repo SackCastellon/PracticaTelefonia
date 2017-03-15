@@ -1,23 +1,22 @@
 package es.uji.al341823.telefonia.api;
 
 import es.uji.al341823.telefonia.IFecha;
+import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.clientes.Direccion;
+import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
-import es.uji.al341823.telefonia.excepciones.ClienteNoExisteExcepcion;
-import es.uji.al341823.telefonia.excepciones.ClienteYaExisteExcepcion;
-import es.uji.al341823.telefonia.excepciones.FacturaNoExisteExcepcion;
-import es.uji.al341823.telefonia.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
-import es.uji.al341823.telefonia.llamadas.Llamada;
-import es.uji.www.GeneradorDatosINE;
+import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * Clase que se encarga de administrar todas la operaciónes
@@ -26,17 +25,19 @@ import java.util.Random;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Administrador {
+public class Administrador implements Serializable {
+
+	private static final long serialVersionUID = 4497473553243150487L;
 
 	/**
 	 * Almacena todos los clientes que hay en el momento
 	 */
-	private static final HashMap<String, Cliente> CLIENTES = new HashMap<>();
+	private final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
 	/**
 	 * Almacena todas las facturas emitidas hasta el momento
 	 */
-	private static final HashMap<Integer, FacturaTelefonica> FACTURAS = new HashMap<>();
+	private final HashMap<Integer, Factura> FACTURAS = new HashMap<>();
 
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
@@ -44,13 +45,21 @@ public class Administrador {
 	 *
 	 * @param cliente Nuevo cliente a dar de alta
 	 *
-	 * @return <code>true</code> si se ha añadido el cliente o <code>false</code> si el cliente ya exitia
+	 * @throws ClienteYaExisteExcepcion En caso de que el cliente ya existiese
 	 */
-	public static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
-		if (exixteCliente(cliente.getNif())) {
+	private void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
+		if (this.exixteCliente(cliente.getNif()))
 			throw new ClienteYaExisteExcepcion();
-		}
-		CLIENTES.put(cliente.getNif(), cliente);
+
+		this.CLIENTES.put(cliente.getNif(), cliente);
+	}
+
+	public void altaParticular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
+		this.altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa)); // TODO
+	}
+
+	public void altaEmpresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
+		this.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa)); // TODO
 	}
 
 	/**
@@ -59,24 +68,13 @@ public class Administrador {
 	 *
 	 * @param nif NIF del cliente a das de baja
 	 *
-	 * @return <code>true</code> si se ha dado de baja el cliente o <code>false</code> si el cliente no exitia
+	 * @throws ClienteNoExisteExcepcion En caso de que el cliente no exista
 	 */
-	public static void bajaCliente(String nif) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
+	public void bajaCliente(String nif) throws ClienteNoExisteExcepcion {
+		if (!this.exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
-		CLIENTES.remove(nif);
-	}
 
-	/**
-	 * Cambia la tarifa del cliente con el NIF dado a la tarifa dada
-	 *
-	 * @param nif         NIF de cliente
-	 * @param nuevaTarifa Nueva tarifa
-	 */
-	public static void cambiarTarifa(String nif, TarifaTelefonica nuevaTarifa) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
-		CLIENTES.get(nif).setTarifa(nuevaTarifa);
+		this.CLIENTES.remove(nif);
 	}
 
 	/**
@@ -86,10 +84,11 @@ public class Administrador {
 	 *
 	 * @return El cliente con ese NIF
 	 */
-	public static Cliente getCliente(String nif) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
+	public Cliente getCliente(String nif) throws ClienteNoExisteExcepcion {
+		if (!this.exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
-		return CLIENTES.get(nif);
+
+		return this.CLIENTES.get(nif);
 	}
 
 	/**
@@ -97,48 +96,8 @@ public class Administrador {
 	 *
 	 * @return Lista de clientes
 	 */
-	public static Collection<Cliente> getClientes() {
-		return CLIENTES.values();
-	}
-
-	/**
-	 * Da de alta una llamada para el cliente con el NIF especificado
-	 *
-	 * @param nif     NIF del cliente
-	 * @param llamada La llamada
-	 */
-	public static void altaLlamada(String nif, Llamada llamada) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
-		CLIENTES.get(nif).altaLlamada(llamada);
-	}
-
-	/**
-	 * Devuelve la lista dellamadas del cliente con el NIF especificado
-	 *
-	 * @param nif NIF del cliente
-	 *
-	 * @return Lista de llamadas
-	 */
-	public static Collection<Llamada> getLlamadas(String nif) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
-		return CLIENTES.get(nif).getLlamadas();
-	}
-
-	/**
-	 * Emite una factura para el cliente con el NIF especificado
-	 *
-	 * @param nif NIF del cliente
-	 *
-	 * @return La factura emitida
-	 */
-	public static FacturaTelefonica emitirFactura(String nif) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
-		FacturaTelefonica factura = getCliente(nif).emitirFactura();
-		FACTURAS.put(factura.getCodigo(), factura);
-		return factura;
+	public LinkedList<Cliente> getClientes() {
+		return new LinkedList<>(this.CLIENTES.values());
 	}
 
 	/**
@@ -148,34 +107,11 @@ public class Administrador {
 	 *
 	 * @return La factura correspondiente
 	 */
-	public static FacturaTelefonica getFactura(int codigo) throws FacturaNoExisteExcepcion{
-		if(!FACTURAS.containsKey(codigo))
+	public Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
+		if (!this.FACTURAS.containsKey(codigo))
 			throw new FacturaNoExisteExcepcion();
-		return FACTURAS.get(codigo);
-	}
 
-	/**
-	 * Devuelve la lista de faturas del cliente correspondiente con el NIF especificado
-	 *
-	 * @param nif NIF del cliente
-	 *
-	 * @return Lista de faturas
-	 */
-	public static Collection<FacturaTelefonica> getFacturas(String nif) throws  ClienteNoExisteExcepcion{
-		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
-		return getCliente(nif).getFacturas();
-	}
-
-	/**
-	 * Comprueba si existe un cliente con el NIF especificado
-	 *
-	 * @param nif NIF a comprobar
-	 *
-	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
-	 */
-	public static boolean exixteCliente(String nif) {
-		return CLIENTES.containsKey(nif);
+		return this.FACTURAS.get(codigo);
 	}
 
 	/**
@@ -189,30 +125,43 @@ public class Administrador {
 	 *
 	 * @return El conjunto que se ha extraido del conjunto original
 	 */
-	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion{
-		if(inico.isAfter(fin))
+	public <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
+		if (inico.isAfter(fin))
 			throw new FechaNoValidaExcepcion();
 
 		Collection<T> extraccion = new LinkedList<>();
 
-		for (T elem : conjunto)
-			if (elem.getFecha().isAfter(inico) && elem.getFecha().isBefore(fin))
+		for (T elem : conjunto) {
+			LocalDateTime fecha = elem.getFecha();
+			if (fecha.isAfter(inico) && fecha.isBefore(fin))
 				extraccion.add(elem);
+		}
 
 		return extraccion;
 	}
 
-	public static boolean esDatoValido(String string, EnumTipoDato tipoDato) {
+	public boolean esDatoValido(String string, EnumTipoDato tipoDato) {
 		return string.matches(tipoDato.getFormato());
 	}
 
 	/**
-	 * Genera un cierto número de clientes particulare de forma aleatoria y los da de alta
+	 * Comprueba si existe un cliente con el NIF especificado
 	 *
-	 * @param cantidad Cantidad de cliente a generar
+	 * @param nif NIF a comprobar
+	 *
+	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
 	 */
+	private boolean exixteCliente(String nif) {
+		return this.CLIENTES.containsKey(nif);
+	}
+
+//	/**
+//	 * Genera un cierto número de clientes particulare de forma aleatoria y los da de alta
+//	 *
+//	 * @param cantidad Cantidad de cliente a generar
+//	 */
 //	@Deprecated
-//	public static void generarParticularesAleatorios(int cantidad) {
+//	public void generarParticularesAleatorios(int cantidad) {
 //		GeneradorDatosINE gen = new GeneradorDatosINE();
 //		Random rand = new Random();
 //
@@ -223,14 +172,13 @@ public class Administrador {
 //			String nif = gen.getNIF();
 //
 //			String provincia = gen.getProvincia();
-//			DireccionPostal direccion = new DireccionPostal(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
+//			Direccion direccion = new Direccion(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
 //
 //			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
 //			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-//			TarifaTelefonica tarifa = new TarifaTelefonica(rand.nextFloat());
+//			Tarifa tarifa = new Tarifa(rand.nextFloat());
 //
 //			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
 //		}
 //	}
-
 }

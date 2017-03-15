@@ -1,10 +1,12 @@
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.IFecha;
-import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
@@ -13,7 +15,9 @@ import java.util.LinkedList;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public abstract class Cliente implements IFecha {
+public abstract class Cliente implements IFecha, Serializable {
+
+	private static final long serialVersionUID = -6698454540590960908L;
 
 	/**
 	 * Nombre del cliente
@@ -26,7 +30,7 @@ public abstract class Cliente implements IFecha {
 	/**
 	 * Dirección del cliente
 	 */
-	private final DireccionPostal direccion;
+	private final Direccion direccion;
 	/**
 	 * Email del cliente
 	 */
@@ -42,11 +46,11 @@ public abstract class Cliente implements IFecha {
 	/**
 	 * Lista de facturas correspondientes al cliente
 	 */
-	private final LinkedList<FacturaTelefonica> facturas = new LinkedList<>();
+	private final LinkedList<Factura> facturas = new LinkedList<>();
 	/**
 	 * Tarifa que tiene contratada el cliente
 	 */
-	private TarifaTelefonica tarifa;
+	private Tarifa tarifa;
 	/**
 	 * El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación
 	 */
@@ -60,7 +64,9 @@ public abstract class Cliente implements IFecha {
 	 * @param fechaAlta Fecha de lata del cliente
 	 * @param tarifa    Tarifa contratada por el cliente
 	 */
-	protected Cliente(String nombre, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
+	Cliente(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
+		super();
+
 		this.nombre = nombre;
 		this.nif = nif;
 		this.direccion = direccion;
@@ -94,7 +100,7 @@ public abstract class Cliente implements IFecha {
 	 *
 	 * @return Dirección del cliente
 	 */
-	public DireccionPostal getDireccion() {
+	public Direccion getDireccion() {
 		return this.direccion;
 	}
 
@@ -122,7 +128,7 @@ public abstract class Cliente implements IFecha {
 	 *
 	 * @return Tarifa contratada
 	 */
-	public TarifaTelefonica getTarifa() {
+	public Tarifa getTarifa() {
 		return this.tarifa;
 	}
 
@@ -131,7 +137,7 @@ public abstract class Cliente implements IFecha {
 	 *
 	 * @param tarifa Nueva tarifa
 	 */
-	public void setTarifa(TarifaTelefonica tarifa) {
+	public void setTarifa(Tarifa tarifa) {
 		this.tarifa = tarifa;
 	}
 
@@ -141,7 +147,7 @@ public abstract class Cliente implements IFecha {
 	 * @param llamada Nueva llamada
 	 */
 	public void altaLlamada(Llamada llamada) {
-		llamadas.add(llamada);
+		this.llamadas.add(llamada);
 	}
 
 	/**
@@ -150,7 +156,7 @@ public abstract class Cliente implements IFecha {
 	 * @return Lista de llamadas
 	 */
 	public LinkedList<Llamada> getLlamadas() {
-		return new LinkedList<>(llamadas);
+		return new LinkedList<>(this.llamadas);
 	}
 
 	/**
@@ -159,20 +165,26 @@ public abstract class Cliente implements IFecha {
 	 *
 	 * @return La factura emitida
 	 */
-	public FacturaTelefonica emitirFactura() {
+	public Factura emitirFactura() {
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
-		for (Llamada llamada : llamadas) {
-			if (llamada.getFecha().isBefore(hoy) && llamada.getFecha().isAfter(ultimaFacturacion))
+		for (Llamada llamada : this.llamadas) {
+			LocalDateTime fecha = llamada.getFecha();
+			if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
 				duracionLlamadas += llamada.getDuracionLlamada();
 		}
 
-		FacturaTelefonica factura = new FacturaTelefonica(tarifa, ultimaFacturacion, hoy, duracionLlamadas);
+		Factura factura;
+		try {
+			factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
+		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
+			return null;
+		}
 
-		ultimaFacturacion = hoy;
+		this.ultimaFacturacion = hoy;
 
-		facturas.add(factura);
+		this.facturas.add(factura);
 		return factura;
 	}
 
@@ -181,8 +193,8 @@ public abstract class Cliente implements IFecha {
 	 *
 	 * @return Lista de facturas
 	 */
-	public LinkedList<FacturaTelefonica> getFacturas() {
-		return new LinkedList<>(facturas);
+	public LinkedList<Factura> getFacturas() {
+		return new LinkedList<>(this.facturas);
 	}
 
 	/**
@@ -193,12 +205,12 @@ public abstract class Cliente implements IFecha {
 	@Override
 	public String toString() {
 		return "Cliente{" +
-				"nombre='" + nombre + '\'' +
-				", nif='" + nif + '\'' +
-				", direccion=" + direccion +
-				", email='" + email + '\'' +
-				", fechaAlta=" + fechaAlta +
-				", tarifa=" + tarifa +
+				"nombre='" + this.nombre + '\'' +
+				", nif='" + this.nif + '\'' +
+				", direccion=" + this.direccion +
+				", email='" + this.email + '\'' +
+				", fechaAlta=" + this.fechaAlta +
+				", tarifa=" + this.tarifa +
 				'}';
 	}
 }

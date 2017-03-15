@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
  */
 public class Empresa extends Cliente {
 
+	private static final long serialVersionUID = -5040781096494997665L;
+
 	/**
 	 * @param nombre    Nombre de la empresa
 	 * @param nif       NIF de la empresa
@@ -19,7 +21,7 @@ public class Empresa extends Cliente {
 	 * @param fechaAlta Fecha se alta de la empresa
 	 * @param tarifa    Tarifa contratada por la empresa
 	 */
-	public Empresa(String nombre, String nif, DireccionPostal direccion, String email, LocalDateTime fechaAlta, TarifaTelefonica tarifa) {
+	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifa);
 	}
 }

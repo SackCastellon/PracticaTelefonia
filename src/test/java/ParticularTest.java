@@ -1,7 +1,8 @@
-import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
-import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
@@ -24,12 +25,12 @@ public class ParticularTest {
 	private static String email;
 	private static LocalDateTime fecha;
 	private static LocalDateTime fechaUltimaEmision;
-	private static TarifaTelefonica tarifa;
+	private static Tarifa tarifa;
 	private static LocalDateTime ultimaFacturacion;
-	private static DireccionPostal direccion;
+	private static Direccion direccion;
 	private static int duracionLlamadas;
 	private static LinkedList<Llamada> llamadas;
-	private static LinkedList<FacturaTelefonica> facturas;
+	private static LinkedList<Factura> facturas;
 	private static Particular cliente;
 
 
@@ -44,11 +45,11 @@ public class ParticularTest {
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
 		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
-		tarifa = new TarifaTelefonica(rand.nextFloat());
+		tarifa = new Tarifa(rand.nextFloat());
 		ultimaFacturacion = LocalDateTime.of(2015, 6, 25, 3, 25);
 
 		String prov = generador.getProvincia();
-		direccion = new DireccionPostal(12100, prov, generador.getPoblacion(prov));
+		direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
 
 		duracionLlamadas = rand.nextInt();
 
@@ -91,7 +92,7 @@ public class ParticularTest {
 
 	@Test
 	public void setTarifaTest() {
-		TarifaTelefonica tarifaNueva = new TarifaTelefonica(rand.nextFloat());
+		Tarifa tarifaNueva = new Tarifa(rand.nextFloat());
 		cliente.setTarifa(tarifaNueva);
 		tarifa = tarifaNueva;
 		Assert.assertEquals(tarifaNueva, cliente.getTarifa());
@@ -118,9 +119,9 @@ public class ParticularTest {
 	}
 
 	@Test
-	public void emitirFacturaTest() {
+	public void emitirFacturaTest() throws FechaNoValidaExcepcion {
 		for (int i = 0; i < 100; i++) {
-			FacturaTelefonica factura = new FacturaTelefonica(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
+			Factura factura = new Factura(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
 			facturas.add(factura);
 			cliente.emitirFactura();
 		}

@@ -1,5 +1,6 @@
-import es.uji.al341823.telefonia.facturacion.FacturaTelefonica;
-import es.uji.al341823.telefonia.facturacion.TarifaTelefonica;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.facturacion.Tarifa;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,27 +13,27 @@ import java.util.Random;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class FacturaTelefonicaTest {
+public class FacturaTest {
 
 	private static Random rand;
 	private static int codigoUnico;
 	private static int codigo;
-	private static TarifaTelefonica tarifa;
+	private static Tarifa tarifa;
 	private static LocalDateTime fechaEmision;
 	private static LocalDateTime fechaUltimaEmision;
 	private static long periodoFactuacion;
 	private static int duracionLlamadas;
 	private static float importe;
-	private static FacturaTelefonica factura;
+	private static Factura factura;
 
 	@BeforeClass
-	public static void first() {
+	public static void first() throws FechaNoValidaExcepcion {
 		rand = new Random();
 
 		codigoUnico = 0;
 		codigo = codigoUnico++;
 
-		tarifa = new TarifaTelefonica(rand.nextFloat());
+		tarifa = new Tarifa(rand.nextFloat());
 
 		fechaEmision = LocalDateTime.now();
 		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
@@ -41,7 +42,7 @@ public class FacturaTelefonicaTest {
 		duracionLlamadas = rand.nextInt();
 		importe = tarifa.getPrecio() * duracionLlamadas;
 
-		factura = new FacturaTelefonica(tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);
+		factura = new Factura(tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);
 	}
 
 	@Test

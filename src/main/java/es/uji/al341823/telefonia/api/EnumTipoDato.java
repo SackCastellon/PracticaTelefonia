@@ -18,7 +18,7 @@ public enum EnumTipoDato {
 		this.formato = formato;
 	}
 
-	protected String getFormato() {
-		return formato;
+	String getFormato() {
+		return this.formato;
 	}
 }

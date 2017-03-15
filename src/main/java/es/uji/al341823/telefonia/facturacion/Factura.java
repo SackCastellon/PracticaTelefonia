@@ -1,8 +1,9 @@
 package es.uji.al341823.telefonia.facturacion;
 
 import es.uji.al341823.telefonia.IFecha;
-import es.uji.al341823.telefonia.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -11,12 +12,13 @@ import java.time.LocalDateTime;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class FacturaTelefonica implements IFecha {
+public class Factura implements IFecha, Serializable {
 
+	private static final long serialVersionUID = -7711276290283216630L;
 	/**
 	 * Se utiliza para obtener el código unico de cada factura
 	 */
-	private static int codigoUnico = 0;
+	private static int codigoUnico;
 
 	/**
 	 * Codigo identificativo unico de la factura
@@ -25,7 +27,7 @@ public class FacturaTelefonica implements IFecha {
 	/**
 	 * La tarifa usada para calcular la factura
 	 */
-	private final TarifaTelefonica tarifa;
+	private final Tarifa tarifa;
 	/**
 	 * Fecha en la que se emitió la factura
 	 */
@@ -47,13 +49,17 @@ public class FacturaTelefonica implements IFecha {
 	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
 	 * @param duracionLlamadas   La duración total en segundos de las llamadas
 	 */
-	public FacturaTelefonica(TarifaTelefonica tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion{
-		if(fechaEmision.isAfter(fechaUltimaEmision))
+	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
+		super();
+
+		if (fechaEmision.isAfter(fechaUltimaEmision))
 			throw new FechaNoValidaExcepcion();
+
 		this.codigo = codigoUnico++;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
-		this.periodoFactuacion = Duration.between(fechaUltimaEmision, fechaEmision).toDays();
+		Duration periodo = Duration.between(fechaUltimaEmision, fechaEmision);
+		this.periodoFactuacion = periodo.toDays();
 		this.importe = tarifa.getPrecio() * duracionLlamadas;
 	}
 
@@ -63,7 +69,7 @@ public class FacturaTelefonica implements IFecha {
 	 * @return Codigo identificativo
 	 */
 	public int getCodigo() {
-		return codigo;
+		return this.codigo;
 	}
 
 	/**
@@ -71,8 +77,8 @@ public class FacturaTelefonica implements IFecha {
 	 *
 	 * @return La taifa de la factura
 	 */
-	public TarifaTelefonica getTarifa() {
-		return tarifa;
+	public Tarifa getTarifa() {
+		return this.tarifa;
 	}
 
 	/**
@@ -81,7 +87,7 @@ public class FacturaTelefonica implements IFecha {
 	 * @return El periodo de facturación
 	 */
 	public long getPeriodoFactuacion() {
-		return periodoFactuacion;
+		return this.periodoFactuacion;
 	}
 
 	/**
@@ -90,7 +96,7 @@ public class FacturaTelefonica implements IFecha {
 	 * @return Importe de la factura
 	 */
 	public float getImporte() {
-		return importe;
+		return this.importe;
 	}
 
 	/**
@@ -105,12 +111,12 @@ public class FacturaTelefonica implements IFecha {
 
 	@Override
 	public String toString() {
-		return "FacturaTelefonica{" +
-				"codigo=" + codigo +
-				", tarifa=" + tarifa +
-				", fechaEmision=" + fechaEmision +
-				", periodoFactuacion=" + periodoFactuacion +
-				", importe=" + importe +
+		return "Factura{" +
+				"codigo=" + this.codigo +
+				", tarifa=" + this.tarifa +
+				", emision=" + this.fechaEmision +
+				", periodo=" + this.periodoFactuacion +
+				", importe=" + this.importe +
 				'}';
 	}
 }

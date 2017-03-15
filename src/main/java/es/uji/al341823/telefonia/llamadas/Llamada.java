@@ -2,6 +2,7 @@ package es.uji.al341823.telefonia.llamadas;
 
 import es.uji.al341823.telefonia.IFecha;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -9,8 +10,9 @@ import java.time.LocalDateTime;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Llamada implements IFecha {
+public class Llamada implements IFecha, Serializable {
 
+	private static final long serialVersionUID = -5491839185929563564L;
 	/**
 	 * Numero desde el que se ha realizado la llamada
 	 */
@@ -37,6 +39,8 @@ public class Llamada implements IFecha {
 	 * @param duracionLlamada Duración de la llamada en segundos
 	 */
 	public Llamada(String numeroOrigen, String numeroDestino, LocalDateTime fechaLlamada, int duracionLlamada) {
+		super();
+
 		this.numeroOrigen = numeroOrigen;
 		this.numeroDestino = numeroDestino;
 		this.fechaLlamada = fechaLlamada;
@@ -49,7 +53,7 @@ public class Llamada implements IFecha {
 	 * @return Devuelve el numero de origen de la llamada
 	 */
 	public String getNumeroOrigen() {
-		return numeroOrigen;
+		return this.numeroOrigen;
 	}
 
 	/**
@@ -58,7 +62,7 @@ public class Llamada implements IFecha {
 	 * @return Devuelve el numero de destino de la llamada
 	 */
 	public String getNumeroDestino() {
-		return numeroDestino;
+		return this.numeroDestino;
 	}
 
 	/**
@@ -67,7 +71,7 @@ public class Llamada implements IFecha {
 	 * @return Durecion de la llamada en segundos
 	 */
 	public int getDuracionLlamada() {
-		return duracionLlamada;
+		return this.duracionLlamada;
 	}
 
 	/**
@@ -77,6 +81,16 @@ public class Llamada implements IFecha {
 	 */
 	@Override
 	public LocalDateTime getFecha() {
-		return fechaLlamada;
+		return this.fechaLlamada;
+	}
+
+	@Override
+	public String toString() {
+		return "Llamada{" +
+				"origen='" + this.numeroOrigen + '\'' +
+				", destino='" + this.numeroDestino + '\'' +
+				", fecha=" + this.fechaLlamada +
+				", duracion=" + this.duracionLlamada +
+				'}';
 	}
 }

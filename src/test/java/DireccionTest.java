@@ -1,4 +1,4 @@
-import es.uji.al341823.telefonia.clientes.DireccionPostal;
+import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import java.util.Random;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class DireccionPostalTest {
+public class DireccionTest {
 
 	private final static Random rand = new Random();
 	private final static GeneradorDatosINE generador = new GeneradorDatosINE();
@@ -18,7 +18,7 @@ public class DireccionPostalTest {
 	private final String prov = generador.getProvincia();
 	private final String poblacion = generador.getPoblacion(prov);
 
-	private final DireccionPostal direccion = new DireccionPostal(codpostal, prov, poblacion);
+	private final Direccion direccion = new Direccion(codpostal, prov, poblacion);
 
 	@Test
 	public void getCodigoPostalTest() {
