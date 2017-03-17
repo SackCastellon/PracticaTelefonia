@@ -1,4 +1,4 @@
-import es.uji.al341823.telefonia.api.Administrador;
+import es.uji.al341823.telefonia.api.manager.DataManager;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
@@ -19,7 +19,7 @@ import java.util.Random;
 /**
  * Created by al341819 on 7/03/17.
  */
-public class AdministradorTest {
+public class DataManagerTest {
 	private static Random rand;
 	private static String nombre;
 	private static String prov;
@@ -27,7 +27,7 @@ public class AdministradorTest {
 	private static LocalDateTime fecha;
 	private static LocalDateTime fechaInicio;
 	private static LocalDateTime fechaFinal;
-	private static Administrador admin;
+	private static DataManager admin;
 	GeneradorDatosINE generador = new GeneradorDatosINE();
 
 	@BeforeClass
@@ -35,7 +35,7 @@ public class AdministradorTest {
 
 		rand = new Random();
 
-		admin = new Administrador();
+		admin = new DataManager();
 
 		fechaInicio = LocalDateTime.of(2013, 1, 1, 1, 1);
 		fechaFinal = LocalDateTime.of(2016, 12, 31, 4, 30);

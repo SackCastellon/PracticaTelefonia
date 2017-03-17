@@ -1,4 +1,4 @@
-package es.uji.al341823.telefonia.api;
+package es.uji.al341823.telefonia.api.manager;
 
 import es.uji.al341823.telefonia.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
@@ -12,7 +12,7 @@ import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,19 +25,22 @@ import java.util.LinkedList;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Administrador implements Serializable {
+public class DataManager implements Serializable {
 
 	private static final long serialVersionUID = 4497473553243150487L;
+
+	private static final File ficheroClientes = new File("Telefonia.data");
+	private static final File ficheroFacturas = new File("Facturas.data");
 
 	/**
 	 * Almacena todos los clientes que hay en el momento
 	 */
-	private final HashMap<String, Cliente> CLIENTES = new HashMap<>();
+	private static final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
 	/**
 	 * Almacena todas las facturas emitidas hasta el momento
 	 */
-	private final HashMap<Integer, Factura> FACTURAS = new HashMap<>();
+	private static final HashMap<Integer, Factura> FACTURAS = new HashMap<>();
 
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
@@ -47,19 +50,19 @@ public class Administrador implements Serializable {
 	 *
 	 * @throws ClienteYaExisteExcepcion En caso de que el cliente ya existiese
 	 */
-	private void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
-		if (this.exixteCliente(cliente.getNif()))
+	private static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
+		if (exixteCliente(cliente.getNif()))
 			throw new ClienteYaExisteExcepcion();
 
-		this.CLIENTES.put(cliente.getNif(), cliente);
+		CLIENTES.put(cliente.getNif(), cliente);
 	}
 
-	public void altaParticular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
-		this.altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa)); // TODO
+	public static void altaParticular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
+		altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa)); // TODO
 	}
 
-	public void altaEmpresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
-		this.altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa)); // TODO
+	public static void altaEmpresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
+		altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa)); // TODO
 	}
 
 	/**
@@ -70,11 +73,11 @@ public class Administrador implements Serializable {
 	 *
 	 * @throws ClienteNoExisteExcepcion En caso de que el cliente no exista
 	 */
-	public void bajaCliente(String nif) throws ClienteNoExisteExcepcion {
-		if (!this.exixteCliente(nif))
+	public static void bajaCliente(String nif) throws ClienteNoExisteExcepcion {
+		if (!exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
 
-		this.CLIENTES.remove(nif);
+		CLIENTES.remove(nif);
 	}
 
 	/**
@@ -84,11 +87,11 @@ public class Administrador implements Serializable {
 	 *
 	 * @return El cliente con ese NIF
 	 */
-	public Cliente getCliente(String nif) throws ClienteNoExisteExcepcion {
-		if (!this.exixteCliente(nif))
+	public static Cliente getCliente(String nif) throws ClienteNoExisteExcepcion {
+		if (!exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
 
-		return this.CLIENTES.get(nif);
+		return CLIENTES.get(nif);
 	}
 
 	/**
@@ -96,8 +99,8 @@ public class Administrador implements Serializable {
 	 *
 	 * @return Lista de clientes
 	 */
-	public LinkedList<Cliente> getClientes() {
-		return new LinkedList<>(this.CLIENTES.values());
+	public static LinkedList<Cliente> getClientes() {
+		return new LinkedList<>(CLIENTES.values());
 	}
 
 	/**
@@ -107,11 +110,11 @@ public class Administrador implements Serializable {
 	 *
 	 * @return La factura correspondiente
 	 */
-	public Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
-		if (!this.FACTURAS.containsKey(codigo))
+	public static Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
+		if (!FACTURAS.containsKey(codigo))
 			throw new FacturaNoExisteExcepcion();
 
-		return this.FACTURAS.get(codigo);
+		return FACTURAS.get(codigo);
 	}
 
 	/**
@@ -125,7 +128,7 @@ public class Administrador implements Serializable {
 	 *
 	 * @return El conjunto que se ha extraido del conjunto original
 	 */
-	public <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
+	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
 		if (inico.isAfter(fin))
 			throw new FechaNoValidaExcepcion();
 
@@ -140,7 +143,7 @@ public class Administrador implements Serializable {
 		return extraccion;
 	}
 
-	public boolean esDatoValido(String string, EnumTipoDato tipoDato) {
+	public static boolean esDatoValido(String string, EnumTipoDato tipoDato) {
 		return string.matches(tipoDato.getFormato());
 	}
 
@@ -151,34 +154,35 @@ public class Administrador implements Serializable {
 	 *
 	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
 	 */
-	private boolean exixteCliente(String nif) {
-		return this.CLIENTES.containsKey(nif);
+	private static boolean exixteCliente(String nif) {
+		return CLIENTES.containsKey(nif);
 	}
 
-//	/**
-//	 * Genera un cierto número de clientes particulare de forma aleatoria y los da de alta
-//	 *
-//	 * @param cantidad Cantidad de cliente a generar
-//	 */
-//	@Deprecated
-//	public void generarParticularesAleatorios(int cantidad) {
-//		GeneradorDatosINE gen = new GeneradorDatosINE();
-//		Random rand = new Random();
-//
-//		for (int i = 0; i < cantidad; i++) {
-//
-//			String nombre = gen.getNombre();
-//			String apellidos = gen.getApellido() + " " + gen.getApellido();
-//			String nif = gen.getNIF();
-//
-//			String provincia = gen.getProvincia();
-//			Direccion direccion = new Direccion(rand.nextInt(100000), provincia, gen.getPoblacion(provincia));
-//
-//			String email = nombre.toLowerCase().replace(' ', '_') + "@example.com";
-//			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
-//			Tarifa tarifa = new Tarifa(rand.nextFloat());
-//
-//			altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
-//		}
-//	}
+	@SuppressWarnings("unchecked")
+	public static void cargarDatos() {
+		try {
+			FileInputStream in = new FileInputStream(ficheroClientes);
+			ObjectInputStream obj = new ObjectInputStream(in);
+			CLIENTES.putAll((HashMap<String, Cliente>) obj.readObject());
+			obj.close();
+		} catch (Exception e) {
+			System.err.println("ERROR: No se pudieron cargar los datos");
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	public static void guardarDatos() {
+		try {
+			ficheroClientes.createNewFile();
+
+			FileOutputStream out = new FileOutputStream(ficheroClientes);
+			ObjectOutputStream obj = new ObjectOutputStream(out);
+			obj.writeObject(CLIENTES);
+			obj.close();
+		} catch (Exception e) {
+			System.err.println("ERROR: No se pudieron guardar los datos");
+			e.printStackTrace();
+		}
+	}
 }
