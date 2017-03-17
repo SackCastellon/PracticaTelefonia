@@ -10,3 +10,6 @@
 # Builds
 target/*
 !target/*.jar
+
+# Ficheros de datos
+Telefonia.data
