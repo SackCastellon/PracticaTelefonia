@@ -52,7 +52,7 @@ public class Factura implements IFecha, Serializable {
 	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
 		super();
 
-		if (fechaEmision.isAfter(fechaUltimaEmision))
+		if (fechaEmision.isBefore(fechaUltimaEmision))
 			throw new FechaNoValidaExcepcion();
 
 		this.codigo = codigoUnico++;

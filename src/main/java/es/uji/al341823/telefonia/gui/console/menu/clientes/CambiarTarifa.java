@@ -22,7 +22,9 @@ class CambiarTarifa extends Menu {
 
 		if (cliente == null) return;
 
-		Tarifa tarifa = new Tarifa(MenuManager.leerNumero("La nueva tarifa: ")); // FIXME mover 'new' a clase DataManager
+		Tarifa tarifa = new Tarifa(MenuManager.leerNumero("La nueva tarifa: "));
+
+		System.out.println();
 
 		cliente.setTarifa(tarifa);
 		System.out.println("Tarifa cambiada con éxito");

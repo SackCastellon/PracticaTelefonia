@@ -27,6 +27,8 @@ class RecuperarFacturasCliente extends Menu {
 
 		System.out.println("Se han emitido un total de " + facturas.size() + " facturas para este cliente:");
 
+		System.out.println();
+
 		for (Factura factura : facturas) {
 			System.out.println(" - " + factura);
 		}

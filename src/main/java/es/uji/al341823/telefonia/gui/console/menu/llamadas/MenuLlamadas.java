@@ -24,6 +24,7 @@ public class MenuLlamadas extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new AltaLlamada(this), new VerLlamadasCliente(this)};
+		return new Menu[] {new AltaLlamada(this), new VerLlamadasCliente(this),
+		new ExtraerLlamadas(this)};
 	}
 }

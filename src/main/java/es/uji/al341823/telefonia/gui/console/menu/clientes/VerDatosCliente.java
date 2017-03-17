@@ -23,6 +23,8 @@ class VerDatosCliente extends Menu {
 
 		System.out.println("Información del cliente: " + cliente);
 
+		System.out.println();
+
 		MenuManager.esperarParaContinuar();
 	}
 

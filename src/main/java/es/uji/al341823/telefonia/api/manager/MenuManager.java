@@ -68,7 +68,7 @@ public class MenuManager {
 				if (seleccion == 0)
 					return;
 
-				else if ((seleccion < menu.getSubmenus().length) && (seleccion > 0)) {
+				else if ((seleccion <= menu.getSubmenus().length) && (seleccion > 0)) {
 					menu.getSubmenus()[seleccion - 1].mostrar();
 					break;
 				}
@@ -138,10 +138,11 @@ public class MenuManager {
 		try {
 			return DataManager.getCliente(nif);
 		} catch (ClienteNoExisteExcepcion e) {
+			System.out.println();
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
+			esperarParaContinuar();
+			return null;
 		}
-
-		return null;
 	}
 
 	public static void esperarParaContinuar() {

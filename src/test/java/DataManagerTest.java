@@ -69,14 +69,14 @@ public class DataManagerTest {
 			if (llamada.getFecha().isAfter(fechaInicio) && llamada.getFecha().isBefore(fechaFinal))
 				llamadasExtraidas.add(llamada);
 
-			Factura factura = new Factura(new Tarifa(rand.nextFloat()), LocalDateTime.of(2021, 12, 28, 2, 32), fecha, rand.nextInt());
+			Factura factura = new Factura(new Tarifa(rand.nextFloat()), fecha, LocalDateTime.of(2021, 12, 28, 2, 32), rand.nextInt());
 			facturas.add(factura);
 
 			if (factura.getFecha().isAfter(fechaInicio) && factura.getFecha().isBefore(fechaFinal))
 				facturasExtraidas.add(factura);
 		}
 
-		Assert.assertEquals(admin.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
+		Assert.assertEquals(DataManager.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
 		Assert.assertEquals(admin.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
 		Assert.assertEquals(admin.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
 	}

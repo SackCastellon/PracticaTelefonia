@@ -20,6 +20,8 @@ class RecuperarDatosFactura extends Menu {
 
 		int codigo = MenuManager.leerEntero("Introduce el codigo de la factura: ");
 
+		System.out.println();
+
 		try {
 			Factura factura = DataManager.getFactura(codigo);
 			System.out.println("Información de la factura: " + factura);

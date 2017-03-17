@@ -24,13 +24,17 @@ class AltaParticular extends Menu {
 
 		System.out.println("Introduce los datos del particular:");
 
-		String nombre = MenuManager.leerTexto(" - Nombre:", EnumTipoDato.TEXTO);
-		String apellidos = MenuManager.leerTexto(" - Apellidos:", EnumTipoDato.TEXTO);
-		String nif = MenuManager.leerTexto(" - NIF:", EnumTipoDato.NIF);
-		Direccion direccion = MenuManager.leerDireccion(" - Dirección:");
-		String email = MenuManager.leerTexto(" - E-mail:", EnumTipoDato.EMAIL);
-		LocalDateTime fecha = MenuManager.leerFecha(" - Fecha de alta:");
-		Tarifa tarifa = new Tarifa(MenuManager.leerNumero(" - Tarifa:"));
+		System.out.println();
+
+		String nombre = MenuManager.leerTexto(" - Nombre: ", EnumTipoDato.TEXTO);
+		String apellidos = MenuManager.leerTexto(" - Apellidos: ", EnumTipoDato.TEXTO);
+		String nif = MenuManager.leerTexto(" - NIF: ", EnumTipoDato.NIF);
+		Direccion direccion = MenuManager.leerDireccion(" - Dirección: ");
+		String email = MenuManager.leerTexto(" - E-mail: ", EnumTipoDato.EMAIL);
+		LocalDateTime fecha = MenuManager.leerFecha(" - Fecha de alta: ");
+		Tarifa tarifa = new Tarifa(MenuManager.leerNumero(" - Tarifa: "));
+
+		System.out.println();
 
 		try {
 			DataManager.altaParticular(nombre, apellidos, nif, direccion, email, fecha, tarifa);

@@ -23,6 +23,8 @@ class EmitirFactura extends Menu {
 
 		Factura factura = cliente.emitirFactura();
 
+		System.out.println();
+
 		if (factura == null)
 			System.out.println("No se pudo emitir la factura");
 		else

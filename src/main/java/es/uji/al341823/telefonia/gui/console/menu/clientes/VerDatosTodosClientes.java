@@ -22,7 +22,9 @@ class VerDatosTodosClientes extends Menu {
 
 		LinkedList<Cliente> clientes = DataManager.getClientes();
 
-		System.out.printf("Hay un total de %d clientes\n", clientes.size());
+		System.out.printf("Hay un total de %d clientes", clientes.size());
+
+		System.out.println();
 
 		for (Cliente cliente : clientes) {
 			System.out.println(" - " + cliente);

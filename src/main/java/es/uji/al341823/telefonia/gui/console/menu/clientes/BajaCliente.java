@@ -21,6 +21,8 @@ class BajaCliente extends Menu {
 
 		String nif = MenuManager.leerTexto("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
 
+		System.out.println();
+
 		try {
 			DataManager.bajaCliente(nif);
 			System.out.println("Cliente eliminado con éxito");
