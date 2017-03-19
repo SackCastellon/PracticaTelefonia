@@ -1,7 +1,7 @@
 package es.uji.al341823.telefonia.gui.console.menu.llamadas;
 
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
@@ -10,16 +10,16 @@ import java.util.LinkedList;
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class VerLlamadasCliente extends Menu {
+public class VerLlamadasCliente extends Menu {
 	public VerLlamadasCliente(Menu padre) {
 		super(padre);
 	}
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = MenuManager.leerClienteNIF();
+		Cliente cliente = AdministradorMenus.leerClienteNIF();
 
 		if (cliente == null) return;
 
@@ -31,7 +31,7 @@ class VerLlamadasCliente extends Menu {
 			System.out.println(" - " + llamada);
 		}
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override

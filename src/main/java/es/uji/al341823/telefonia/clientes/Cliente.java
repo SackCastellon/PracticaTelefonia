@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.IFecha;
+import es.uji.al341823.telefonia.api.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
@@ -178,7 +178,7 @@ public abstract class Cliente implements IFecha, Serializable {
 		Factura factura;
 		try {
 			factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
-		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
+		} catch (FechaNoValidaExcepcion e) {
 			return null;
 		}
 

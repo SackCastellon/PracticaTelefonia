@@ -1,4 +1,4 @@
-package es.uji.al341823.telefonia.api.manager;
+package es.uji.al341823.telefonia.api;
 
 /**
  * Diferentes tipos de datos de entrada con sus diferentes formatos

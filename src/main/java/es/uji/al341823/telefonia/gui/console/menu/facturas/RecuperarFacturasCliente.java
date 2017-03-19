@@ -1,8 +1,8 @@
 package es.uji.al341823.telefonia.gui.console.menu.facturas;
 
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 import java.util.LinkedList;
@@ -10,16 +10,16 @@ import java.util.LinkedList;
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class RecuperarFacturasCliente extends Menu {
+public class RecuperarFacturasCliente extends Menu {
 	public RecuperarFacturasCliente(Menu padre) {
 		super(padre);
 	}
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = MenuManager.leerClienteNIF();
+		Cliente cliente = AdministradorMenus.leerClienteNIF();
 
 		if (cliente == null) return;
 
@@ -33,7 +33,7 @@ class RecuperarFacturasCliente extends Menu {
 			System.out.println(" - " + factura);
 		}
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override

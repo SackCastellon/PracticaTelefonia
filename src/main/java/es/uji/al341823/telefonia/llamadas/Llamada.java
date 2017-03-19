@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.llamadas;
 
-import es.uji.al341823.telefonia.IFecha;
+import es.uji.al341823.telefonia.api.IFecha;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

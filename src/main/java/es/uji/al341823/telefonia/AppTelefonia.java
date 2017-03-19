@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia;
 
-import es.uji.al341823.telefonia.api.manager.DataManager;
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
 
@@ -10,6 +10,8 @@ import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
  */
 public class AppTelefonia {
 
+	private static final String ficheroDatos = "Telefonia.data";
+
 	/**
 	 * Metodo main, primer metodo que se llama la ejecutar el programa
 	 *
@@ -17,12 +19,13 @@ public class AppTelefonia {
 	 */
 	public static void main(String[] args) {
 
-		DataManager.cargarDatos();
+		AdministradorDatos.cargarDatos(ficheroDatos);
 
 		Menu menuPrincipal = new MenuPrincipal(null);
 		menuPrincipal.mostrar();
-		Menu.scanner.close();
 
-		DataManager.guardarDatos();
+		AdministradorDatos.guardarDatos(ficheroDatos);
+
+		Menu.scanner.close();
 	}
 }

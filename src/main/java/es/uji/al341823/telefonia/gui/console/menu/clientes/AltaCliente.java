@@ -1,12 +1,12 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
-import es.uji.al341823.telefonia.api.manager.MenuManager;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class AltaCliente extends Menu {
+public class AltaCliente extends Menu {
 
 	public AltaCliente(Menu padre) {
 		super(padre);
@@ -14,7 +14,7 @@ class AltaCliente extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.seleccionarOpcion(this);
+		AdministradorMenus.seleccionarOpcion(this);
 	}
 
 	@Override

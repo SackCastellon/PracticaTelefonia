@@ -1,8 +1,8 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.api.manager.DataManager;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
@@ -19,36 +19,36 @@ public class ExtraerClientes extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		LocalDateTime inicio = MenuManager.leerFecha("Introcuce la fecha de inicio: ");
-		LocalDateTime fin = MenuManager.leerFecha("Introcuce la fecha de fin: ");
+		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio: ");
+		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin: ");
 
 		Collection<Cliente> clientes;
 
 		try {
-			clientes = DataManager.extraerConjunto(DataManager.getClientes(), inicio, fin);
+			clientes = AdministradorDatos.extraerConjunto(AdministradorDatos.getClientes(), inicio, fin);
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
-			MenuManager.esperarParaContinuar();
+			AdministradorMenus.esperarParaContinuar();
 			return;
 		}
 
-		System.out.println("Durante este periodo de tiempo se direon de alta un total de " + clientes.size() + " clientes");
-
 		System.out.println();
+
+		System.out.println("Durante este periodo de tiempo se direon de alta un total de " + clientes.size() + " cliente(s)");
 
 		for (Cliente cliente : clientes) {
 			System.out.println(" - " + cliente);
 		}
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Clientes dados de alta entre dos fechas";
+		return "Ver clientes dados de alta entre dos fechas";
 	}
 
 	@Override

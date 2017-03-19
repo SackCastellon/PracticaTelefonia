@@ -1,6 +1,5 @@
-package es.uji.al341823.telefonia.api.manager;
+package es.uji.al341823.telefonia.api;
 
-import es.uji.al341823.telefonia.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
@@ -9,13 +8,13 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -25,22 +24,9 @@ import java.util.LinkedList;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class DataManager implements Serializable {
+public class AdministradorDatos {
 
-	private static final long serialVersionUID = 4497473553243150487L;
-
-	private static final File ficheroClientes = new File("Telefonia.data");
-	private static final File ficheroFacturas = new File("Facturas.data");
-
-	/**
-	 * Almacena todos los clientes que hay en el momento
-	 */
-	private static final HashMap<String, Cliente> CLIENTES = new HashMap<>();
-
-	/**
-	 * Almacena todas las facturas emitidas hasta el momento
-	 */
-	private static final HashMap<Integer, Factura> FACTURAS = new HashMap<>();
+	private static Datos datos = new Datos();
 
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
@@ -54,7 +40,7 @@ public class DataManager implements Serializable {
 		if (exixteCliente(cliente.getNif()))
 			throw new ClienteYaExisteExcepcion();
 
-		CLIENTES.put(cliente.getNif(), cliente);
+		datos.CLIENTES.put(cliente.getNif(), cliente);
 	}
 
 	public static void altaParticular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
@@ -77,7 +63,7 @@ public class DataManager implements Serializable {
 		if (!exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
 
-		CLIENTES.remove(nif);
+		datos.CLIENTES.remove(nif);
 	}
 
 	/**
@@ -91,7 +77,7 @@ public class DataManager implements Serializable {
 		if (!exixteCliente(nif))
 			throw new ClienteNoExisteExcepcion();
 
-		return CLIENTES.get(nif);
+		return datos.CLIENTES.get(nif);
 	}
 
 	/**
@@ -100,7 +86,21 @@ public class DataManager implements Serializable {
 	 * @return Lista de clientes
 	 */
 	public static LinkedList<Cliente> getClientes() {
-		return new LinkedList<>(CLIENTES.values());
+		return new LinkedList<>(datos.CLIENTES.values());
+	}
+
+	/**
+	 * Eite una factura para el cliente especificado
+	 *
+	 * @param cliente El cliende del cual se emitirá la factura
+	 *
+	 * @return La factura emitida, <code>null</code> si no se pudo emitir
+	 */
+	public static Factura emitirFactura(Cliente cliente) {
+		Factura factura = cliente.emitirFactura();
+		datos.FACTURAS.put(factura.getCodigo(), factura);
+
+		return factura;
 	}
 
 	/**
@@ -111,10 +111,10 @@ public class DataManager implements Serializable {
 	 * @return La factura correspondiente
 	 */
 	public static Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
-		if (!FACTURAS.containsKey(codigo))
+		if (!datos.FACTURAS.containsKey(codigo))
 			throw new FacturaNoExisteExcepcion();
 
-		return FACTURAS.get(codigo);
+		return datos.FACTURAS.get(codigo);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class DataManager implements Serializable {
 	 * @return El conjunto que se ha extraido del conjunto original
 	 */
 	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
-		if (inico.isAfter(fin))
+		if (inico.isBefore(fin))
 			throw new FechaNoValidaExcepcion();
 
 		Collection<T> extraccion = new LinkedList<>();
@@ -143,8 +143,16 @@ public class DataManager implements Serializable {
 		return extraccion;
 	}
 
-	public static boolean esDatoValido(String string, EnumTipoDato tipoDato) {
-		return string.matches(tipoDato.getFormato());
+	/**
+	 * Comprueba si un dato es valido, comprovando que el coincide con el patron del tipo de dato
+	 *
+	 * @param dato     El dato
+	 * @param tipoDato El tipo de dato
+	 *
+	 * @return <code>true</code> si coincide con el patron de tipo de dato, <code>false</code> en caso contrario
+	 */
+	public static boolean esDatoValido(String dato, EnumTipoDato tipoDato) {
+		return dato.matches(tipoDato.getFormato());
 	}
 
 	/**
@@ -155,34 +163,59 @@ public class DataManager implements Serializable {
 	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
 	 */
 	private static boolean exixteCliente(String nif) {
-		return CLIENTES.containsKey(nif);
+		return datos.CLIENTES.containsKey(nif);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void cargarDatos() {
+	/**
+	 * Carga los datos (clientes y facturas) desde el fichero especificado
+	 *
+	 * @param nombreFichero El fichero de datos
+	 */
+	public static void cargarDatos(String nombreFichero) {
 		try {
-			FileInputStream in = new FileInputStream(ficheroClientes);
-			ObjectInputStream obj = new ObjectInputStream(in);
-			CLIENTES.putAll((HashMap<String, Cliente>) obj.readObject());
-			obj.close();
-		} catch (Exception e) {
-			System.err.println("ERROR: No se pudieron cargar los datos");
-			e.printStackTrace();
+			File fichero = new File(nombreFichero);
+
+			FileInputStream fin = new FileInputStream(fichero);
+			ObjectInputStream oin = new ObjectInputStream(fin);
+			datos = (Datos) oin.readObject();
+
+			System.out.println("Datos cargados con éxito");
+
+			AdministradorMenus.esperarParaContinuar();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error al cargar datos: No se encontro el fichero de datos");
+		} catch (IOException e) {
+			System.out.println("Error al cargar datos: No se pudo leer el fichero de datos");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error al cargar datos: No se encontro la clase");
 		}
 	}
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	public static void guardarDatos() {
+	/**
+	 * Guarda los datos (clientes y facturas) en el fichero especificado
+	 *
+	 * @param nombreFichero El nombre del fichero de datos
+	 */
+	public static void guardarDatos(String nombreFichero) {
 		try {
-			ficheroClientes.createNewFile();
+			File fichero = new File(nombreFichero);
 
-			FileOutputStream out = new FileOutputStream(ficheroClientes);
-			ObjectOutputStream obj = new ObjectOutputStream(out);
-			obj.writeObject(CLIENTES);
-			obj.close();
-		} catch (Exception e) {
-			System.err.println("ERROR: No se pudieron guardar los datos");
-			e.printStackTrace();
+			System.out.println();
+
+			if (fichero.createNewFile())
+				System.out.println("El fichero de datos no existia y se ha creado\n");
+
+			FileOutputStream fin = new FileOutputStream(fichero);
+			ObjectOutputStream oin = new ObjectOutputStream(fin);
+			oin.writeObject(datos);
+
+			System.out.println("Datos guardados con éxito");
+
+			AdministradorMenus.esperarParaContinuar();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
+		} catch (IOException e) {
+			System.out.println("Error al guardar datos: No se pudo escribir en el fichero de datos");
 		}
 	}
 }

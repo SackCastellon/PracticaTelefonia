@@ -1,4 +1,4 @@
-import es.uji.al341823.telefonia.api.manager.DataManager;
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
@@ -19,7 +19,7 @@ import java.util.Random;
 /**
  * Created by al341819 on 7/03/17.
  */
-public class DataManagerTest {
+public class AdministradorDatosTest {
 	private static Random rand;
 	private static String nombre;
 	private static String prov;
@@ -27,7 +27,7 @@ public class DataManagerTest {
 	private static LocalDateTime fecha;
 	private static LocalDateTime fechaInicio;
 	private static LocalDateTime fechaFinal;
-	private static DataManager admin;
+	private static AdministradorDatos admin;
 	GeneradorDatosINE generador = new GeneradorDatosINE();
 
 	@BeforeClass
@@ -35,7 +35,7 @@ public class DataManagerTest {
 
 		rand = new Random();
 
-		admin = new DataManager();
+		admin = new AdministradorDatos();
 
 		fechaInicio = LocalDateTime.of(2013, 1, 1, 1, 1);
 		fechaFinal = LocalDateTime.of(2016, 12, 31, 4, 30);
@@ -76,7 +76,7 @@ public class DataManagerTest {
 				facturasExtraidas.add(factura);
 		}
 
-		Assert.assertEquals(DataManager.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
+		Assert.assertEquals(AdministradorDatos.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
 		Assert.assertEquals(admin.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
 		Assert.assertEquals(admin.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
 	}

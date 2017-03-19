@@ -1,8 +1,8 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
-import es.uji.al341823.telefonia.api.manager.DataManager;
+import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class VerDatosTodosClientes extends Menu {
+public class VerDatosTodosClientes extends Menu {
 
 	public VerDatosTodosClientes(Menu padre) {
 		super(padre);
@@ -18,9 +18,9 @@ class VerDatosTodosClientes extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		LinkedList<Cliente> clientes = DataManager.getClientes();
+		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
 
 		System.out.printf("Hay un total de %d clientes", clientes.size());
 
@@ -30,7 +30,7 @@ class VerDatosTodosClientes extends Menu {
 			System.out.println(" - " + cliente);
 		}
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class VerDatosCliente extends Menu {
+public class VerDatosCliente extends Menu {
 
 	public VerDatosCliente(Menu padre) {
 		super(padre);
@@ -15,9 +15,9 @@ class VerDatosCliente extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = MenuManager.leerClienteNIF();
+		Cliente cliente = AdministradorMenus.leerClienteNIF();
 
 		if (cliente == null) return;
 
@@ -25,7 +25,7 @@ class VerDatosCliente extends Menu {
 
 		System.out.println();
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override

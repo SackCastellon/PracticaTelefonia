@@ -1,14 +1,14 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Tarifa;
-import es.uji.al341823.telefonia.api.manager.MenuManager;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
  * Created by Juanjo on 16/03/2017.
  */
-class CambiarTarifa extends Menu {
+public class CambiarTarifa extends Menu {
 
 	public CambiarTarifa(Menu padre) {
 		super(padre);
@@ -16,20 +16,20 @@ class CambiarTarifa extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.imprimeTitulo(this);
+		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = MenuManager.leerClienteNIF();
+		Cliente cliente = AdministradorMenus.leerClienteNIF();
 
 		if (cliente == null) return;
 
-		Tarifa tarifa = new Tarifa(MenuManager.leerNumero("La nueva tarifa: "));
+		Tarifa tarifa = new Tarifa(AdministradorMenus.leerNumero("La nueva tarifa: "));
 
 		System.out.println();
 
 		cliente.setTarifa(tarifa);
 		System.out.println("Tarifa cambiada con éxito");
 
-		MenuManager.esperarParaContinuar();
+		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override

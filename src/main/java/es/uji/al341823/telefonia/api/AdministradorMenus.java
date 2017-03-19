@@ -1,4 +1,4 @@
-package es.uji.al341823.telefonia.api.manager;
+package es.uji.al341823.telefonia.api;
 
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -6,37 +6,39 @@ import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 /**
  * Created by Juanjo on 15/03/2017.
  */
-public class MenuManager {
+public class AdministradorMenus {
 
 	public static void imprimeTitulo(Menu menu) {
+		String spaceOrigninal = "                              ";
+		LinkedList<String> titulos = new LinkedList<>();
+
+		Menu padre = menu;
+		while ((padre = padre.getPadre()) != null)
+			titulos.add(0, padre.getTitulo());
+
+
 		clearScreen();
 
 		System.out.println();
-		System.out.println("########################################");
+		System.out.println("############################################################");
 		System.out.println();
 
-		Menu padre = menu.getPadre();
-		while (padre != null) {
-
-			String space = "                    ";
-			space = space.substring(0, Math.max(0, 20 - (padre.getTitulo().length() / 2)));
-
-			System.out.println(space + padre.getTitulo());
-
-			padre = padre.getPadre();
+		for (String titulo : titulos) {
+			String space = spaceOrigninal.substring(0, Math.max(0, 30 - (titulo.length() / 2)));
+			System.out.println(space + titulo);
 		}
 
-		String space = "                    ";
-		space = space.substring(0, Math.max(0, 18 - (menu.getTitulo().length() / 2)));
+		String space = spaceOrigninal.substring(0, Math.max(0, 28 - (menu.getTitulo().length() / 2)));
 
 		System.out.println(space + "- " + menu.getTitulo() + " -");
 
 		System.out.println();
-		System.out.println("########################################");
+		System.out.println("############################################################");
 		System.out.println();
 	}
 
@@ -83,7 +85,7 @@ public class MenuManager {
 		System.out.print(mensaje);
 		String line = Menu.scanner.nextLine();
 
-		while (!DataManager.esDatoValido(line, tipoDato)) {
+		while (!AdministradorDatos.esDatoValido(line, tipoDato)) {
 			clearLine();
 			System.out.print(mensaje);
 			line = Menu.scanner.nextLine();
@@ -136,7 +138,7 @@ public class MenuManager {
 		String nif = leerTexto("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
 
 		try {
-			return DataManager.getCliente(nif);
+			return AdministradorDatos.getCliente(nif);
 		} catch (ClienteNoExisteExcepcion e) {
 			System.out.println();
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
@@ -146,7 +148,8 @@ public class MenuManager {
 	}
 
 	public static void esperarParaContinuar() {
-		System.out.print("\nPulsa 'Enter' para continuar...");
+		System.out.println();
+		System.out.print("Pulsa 'Enter' para continuar...");
 		Menu.scanner.nextLine();
 	}
 

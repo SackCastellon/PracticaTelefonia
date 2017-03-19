@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.gui.console.menu;
 
-import es.uji.al341823.telefonia.api.manager.MenuManager;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.clientes.MenuClientes;
 import es.uji.al341823.telefonia.gui.console.menu.facturas.MenuFacturas;
 import es.uji.al341823.telefonia.gui.console.menu.llamadas.MenuLlamadas;
@@ -16,7 +16,7 @@ public class MenuPrincipal extends Menu {
 
 	@Override
 	public void mostrar() {
-		MenuManager.seleccionarOpcion(this);
+		AdministradorMenus.seleccionarOpcion(this);
 	}
 
 	@Override
@@ -26,6 +26,7 @@ public class MenuPrincipal extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new MenuClientes(this), new MenuLlamadas(this), new MenuFacturas(this)};
+		return new Menu[] {new MenuClientes(this), new MenuLlamadas(this),
+				new MenuFacturas(this)};
 	}
 }
