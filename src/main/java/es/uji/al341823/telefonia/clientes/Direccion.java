@@ -69,9 +69,9 @@ public class Direccion implements Serializable {
 	@Override
 	public String toString() {
 		return "Direccion{" +
-				"codigoPostal=" + this.codigoPostal +
-				", provincia='" + this.provincia + '\'' +
-				", poblacion='" + this.poblacion + '\'' +
+				"cp=" + this.codigoPostal +
+				", prov='" + this.provincia + '\'' +
+				", pob='" + this.poblacion + '\'' +
 				'}';
 	}
 }

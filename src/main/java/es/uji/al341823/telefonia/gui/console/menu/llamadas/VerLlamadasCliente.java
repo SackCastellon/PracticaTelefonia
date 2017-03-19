@@ -8,7 +8,8 @@ import es.uji.al341823.telefonia.llamadas.Llamada;
 import java.util.LinkedList;
 
 /**
- * Created by Juanjo on 16/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class VerLlamadasCliente extends Menu {
 	public VerLlamadasCliente(Menu padre) {

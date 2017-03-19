@@ -1,7 +1,8 @@
 package es.uji.al341823.telefonia.api.excepciones;
 
 /**
- * Created by al341819 on 14/03/17.
+ * @author David Agost (al341819)
+ * @since 0.2
  */
 public class ClienteYaExisteExcepcion extends Exception {
 

@@ -47,9 +47,9 @@ public class Particular extends Cliente {
 				"nombre='" + this.getNombre() + '\'' +
 				", apellidos='" + this.apellidos + '\'' +
 				", nif='" + this.getNif() + '\'' +
-				", direccion=" + this.getDireccion() +
+				", dir=" + this.getDireccion() +
 				", email='" + this.getEmail() + '\'' +
-				", fechaAlta=" + this.getFecha() +
+				", alta=" + this.getFecha() +
 				", tarifa=" + this.getTarifa() +
 				'}';
 	}

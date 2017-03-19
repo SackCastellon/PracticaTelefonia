@@ -7,7 +7,8 @@ import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
- * Created by Juanjo on 16/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class RecuperarDatosFactura extends Menu {
 	public RecuperarDatosFactura(Menu padre) {

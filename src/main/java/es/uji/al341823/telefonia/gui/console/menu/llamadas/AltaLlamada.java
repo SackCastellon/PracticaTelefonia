@@ -9,7 +9,10 @@ import es.uji.al341823.telefonia.llamadas.Llamada;
 import java.time.LocalDateTime;
 
 /**
- * Created by Juanjo on 16/03/2017.
+ * Clase del menu para dar de alta una empresa
+ *
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class AltaLlamada extends Menu {
 	public AltaLlamada(Menu padre) {

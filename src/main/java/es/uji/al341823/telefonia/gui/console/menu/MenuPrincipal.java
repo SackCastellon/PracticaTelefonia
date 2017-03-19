@@ -6,7 +6,8 @@ import es.uji.al341823.telefonia.gui.console.menu.facturas.MenuFacturas;
 import es.uji.al341823.telefonia.gui.console.menu.llamadas.MenuLlamadas;
 
 /**
- * Created by Juanjo on 15/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class MenuPrincipal extends Menu {
 

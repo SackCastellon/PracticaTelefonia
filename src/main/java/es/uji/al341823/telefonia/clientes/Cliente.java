@@ -207,9 +207,9 @@ public abstract class Cliente implements IFecha, Serializable {
 		return "Cliente{" +
 				"nombre='" + this.nombre + '\'' +
 				", nif='" + this.nif + '\'' +
-				", direccion=" + this.direccion +
+				", dir=" + this.direccion +
 				", email='" + this.email + '\'' +
-				", fechaAlta=" + this.fechaAlta +
+				", alta=" + this.fechaAlta +
 				", tarifa=" + this.tarifa +
 				'}';
 	}

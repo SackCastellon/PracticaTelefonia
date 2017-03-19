@@ -3,7 +3,8 @@ package es.uji.al341823.telefonia.gui.console.menu;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 
 /**
- * Created by Juanjo on 19/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class GuardarDatos extends Menu {
 	public GuardarDatos(Menu padre) {

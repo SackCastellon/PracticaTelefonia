@@ -6,7 +6,10 @@ import es.uji.al341823.telefonia.facturacion.Tarifa;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
- * Created by Juanjo on 16/03/2017.
+ * Clase del menu para cambiar la tarifa de un cliente
+ *
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class CambiarTarifa extends Menu {
 

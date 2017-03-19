@@ -9,7 +9,10 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 /**
- * Created by Juanjo on 15/03/2017.
+ * Contiene una seria de metodos utiles para los menus
+ *
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class AdministradorMenus {
 
@@ -33,7 +36,8 @@ public class AdministradorMenus {
 			System.out.println(space + titulo);
 		}
 
-		String space = spaceOrigninal.substring(0, Math.max(0, 28 - (menu.getTitulo().length() / 2)));
+		String titulo = menu.getTitulo();
+		String space = spaceOrigninal.substring(0, Math.max(0, 28 - (titulo.length() / 2)));
 
 		System.out.println(space + "- " + menu.getTitulo() + " -");
 

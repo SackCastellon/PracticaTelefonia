@@ -11,7 +11,10 @@ import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import java.time.LocalDateTime;
 
 /**
- * Created by juanjo on 3/16/17.
+ * Clase del menu para dar de alta una empresa
+ *
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class AltaEmpresa extends Menu {
 	public AltaEmpresa(Menu padre) {

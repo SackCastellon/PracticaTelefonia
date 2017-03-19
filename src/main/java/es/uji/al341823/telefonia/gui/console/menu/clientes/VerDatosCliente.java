@@ -5,7 +5,8 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
- * Created by Juanjo on 16/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class VerDatosCliente extends Menu {
 

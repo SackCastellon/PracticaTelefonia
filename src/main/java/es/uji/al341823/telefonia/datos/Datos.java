@@ -7,9 +7,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Created by Juanjo on 18/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class Datos implements Serializable {
+
+	private static final long serialVersionUID = -5886315231049338254L;
 
 	/** Almacena todos los clientes que hay en el momento */
 	public final HashMap<String, Cliente> CLIENTES = new HashMap<>();

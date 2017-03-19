@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
- * Created by juanjo on 3/17/17.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public class ExtraerFacturas extends Menu {
 	public ExtraerFacturas(Menu padre) {

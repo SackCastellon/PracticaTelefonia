@@ -3,7 +3,8 @@ package es.uji.al341823.telefonia.gui.console.menu;
 import java.util.Scanner;
 
 /**
- * Created by Juanjo on 15/03/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.2
  */
 public abstract class Menu {
 
