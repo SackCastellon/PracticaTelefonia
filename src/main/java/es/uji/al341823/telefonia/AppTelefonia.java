@@ -1,6 +1,7 @@
 package es.uji.al341823.telefonia;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
 
@@ -19,12 +20,16 @@ public class AppTelefonia {
 	 */
 	public static void main(String[] args) {
 
+		AdministradorMenus.clearScreen();
 		AdministradorDatos.cargarDatos(ficheroDatos);
+		AdministradorMenus.clearScreen();
 
 		Menu menuPrincipal = new MenuPrincipal(null);
 		menuPrincipal.mostrar();
 
+		AdministradorMenus.clearScreen();
 		AdministradorDatos.guardarDatos(ficheroDatos);
+		AdministradorMenus.clearScreen();
 
 		Menu.scanner.close();
 	}

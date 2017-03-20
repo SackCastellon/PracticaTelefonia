@@ -129,7 +129,7 @@ public class AdministradorDatos {
 	 * @return El conjunto que se ha extraido del conjunto original
 	 */
 	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
-		if (inico.isBefore(fin))
+		if (inico.isAfter(fin))
 			throw new FechaNoValidaExcepcion();
 
 		Collection<T> extraccion = new LinkedList<>();
