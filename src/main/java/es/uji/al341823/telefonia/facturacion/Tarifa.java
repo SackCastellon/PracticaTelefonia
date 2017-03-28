@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Tarifa implements Serializable {
+public abstract class Tarifa implements Serializable {
 
 	private static final long serialVersionUID = 2027121994743403669L;
 	/**
@@ -35,8 +35,8 @@ public class Tarifa implements Serializable {
 		return this.precio;
 	}
 
-	@Override
-	public String toString() {
-		return "Precio=" + this.precio;
-	}
+//	@Override
+//	public String toString() {
+//		return "Precio=" + this.precio;
+//	}
 }
