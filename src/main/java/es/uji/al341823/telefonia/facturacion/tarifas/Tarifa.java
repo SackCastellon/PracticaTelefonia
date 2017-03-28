@@ -1,7 +1,8 @@
 package es.uji.al341823.telefonia.facturacion.tarifas;
 
+import es.uji.al341823.telefonia.llamadas.Llamada;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @author Juanjo González (al341823)
@@ -32,12 +33,11 @@ public abstract class Tarifa implements Serializable {
 	 *
 	 * @return Precio por minuto
 	 */
-	public float getPrecio(LocalDateTime fecha) {
+	public float getPrecio() {
 		return this.precio;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Precio=" + this.precio;
-//	}
+	public float getCosteLlamada(Llamada llamada) {
+		return this.precio * llamada.getDuracionLlamada();
+	}
 }

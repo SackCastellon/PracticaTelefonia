@@ -165,7 +165,7 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return La factura emitida
 	 */
-	public Factura emitirFactura() {
+	public Factura emitirFactura() { //FIXME
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
