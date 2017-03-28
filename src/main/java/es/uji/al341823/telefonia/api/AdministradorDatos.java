@@ -10,7 +10,7 @@ import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 
 import java.io.*;
 import java.time.LocalDateTime;

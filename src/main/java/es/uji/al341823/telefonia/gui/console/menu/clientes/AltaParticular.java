@@ -5,7 +5,7 @@ import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 import java.time.LocalDateTime;

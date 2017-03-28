@@ -4,7 +4,7 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;

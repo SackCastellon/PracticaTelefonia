@@ -3,7 +3,7 @@ package es.uji.al341823.telefonia.clientes;
 import es.uji.al341823.telefonia.api.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.Serializable;

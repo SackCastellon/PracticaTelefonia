@@ -1,6 +1,6 @@
 package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 
 import java.time.LocalDateTime;
 

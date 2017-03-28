@@ -1,4 +1,4 @@
-import es.uji.al341823.telefonia.facturacion.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
