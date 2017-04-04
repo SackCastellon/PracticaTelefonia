@@ -2,7 +2,10 @@ package es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.facturacion.tarifas.*;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaDiasSemana;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaHoras;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**

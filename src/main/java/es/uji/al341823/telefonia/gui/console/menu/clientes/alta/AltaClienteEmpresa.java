@@ -4,8 +4,8 @@ import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
+import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
 import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 import java.time.LocalDateTime;
@@ -34,12 +34,14 @@ public class AltaClienteEmpresa extends Menu {
 		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección: ");
 		String email = AdministradorMenus.leerTexto(" - E-mail: ", EnumTipoDato.EMAIL);
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta: ");
-		//Tarifa tarifa = new Tarifa(AdministradorMenus.leerNumero(" - Tarifa: "));
 
 		System.out.println();
 
+		FabricaClientes fabricaClientes = new FabricaClientes();
+		FabricaTarifas fabricaTarifas = new FabricaTarifas();
+
 		try {
-			AdministradorDatos.altaEmpresa(nombre, nif, direccion, email, fecha, new TarifaBasica(0.15f));
+			AdministradorDatos.altaCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifa(TipoTarifa.BASICA)));
 			System.out.println("Cliente añadido con éxito");
 		} catch (ClienteYaExisteExcepcion e) {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");

@@ -5,12 +5,8 @@ import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.clientes.Empresa;
-import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -36,19 +32,11 @@ public class AdministradorDatos {
 	 *
 	 * @throws ClienteYaExisteExcepcion En caso de que el cliente ya existiese
 	 */
-	private static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
+	public static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
 		if (exixteCliente(cliente.getNif()))
 			throw new ClienteYaExisteExcepcion();
 
 		datos.CLIENTES.put(cliente.getNif(), cliente);
-	}
-
-	public static void altaParticular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
-		altaCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa)); // TODO
-	}
-
-	public static void altaEmpresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fecha, Tarifa tarifa) throws ClienteYaExisteExcepcion {
-		altaCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa)); // TODO
 	}
 
 	/**
