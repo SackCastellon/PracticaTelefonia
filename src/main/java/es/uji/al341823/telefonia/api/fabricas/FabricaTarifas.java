@@ -9,8 +9,14 @@ import es.uji.al341823.telefonia.facturacion.tarifas.TarifaHoras;
  * Created by al341819 on 4/04/17.
  */
 public class FabricaTarifas {
-    public Tarifa getTarifa(TipoTarifa tipo){
-        Tarifa tarifa=new TarifaBasica(0.15f);
+
+    Tarifa tarifa;
+
+    public Tarifa getTarifaBasica(TipoTarifa tipo){
+        return tarifa = new TarifaBasica(0.15f);
+    }
+
+    public Tarifa getTarifaExtra(TipoTarifa tipo){
         switch(tipo){
             case TARDES:
                 tarifa=new TarifaHoras(new TarifaBasica(0.15f),0.05f,16,20);
