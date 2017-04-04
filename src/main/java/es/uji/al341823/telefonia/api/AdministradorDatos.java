@@ -90,7 +90,7 @@ public class AdministradorDatos {
 	}
 
 	/**
-	 * Eite una factura para el cliente especificado
+	 * Emite una factura para el cliente especificado
 	 *
 	 * @param cliente El cliende del cual se emitirá la factura
 	 *
@@ -111,7 +111,7 @@ public class AdministradorDatos {
 	 * @return La factura correspondiente
 	 */
 	public static Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
-		if (!datos.FACTURAS.containsKey(codigo))
+		if ((codigo > datos.FACTURAS.size()) || (datos.FACTURAS.get(codigo) == null))
 			throw new FacturaNoExisteExcepcion();
 
 		return datos.FACTURAS.get(codigo);
@@ -175,19 +175,19 @@ public class AdministradorDatos {
 		try {
 			File fichero = new File(nombreFichero);
 
-			FileInputStream fin = new FileInputStream(fichero);
-			ObjectInputStream oin = new ObjectInputStream(fin);
-			datos = (Datos) oin.readObject();
+			FileInputStream fis = new FileInputStream(fichero);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			datos = (Datos) ois.readObject();
 
 			System.out.println("Datos cargados con éxito");
-
-			AdministradorMenus.esperarParaContinuar();
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
 			System.out.println("Error al cargar datos: No se pudo leer el fichero de datos");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro la clase");
+		} finally {
+			AdministradorMenus.esperarParaContinuar();
 		}
 	}
 
@@ -205,17 +205,17 @@ public class AdministradorDatos {
 			if (fichero.createNewFile())
 				System.out.println("El fichero de datos no existia y se ha creado\n");
 
-			FileOutputStream fin = new FileOutputStream(fichero);
-			ObjectOutputStream oin = new ObjectOutputStream(fin);
-			oin.writeObject(datos);
+			FileOutputStream fos = new FileOutputStream(fichero);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(datos);
 
 			System.out.println("Datos guardados con éxito");
-
-			AdministradorMenus.esperarParaContinuar();
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
 			System.out.println("Error al guardar datos: No se pudo escribir en el fichero de datos");
+		} finally {
+			AdministradorMenus.esperarParaContinuar();
 		}
 	}
 }

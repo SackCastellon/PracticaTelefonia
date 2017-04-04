@@ -5,6 +5,7 @@ import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
@@ -57,7 +58,7 @@ public class AdministradorDatosTest {
 			direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
 			fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60));
 
-			Cliente cliente = new Particular(nombre, generador.getApellido() + ' ' + generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", fecha, new Tarifa(rand.nextFloat()));
+			Cliente cliente = new Particular(nombre, generador.getApellido() + ' ' + generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", fecha, new TarifaBasica(rand.nextFloat()));
 			clientes.add(cliente);
 
 			if (cliente.getFecha().isAfter(fechaInicio) && cliente.getFecha().isBefore(fechaFinal))
@@ -69,7 +70,7 @@ public class AdministradorDatosTest {
 			if (llamada.getFecha().isAfter(fechaInicio) && llamada.getFecha().isBefore(fechaFinal))
 				llamadasExtraidas.add(llamada);
 
-			Factura factura = new Factura(new Tarifa(rand.nextFloat()), fecha, LocalDateTime.of(2021, 12, 28, 2, 32), rand.nextInt());
+			Factura factura = new Factura(new TarifaBasica(rand.nextFloat()), fecha, LocalDateTime.of(2021, 12, 28, 2, 32), rand.nextInt());
 			facturas.add(factura);
 
 			if (factura.getFecha().isAfter(fechaInicio) && factura.getFecha().isBefore(fechaFinal))

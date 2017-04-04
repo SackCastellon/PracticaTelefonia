@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class Factura implements IFecha, Serializable {
 
 	private static final long serialVersionUID = -7711276290283216630L;
+
 	/**
 	 * Se utiliza para obtener el código unico de cada factura
 	 */
@@ -113,7 +114,7 @@ public class Factura implements IFecha, Serializable {
 	@Override
 	public String toString() {
 		return "Factura{" +
-				"codigo=" + this.codigo +
+				"cod=" + this.codigo +
 				", tarifa=" + this.tarifa +
 				", emision=" + this.fechaEmision +
 				", periodo=" + this.periodoFactuacion +

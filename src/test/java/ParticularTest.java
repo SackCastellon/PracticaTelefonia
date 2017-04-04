@@ -3,6 +3,7 @@ import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Assert;
@@ -45,7 +46,7 @@ public class ParticularTest {
 		email = nombre + "@uji.es";
 		fecha = LocalDateTime.now();
 		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
-		tarifa = new Tarifa(rand.nextFloat());
+		tarifa = new TarifaBasica(rand.nextFloat());
 		ultimaFacturacion = LocalDateTime.of(2015, 6, 25, 3, 25);
 
 		String prov = generador.getProvincia();
@@ -92,7 +93,7 @@ public class ParticularTest {
 
 	@Test
 	public void setTarifaTest() {
-		Tarifa tarifaNueva = new Tarifa(rand.nextFloat());
+		Tarifa tarifaNueva = new TarifaBasica(rand.nextFloat());
 		cliente.setTarifa(tarifaNueva);
 		tarifa = tarifaNueva;
 		Assert.assertEquals(tarifaNueva, cliente.getTarifa());

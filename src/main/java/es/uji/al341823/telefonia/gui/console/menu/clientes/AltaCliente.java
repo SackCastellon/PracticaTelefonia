@@ -2,6 +2,8 @@ package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.menu.clientes.alta.AltaClienteParticular;
+import es.uji.al341823.telefonia.gui.console.menu.clientes.alta.AltaClienteEmpresa;
 
 /**
  * Clase del menu para dar de alta a un cliente
@@ -17,7 +19,7 @@ public class AltaCliente extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.seleccionarOpcion(this);
+		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class AltaCliente extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new AltaParticular(this), new AltaEmpresa(this)};
+		return new Menu[] {new AltaClienteParticular(this), new AltaClienteEmpresa(this)};
 	}
 
 }

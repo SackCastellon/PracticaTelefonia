@@ -15,7 +15,7 @@ public class MenuFacturas extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.seleccionarOpcion(this);
+		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
 	@Override

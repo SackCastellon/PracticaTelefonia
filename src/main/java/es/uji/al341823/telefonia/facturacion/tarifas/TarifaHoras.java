@@ -1,19 +1,17 @@
 package es.uji.al341823.telefonia.facturacion.tarifas;
 
 import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalField;
 
 /**
- * Created by al341819 on 28/03/17.
+ * @author Juanjo González (al341823)
+ * @author David Agost (al341819)
+ * @since 0.3
  */
-public class TarifaHoras extends TarifaExtra{
+public class TarifaHoras extends TarifaExtra {
 
+	private static final long serialVersionUID = -4769818361637738499L;
 
-    public TarifaHoras(Tarifa tarifaBase, float precio, int inicioPeriodo, int finPeriodo) {
-        super(tarifaBase, precio, ChronoField.HOUR_OF_DAY, inicioPeriodo, finPeriodo);
-    }
-
-    public TarifaHoras(Tarifa tarifaBase, float precio, int momento) {
-        super(tarifaBase, precio, ChronoField.HOUR_OF_DAY, momento);
-    }
+	public TarifaHoras(Tarifa tarifaBase, float precio, int inicioPeriodo, int finPeriodo) {
+		super(tarifaBase, precio, ChronoField.HOUR_OF_DAY, inicioPeriodo, finPeriodo);
+	}
 }

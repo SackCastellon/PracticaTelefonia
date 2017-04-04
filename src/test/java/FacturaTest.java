@@ -1,6 +1,7 @@
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class FacturaTest {
 		codigoUnico = 0;
 		codigo = codigoUnico++;
 
-		tarifa = new Tarifa(rand.nextFloat());
+		tarifa = new TarifaBasica(rand.nextFloat());
 
 		fechaEmision = LocalDateTime.now();
 		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);

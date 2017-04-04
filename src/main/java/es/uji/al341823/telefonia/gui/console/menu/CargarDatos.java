@@ -9,6 +9,7 @@ import es.uji.al341823.telefonia.api.AdministradorMenus;
  * @since 0.2
  */
 public class CargarDatos extends Menu {
+
 	public CargarDatos(Menu padre) {
 		super(padre);
 	}

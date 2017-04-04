@@ -54,7 +54,7 @@ public class ExtraerLlamadas extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Ver faturas de un cliente emitidas entre dos fechas";
+		return "Ver llamadas de un cliente emitidas entre dos fechas";
 	}
 
 	@Override

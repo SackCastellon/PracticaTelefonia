@@ -1,6 +1,8 @@
 package es.uji.al341823.telefonia.clientes;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IFecha;
+import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
@@ -8,6 +10,7 @@ import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -39,14 +42,12 @@ public abstract class Cliente implements IFecha, Serializable {
 	 * Fecha en la que se dió de alta el cliente
 	 */
 	private final LocalDateTime fechaAlta;
-	/**
-	 * Lista de llamadas que realizó el cliente
-	 */
-	private final LinkedList<Llamada> llamadas = new LinkedList<>();
-	/**
-	 * Lista de facturas correspondientes al cliente
-	 */
-	private final LinkedList<Factura> facturas = new LinkedList<>();
+
+	/** Lista de llamadas que realizó el cliente */
+	private final LinkedList<Llamada> llamadas = new LinkedList<>(); //TODO cambiar para que sea como la facturas
+
+	/** Conjunto de codigos de las facturas correspondientes al cliente */
+	private final HashSet<Integer> codigosFacturas = new HashSet<>();
 	/**
 	 * Tarifa que tiene contratada el cliente
 	 */
@@ -184,17 +185,27 @@ public abstract class Cliente implements IFecha, Serializable {
 
 		this.ultimaFacturacion = hoy;
 
-		this.facturas.add(factura);
+		this.codigosFacturas.add(factura.getCodigo());
 		return factura;
 	}
 
 	/**
-	 * Devuelve una copia de la lista de las facturas del cliente
+	 * Devuelve una copia de la lista de las codigosFacturas del cliente
 	 *
-	 * @return Lista de facturas
+	 * @return Lista de codigosFacturas - Vacia si no hay facturas
 	 */
 	public LinkedList<Factura> getFacturas() {
-		return new LinkedList<>(this.facturas);
+		LinkedList<Factura> facturas = new LinkedList<>();
+
+		for (int codigo : this.codigosFacturas) {
+			try {
+				facturas.add(AdministradorDatos.getFactura(codigo));
+			} catch (FacturaNoExisteExcepcion facturaNoExisteExcepcion) {
+				System.out.println("Hay un problema de coerencia en la lista de facturas.");
+			}
+		}
+
+		return facturas;
 	}
 
 	/**

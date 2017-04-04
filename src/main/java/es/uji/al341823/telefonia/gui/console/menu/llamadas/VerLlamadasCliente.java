@@ -42,6 +42,6 @@ public class VerLlamadasCliente extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return null;
+		return new Menu[0];
 	}
 }

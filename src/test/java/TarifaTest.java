@@ -1,4 +1,5 @@
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class TarifaTest {
 		rand = new Random();
 		precio = rand.nextFloat();
 
-		tarifa = new Tarifa(precio);
+		tarifa = new TarifaBasica(precio);
 	}
 
 	@Test

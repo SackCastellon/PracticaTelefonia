@@ -7,6 +7,7 @@ import es.uji.al341823.telefonia.api.AdministradorMenus;
  * @since 0.2
  */
 public class GuardarDatos extends Menu {
+
 	public GuardarDatos(Menu padre) {
 		super(padre);
 	}

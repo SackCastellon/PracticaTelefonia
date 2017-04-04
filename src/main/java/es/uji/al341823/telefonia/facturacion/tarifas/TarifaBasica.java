@@ -1,11 +1,20 @@
 package es.uji.al341823.telefonia.facturacion.tarifas;
 
 /**
- * Created by Juanjo on 28/03/2017.
+ * @author Juanjo González (al341823)
+ * @author David Agost (al341819)
+ * @since 0.3
  */
 public class TarifaBasica extends Tarifa {
 
-	public TarifaBasica() {
-		super(0.15f);
+	private static final long serialVersionUID = 2220349570647412451L;
+
+	public TarifaBasica(float precio) {
+		super(precio);
+	}
+
+	@Override
+	public String getDescripcion() {
+		return "Tarifa Basica " + this.getPrecio() + " €/min";
 	}
 }

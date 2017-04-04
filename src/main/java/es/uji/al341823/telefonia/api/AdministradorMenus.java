@@ -46,7 +46,7 @@ public class AdministradorMenus {
 		System.out.println();
 	}
 
-	public static void seleccionarOpcion(Menu menu) {
+	public static void seleccionarSubmenu(Menu menu) {
 		while (true) {
 			imprimeTitulo(menu);
 
@@ -79,6 +79,24 @@ public class AdministradorMenus {
 					break;
 				}
 
+				clearLine();
+			}
+		}
+	}
+
+	public static <T extends IDescripcion> T seleccionarOpciones(T[] opciones) {
+		System.out.println("Elige una opción:");
+
+		for (int i = 0; i < opciones.length; i++)
+			System.out.printf("  %d - %s\n", i, opciones[i].getDescripcion());
+
+		while (true) {
+			System.out.print("> ");
+
+			try {
+				int seleccion = Integer.parseInt(Menu.scanner.nextLine());
+				return opciones[seleccion];
+			} catch (Exception e) {
 				clearLine();
 			}
 		}
@@ -125,13 +143,11 @@ public class AdministradorMenus {
 		LocalDateTime date = null;
 
 		while (date == null) {
-			try {
-				String line = leerTexto(mensaje, EnumTipoDato.FECHA);
-				if ("hoy".equalsIgnoreCase(line)) date = LocalDateTime.now();
-				else date = LocalDateTime.parse(line.replace(' ', 'T'));
-			} catch (Exception e) {
-				date = null;
-			}
+
+			String line = leerTexto(mensaje, EnumTipoDato.FECHA);
+
+			if ("hoy".equalsIgnoreCase(line)) date = LocalDateTime.now();
+			else date = LocalDateTime.parse(line.replace(' ', 'T'));
 		}
 
 		return date;
