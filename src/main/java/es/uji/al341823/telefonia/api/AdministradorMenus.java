@@ -116,13 +116,6 @@ public class AdministradorMenus {
 		return line;
 	}
 
-	public static float leerNumero(String mensaje) {
-
-		String line = leerTexto(mensaje, EnumTipoDato.NUMERO);
-
-		return Float.parseFloat(line);
-	}
-
 	public static int leerEntero(String mensaje) {
 
 		String line = leerTexto(mensaje, EnumTipoDato.ENTERO);

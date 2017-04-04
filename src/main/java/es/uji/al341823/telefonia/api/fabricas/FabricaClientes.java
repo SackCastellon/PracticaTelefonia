@@ -9,7 +9,9 @@ import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import java.time.LocalDateTime;
 
 /**
- * Created by Juanjo on 04/04/2017.
+ * @author Juanjo González (al341823)
+ * @author David Agost (al341819)
+ * @since 0.3
  */
 public class FabricaClientes {
 

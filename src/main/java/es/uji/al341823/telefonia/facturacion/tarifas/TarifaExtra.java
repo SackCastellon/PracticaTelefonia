@@ -33,18 +33,6 @@ public abstract class TarifaExtra extends Tarifa {
 		this(tarifaBase, precio, unidadMomento, momento, momento);
 	}
 
-	public Tarifa getTarifaBase() {
-		return this.tarifaBase;
-	}
-
-	public int getInicioPeriodo() {
-		return this.inicioPeriodo;
-	}
-
-	public int getFinPeriodo() {
-		return this.finPeriodo;
-	}
-
 	@Override
 	public float getCosteLlamada(Llamada llamada) {
 		float costeBase = this.tarifaBase.getCosteLlamada(llamada);
@@ -64,13 +52,13 @@ public abstract class TarifaExtra extends Tarifa {
 
 	@Override
 	public String getDescripcion() {
-		if (this.getInicioPeriodo() == this.getFinPeriodo())
+		if (this.inicioPeriodo == this.finPeriodo)
 			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
-					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.getInicioPeriodo());
+					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo);
 		else
 			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
-					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.getInicioPeriodo(),
-					this.getFinPeriodo());
+					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo,
+					this.finPeriodo);
 	}
 
 	@Override
