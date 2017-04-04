@@ -5,6 +5,8 @@ import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
+import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
+import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
@@ -42,7 +44,7 @@ public class AltaClienteParticular extends Menu {
 		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
 		try {
-			AdministradorDatos.altaCliente(fabricaClientes.getParticular(nombre, apellidos, nif, direccion, email, fecha, fabricaTarifas.getTarifa(TipoTarifa.BASICA)));
+			AdministradorDatos.altaCliente(fabricaClientes.getParticular(nombre, apellidos, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
 			System.out.println("Cliente añadido con éxito");
 		} catch (ClienteYaExisteExcepcion e) {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");

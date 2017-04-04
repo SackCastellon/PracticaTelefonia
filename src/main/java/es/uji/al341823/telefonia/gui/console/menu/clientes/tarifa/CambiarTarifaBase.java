@@ -1,9 +1,10 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
+import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
-import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
@@ -24,7 +25,10 @@ public class CambiarTarifaBase extends Menu {
 
 		if (cliente == null) return;
 
-		Tarifa[] tarifasBase = {new TarifaBasica(0.15f)}; // FIXME Arreglar cuando se implemente la interfaz gráfica
+		FabricaTarifas fabricaTarifas = new FabricaTarifas();
+
+		Tarifa[] tarifasBase = {
+				fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)};
 
 		Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasBase);
 

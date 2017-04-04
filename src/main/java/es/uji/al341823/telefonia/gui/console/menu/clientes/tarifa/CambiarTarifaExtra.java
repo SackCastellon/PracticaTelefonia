@@ -1,11 +1,11 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
+import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
-import es.uji.al341823.telefonia.facturacion.tarifas.TarifaDiasSemana;
 import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
-import es.uji.al341823.telefonia.facturacion.tarifas.TarifaHoras;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
@@ -27,10 +27,11 @@ public class CambiarTarifaExtra extends Menu {
 		if (cliente == null) return;
 
 		Tarifa tarifaBase = cliente.getTarifa();
+		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
 		TarifaExtra[] tarifasExtra = {
-				new TarifaHoras(tarifaBase, 0.05f, 17, 20),
-				new TarifaDiasSemana(tarifaBase, 0, 7)}; // FIXME Arreglar cuando se implemente la interfaz gráfica
+				fabricaTarifas.getTarifaExtra(tarifaBase, TipoTarifa.Extra.TARDES),
+				fabricaTarifas.getTarifaExtra(tarifaBase, TipoTarifa.Extra.DOMINGOS)};
 
 		Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasExtra);
 
