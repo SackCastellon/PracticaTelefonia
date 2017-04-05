@@ -32,10 +32,10 @@ public class AltaClienteEmpresa extends Menu {
 		System.out.println();
 
 		String nombre = AdministradorMenus.leerTexto(" - Nombre: ", EnumTipoDato.TEXTO);
-		String nif = AdministradorMenus.leerTexto(" - NIF: ", EnumTipoDato.NIF);
-		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección: ");
+		String nif = AdministradorMenus.leerTexto(" - NIF: ", EnumTipoDato.NIF_EMPRESA);
+		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección (CP, Provincia, Problación): ");
 		String email = AdministradorMenus.leerTexto(" - E-mail: ", EnumTipoDato.EMAIL);
-		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta: ");
+		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		System.out.println();
 

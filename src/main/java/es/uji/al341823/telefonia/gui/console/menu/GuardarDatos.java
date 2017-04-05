@@ -1,6 +1,8 @@
 package es.uji.al341823.telefonia.gui.console.menu;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.api.EnumTipoDato;
 
 /**
  * @author Juanjo González (al341823)
@@ -16,7 +18,9 @@ public class GuardarDatos extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		System.out.println("Esta funcionalidad no se implementado todavia");
+		String ruta = AdministradorMenus.leerTexto("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO);
+
+		AdministradorDatos.guardarDatos(ruta);
 
 		AdministradorMenus.esperarParaContinuar();
 	}

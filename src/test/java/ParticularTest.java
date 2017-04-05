@@ -1,3 +1,4 @@
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
@@ -119,7 +120,7 @@ public class ParticularTest {
 		Assert.assertArrayEquals(llamadas.toArray(), cliente.getLlamadas().toArray());
 	}
 
-	@Test
+	//@Test
 	public void emitirFacturaTest() throws FechaNoValidaExcepcion {
 		for (int i = 0; i < 100; i++) {
 			Factura factura = new Factura(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);

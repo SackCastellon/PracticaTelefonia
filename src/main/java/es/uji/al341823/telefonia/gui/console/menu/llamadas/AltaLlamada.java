@@ -31,7 +31,7 @@ public class AltaLlamada extends Menu {
 
 		String origen = AdministradorMenus.leerTexto(" - Numero de origen: ", EnumTipoDato.TELEFONO);
 		String destino = AdministradorMenus.leerTexto(" - Numero de destino: ", EnumTipoDato.TELEFONO);
-		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de la llamada: ");
+		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de la llamada (AAAA-MM-DD hh:mm:ss | hoy): ");
 		int duracion = AdministradorMenus.leerEntero(" - Duracion de la llamada en segundos: ");
 
 		Llamada llamada = new Llamada(origen, destino, fecha, duracion);

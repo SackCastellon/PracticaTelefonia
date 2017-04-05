@@ -39,7 +39,7 @@ public class AdministradorMenus {
 		String titulo = menu.getTitulo();
 		String space = spaceOrigninal.substring(0, Math.max(0, 28 - (titulo.length() / 2)));
 
-		System.out.println(space + "- " + menu.getTitulo() + " -");
+		System.out.println(space + "- " + titulo + " -");
 
 		System.out.println();
 		System.out.println("############################################################");

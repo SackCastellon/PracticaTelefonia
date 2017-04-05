@@ -27,8 +27,8 @@ public class ExtraerLlamadas extends Menu {
 
 		if (cliente == null) return;
 
-		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio: ");
-		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin: ");
+		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		Collection<Llamada> llamadas;
 

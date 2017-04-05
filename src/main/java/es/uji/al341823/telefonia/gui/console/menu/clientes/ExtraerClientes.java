@@ -22,8 +22,8 @@ public class ExtraerClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio: ");
-		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin: ");
+		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		Collection<Cliente> clientes;
 

@@ -26,7 +26,7 @@ public class VerLlamadasCliente extends Menu {
 
 		LinkedList<Llamada> llamadas = cliente.getLlamadas();
 
-		System.out.println("Se han emitido un total de " + llamadas.size() + " facturas para este cliente:");
+		System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
 
 		for (Llamada llamada : llamadas) {
 			System.out.println(" - " + llamada);

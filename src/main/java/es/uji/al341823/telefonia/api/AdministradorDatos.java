@@ -174,8 +174,6 @@ public class AdministradorDatos {
 			System.out.println("Error al cargar datos: No se pudo leer el fichero de datos");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro la clase");
-		} finally {
-			AdministradorMenus.esperarParaContinuar();
 		}
 	}
 
@@ -202,8 +200,6 @@ public class AdministradorDatos {
 			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
 			System.out.println("Error al guardar datos: No se pudo escribir en el fichero de datos");
-		} finally {
-			AdministradorMenus.esperarParaContinuar();
 		}
 	}
 }

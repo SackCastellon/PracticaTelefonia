@@ -2,6 +2,8 @@ package es.uji.al341823.telefonia;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.gui.console.menu.CargarDatos;
+import es.uji.al341823.telefonia.gui.console.menu.GuardarDatos;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
 
@@ -11,8 +13,6 @@ import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
  */
 public class AppTelefonia {
 
-	private static final String ficheroDatos = "Telefonia.data";
-
 	/**
 	 * Metodo main, primer metodo que se llama la ejecutar el programa
 	 *
@@ -21,14 +21,13 @@ public class AppTelefonia {
 	public static void main(String[] args) {
 
 		AdministradorMenus.clearScreen();
-		AdministradorDatos.cargarDatos(ficheroDatos);
-		AdministradorMenus.clearScreen();
 
-		Menu menuPrincipal = new MenuPrincipal(null);
-		menuPrincipal.mostrar();
+		Menu menuCargar = new CargarDatos(null);
+		menuCargar.mostrar();
 
-		AdministradorMenus.clearScreen();
-		AdministradorDatos.guardarDatos(ficheroDatos);
+		Menu menuGuardar = new GuardarDatos(null);
+		menuGuardar.mostrar();
+
 		AdministradorMenus.clearScreen();
 
 		Menu.scanner.close();
