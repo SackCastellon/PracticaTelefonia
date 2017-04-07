@@ -12,22 +12,21 @@ import java.time.LocalDateTime;
 public class Particular extends Cliente {
 
 	private static final long serialVersionUID = 6968740004850893790L;
-	/**
-	 * Los apellidos del cliente
-	 */
+
+	/** Los apellidos del cliente */
 	private final String apellidos;
 
 	/**
-	 * @param nombre    Nombre del particular
-	 * @param apellidos Apellidos del particular
-	 * @param nif       NIF del particulas
-	 * @param direccion Dirección del particular
-	 * @param email     Email del particular
-	 * @param fechaAlta Fecha de alta del particular
-	 * @param tarifa    Tarifa contratada por el particular
+	 * @param nombre     Nombre del particular
+	 * @param apellidos  Apellidos del particular
+	 * @param nif        NIF del particulas
+	 * @param direccion  Dirección del particular
+	 * @param email      Email del particular
+	 * @param fechaAlta  Fecha de alta del particular
+	 * @param tarifaBase Tarifa contratada por el particular
 	 */
-	public Particular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifa) {
-		super(nombre, nif, direccion, email, fechaAlta, tarifa);
+	public Particular(String nombre, String apellidos, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifaBase) {
+		super(nombre, nif, direccion, email, fechaAlta, tarifaBase);
 
 		this.apellidos = apellidos;
 	}
@@ -41,6 +40,11 @@ public class Particular extends Cliente {
 		return this.apellidos;
 	}
 
+	/**
+	 * Devuelve toda la información del cliente particular
+	 *
+	 * @return Información del cliente particular
+	 */
 	@Override
 	public String toString() {
 		return "Cliente{" +

@@ -8,6 +8,5 @@ import java.time.LocalDateTime;
  * @since 0.1
  */
 public interface IFecha {
-
 	LocalDateTime getFecha();
 }

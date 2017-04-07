@@ -22,7 +22,7 @@ public class BajaCliente extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerTexto("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
+		String nif = AdministradorMenus.leerDato("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
 
 		System.out.println();
 

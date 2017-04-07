@@ -1,6 +1,5 @@
 package es.uji.al341823.telefonia.gui.console.menu.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 import es.uji.al341823.telefonia.gui.console.menu.clientes.alta.AltaClienteEmpresa;
 import es.uji.al341823.telefonia.gui.console.menu.clientes.alta.AltaClienteParticular;
@@ -15,11 +14,6 @@ public class AltaCliente extends Menu {
 
 	public AltaCliente(Menu padre) {
 		super(padre);
-	}
-
-	@Override
-	public void mostrar() {
-		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
 	@Override

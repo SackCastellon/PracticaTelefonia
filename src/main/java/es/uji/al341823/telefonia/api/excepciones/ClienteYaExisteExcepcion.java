@@ -8,6 +8,9 @@ public class ClienteYaExisteExcepcion extends Exception {
 
 	private static final long serialVersionUID = -8279809112246865806L;
 
+	/**
+	 * Excepción que se lanza cuando se intenta, normalmente añadir, un cliente que ya existe
+	 */
 	public ClienteYaExisteExcepcion() {
 		super("Cliente ya existe");
 	}

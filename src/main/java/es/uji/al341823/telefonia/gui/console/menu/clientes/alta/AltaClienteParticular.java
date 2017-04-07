@@ -31,11 +31,11 @@ public class AltaClienteParticular extends Menu {
 
 		System.out.println();
 
-		String nombre = AdministradorMenus.leerTexto(" - Nombre: ", EnumTipoDato.TEXTO);
-		String apellidos = AdministradorMenus.leerTexto(" - Apellidos: ", EnumTipoDato.TEXTO);
-		String nif = AdministradorMenus.leerTexto(" - NIF: ", EnumTipoDato.NIF);
+		String nombre = AdministradorMenus.leerDato(" - Nombre: ", EnumTipoDato.TEXTO);
+		String apellidos = AdministradorMenus.leerDato(" - Apellidos: ", EnumTipoDato.TEXTO);
+		String nif = AdministradorMenus.leerDato(" - NIF: ", EnumTipoDato.NIF);
 		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección (CP, Provincia, Problación): ");
-		String email = AdministradorMenus.leerTexto(" - E-mail: ", EnumTipoDato.EMAIL);
+		String email = AdministradorMenus.leerDato(" - E-mail: ", EnumTipoDato.EMAIL);
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		System.out.println();

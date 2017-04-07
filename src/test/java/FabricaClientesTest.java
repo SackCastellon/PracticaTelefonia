@@ -17,46 +17,50 @@ import java.util.Random;
  */
 public class FabricaClientesTest {
 
-    private static Random rand;
-    private static FabricaClientes fabricaClientes;
-    private static String nombre;
-    private static String apellidos;
-    private static String NIF;
-    private static Direccion direccion;
-    private static String email;
-    private static LocalDateTime fecha;
-    private static Tarifa tarifa;
-    private static Particular particular;
-    private static Empresa empresa;
+	private static Random rand;
+	private static FabricaClientes fabricaClientes;
+	private static String nombre;
+	private static String apellidos;
+	private static String NIF;
+	private static Direccion direccion;
+	private static String email;
+	private static LocalDateTime fecha;
+	private static Tarifa tarifa;
+	private static Particular particular;
+	private static Empresa empresa;
 
-    @BeforeClass
-    public static void first() {
-        GeneradorDatosINE generador = new GeneradorDatosINE();
-        rand = new Random();
+	@BeforeClass
+	public static void first() {
+		GeneradorDatosINE generador = new GeneradorDatosINE();
+		rand = new Random();
 
-        fabricaClientes=new FabricaClientes();
+		fabricaClientes = new FabricaClientes();
 
-        nombre = generador.getNombre();
-        apellidos = generador.getApellido() + ' ' + generador.getApellido();
-        NIF = generador.getNIF();
+		nombre = generador.getNombre();
+		apellidos = generador.getApellido() + ' ' + generador.getApellido();
+		NIF = generador.getNIF();
 
-        String prov = generador.getProvincia();
-        direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
+		String prov = generador.getProvincia();
+		direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
 
-        email = nombre + "@uji.es";
-        fecha = LocalDateTime.now();
-        tarifa = new TarifaBasica(rand.nextFloat());
+		email = nombre + "@uji.es";
+		fecha = LocalDateTime.now();
+		tarifa = new TarifaBasica(rand.nextFloat());
 
-        particular = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
+		particular = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
 
-        empresa = new Empresa(nombre, NIF, direccion, email, fecha, tarifa);
-    }
+		empresa = new Empresa(nombre, NIF, direccion, email, fecha, tarifa);
+	}
 
-    @Test
-    public void getParticularTest(){ Assert.assertEquals(particular, fabricaClientes.getParticular(nombre, apellidos, NIF, direccion, email, fecha, tarifa)); }
+	@Test
+	public void getParticularTest() {
+		Assert.assertEquals(particular, fabricaClientes.getParticular(nombre, apellidos, NIF, direccion, email, fecha, tarifa));
+	}
 
-    @Test
-    public void getEmpresaTest(){ Assert.assertEquals(empresa, fabricaClientes.getEmpresa(nombre, NIF, direccion, email, fecha, tarifa)); }
+	@Test
+	public void getEmpresaTest() {
+		Assert.assertEquals(empresa, fabricaClientes.getEmpresa(nombre, NIF, direccion, email, fecha, tarifa));
+	}
 
 
 }

@@ -12,6 +12,6 @@ public class TarifaDiasSemana extends TarifaExtra {
 	private static final long serialVersionUID = 8531742493015708355L;
 
 	public TarifaDiasSemana(Tarifa tarifaBase, float precio, int momento) {
-		super(tarifaBase, precio, ChronoField.DAY_OF_WEEK, momento);
+		super(tarifaBase, precio, ChronoField.DAY_OF_WEEK, momento, momento);
 	}
 }

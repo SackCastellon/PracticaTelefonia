@@ -50,6 +50,11 @@ public abstract class Tarifa implements Serializable, IDescripcion {
 		return this.precio * llamada.getDuracionLlamada();
 	}
 
+	/**
+	 * Devuelve toda la información de la tarifa
+	 *
+	 * @return Información de la tarifa
+	 */
 	@Override
 	public String toString() {
 		return "Tarifa{" +

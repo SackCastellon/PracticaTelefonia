@@ -13,21 +13,14 @@ import java.time.LocalDateTime;
 public class Llamada implements IFecha, Serializable {
 
 	private static final long serialVersionUID = -5491839185929563564L;
-	/**
-	 * Numero desde el que se ha realizado la llamada
-	 */
+
+	/** Numero desde el que se ha realizado la llamada */
 	private final String numeroOrigen;
-	/**
-	 * Numero al que se ha realizado la llamada
-	 */
+	/** Numero al que se ha realizado la llamada */
 	private final String numeroDestino;
-	/**
-	 * Fecha y hora a la que se realizó la llamada
-	 */
+	/** Fecha y hora a la que se realizó la llamada */
 	private final LocalDateTime fechaLlamada;
-	/**
-	 * Duración de la llamada en segundos
-	 */
+	/** Duración de la llamada en segundos */
 	private final int duracionLlamada;
 
 	/**
@@ -84,6 +77,11 @@ public class Llamada implements IFecha, Serializable {
 		return this.fechaLlamada;
 	}
 
+	/**
+	 * Devuelve toda la información de la llamada
+	 *
+	 * @return Información de la llamada
+	 */
 	@Override
 	public String toString() {
 		return "Llamada{" +

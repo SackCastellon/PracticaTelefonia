@@ -29,10 +29,6 @@ public abstract class TarifaExtra extends Tarifa {
 		this.finPeriodo = finPeriodo;
 	}
 
-	TarifaExtra(Tarifa tarifaBase, float precio, TemporalField unidadMomento, int momento) {
-		this(tarifaBase, precio, unidadMomento, momento, momento);
-	}
-
 	@Override
 	public float getCosteLlamada(Llamada llamada) {
 		float costeBase = this.tarifaBase.getCosteLlamada(llamada);

@@ -16,6 +16,16 @@ import java.util.LinkedList;
  */
 public class AdministradorMenus {
 
+	/**
+	 * Imprime el titulo del menú indicado, mostrando tambien los titulos de sus menús padre de forma recursiva.
+	 * <ol>
+	 * <li>Limpia la pantalla</li>
+	 * <li>Muestra al jerarquia de menús hasta el actual</li>
+	 * <li>Muestra el titulo del menú actual</li>
+	 * </ol>
+	 *
+	 * @param menu El menú actual
+	 */
 	public static void imprimeTitulo(Menu menu) {
 		String spaceOrigninal = "                              ";
 		LinkedList<String> titulos = new LinkedList<>();
@@ -23,7 +33,6 @@ public class AdministradorMenus {
 		Menu padre = menu;
 		while ((padre = padre.getPadre()) != null)
 			titulos.add(0, padre.getTitulo());
-
 
 		clearScreen();
 
@@ -46,10 +55,14 @@ public class AdministradorMenus {
 		System.out.println();
 	}
 
-	public static void seleccionarSubmenu(Menu menu) {
+	/**
+	 * Muestra una lista con los submenún del menú actual, y una opcion para volver al menu anterior (o salir de
+	 * programa en su defecto), y espera a que se selecione uno que posteriormente se mostrará en pantalla
+	 *
+	 * @param menu El menú actual
+	 */
+	public static void seleccionarSubmenu(Menu menu) { // TODO Actualizar para que use seleccionarOpciones()
 		while (true) {
-			imprimeTitulo(menu);
-
 			System.out.println("Elige una opción:");
 
 			for (int i = 1; i <= menu.getSubmenus().length; i++)
@@ -84,6 +97,14 @@ public class AdministradorMenus {
 		}
 	}
 
+	/**
+	 * Muestra una lista con las opciones especificadas y espera a que se selecione una
+	 *
+	 * @param opciones Las opciones a seleccionar
+	 * @param <T>      Un conjunto de opciones que implementen la interfaz IDescricion
+	 *
+	 * @return La opción seleccionada
+	 */
 	public static <T extends IDescripcion> T seleccionarOpciones(T[] opciones) {
 		System.out.println("Elige una opción:");
 
@@ -102,7 +123,16 @@ public class AdministradorMenus {
 		}
 	}
 
-	public static String leerTexto(String mensaje, EnumTipoDato tipoDato) {
+	/**
+	 * Muestra el mensaje indicado y espera a que el usuario introduzca un dato del tipo indicado
+	 * Solo debuelve el dato intoducido cuando este dato es del tipo indicado y valido
+	 *
+	 * @param mensaje  En mensaje a mostrar
+	 * @param tipoDato El tipo del dato a introducit
+	 *
+	 * @return El dato introducido
+	 */
+	public static String leerDato(String mensaje, EnumTipoDato tipoDato) {
 
 		System.out.print(mensaje);
 		String line = Menu.scanner.nextLine();
@@ -116,28 +146,56 @@ public class AdministradorMenus {
 		return line;
 	}
 
+	/**
+	 * Muestra el mensaje indicado y espera a que el usuario introduzca un entero
+	 *
+	 * @param mensaje En mensaje a mostrar
+	 *
+	 * @return El entero introducido
+	 *
+	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 */
 	public static int leerEntero(String mensaje) {
 
-		String line = leerTexto(mensaje, EnumTipoDato.ENTERO);
+		String line = leerDato(mensaje, EnumTipoDato.ENTERO);
 
 		return Integer.parseInt(line);
 	}
 
+	/**
+	 * Muestra el mensaje indicado y espera a que el usuario introduzca una direccion
+	 *
+	 * @param mensaje En mensaje a mostrar
+	 *
+	 * @return La {@link Direccion} introducida
+	 *
+	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 */
 	public static Direccion leerDireccion(String mensaje) {
 
-		String line = leerTexto(mensaje, EnumTipoDato.DIRECCION);
+		String line = leerDato(mensaje, EnumTipoDato.DIRECCION);
 		String[] direccion = line.split(", ");
 
 		return new Direccion(Integer.parseInt(direccion[0]), direccion[1], direccion[2]);
 	}
 
+	/**
+	 * Muestra el mensaje indicado y espera a que el usuario introduzca una fecha con formato '{@code AAAA-MM-DD
+	 * hh:mm:ss}' o la cadena '{@code hoy}'
+	 *
+	 * @param mensaje En mensaje a mostrar
+	 *
+	 * @return La fecha introducida ({@link LocalDateTime})
+	 *
+	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 */
 	public static LocalDateTime leerFecha(String mensaje) {
 
 		LocalDateTime date = null;
 
 		while (date == null) {
 
-			String line = leerTexto(mensaje, EnumTipoDato.FECHA);
+			String line = leerDato(mensaje, EnumTipoDato.FECHA);
 
 			if ("hoy".equalsIgnoreCase(line)) date = LocalDateTime.now();
 			else date = LocalDateTime.parse(line.replace(' ', 'T'));
@@ -146,9 +204,17 @@ public class AdministradorMenus {
 		return date;
 	}
 
+	/**
+	 * Espera a que el usuario introduzca el NIF de un cliente
+	 *
+	 * @return El cliente correspondiente al NIF introducido, {@code null} ni el NIF no corresponde a ningún
+	 * cliente
+	 *
+	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 */
 	public static Cliente leerClienteNIF() {
 
-		String nif = leerTexto("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
+		String nif = leerDato("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
 
 		try {
 			return AdministradorDatos.getCliente(nif);
@@ -160,16 +226,26 @@ public class AdministradorMenus {
 		}
 	}
 
+	/**
+	 * Muestra el mensaje {@code Pulsa 'Enter' para continuar...} y espera a que el usuario pulse
+	 * {@code Enter}
+	 */
 	public static void esperarParaContinuar() {
 		System.out.println();
 		System.out.print("Pulsa 'Enter' para continuar...");
 		Menu.scanner.nextLine();
 	}
 
+	/**
+	 * Limpia toda la pantalla de la consola y posiciona el cursor en la esquina superior izquierda
+	 */
 	public static void clearScreen() {
 		System.out.print("\033[2J\033[H");
 	}
 
+	/**
+	 * Borra la linea anterior y posiciona el cursor al principio de esa linea
+	 */
 	public static void clearLine() {
 		System.out.print("\033[F\033[J");
 	}

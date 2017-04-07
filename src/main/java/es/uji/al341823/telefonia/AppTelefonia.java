@@ -1,10 +1,9 @@
 package es.uji.al341823.telefonia;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.gui.console.menu.CargarDatos;
-import es.uji.al341823.telefonia.gui.console.menu.GuardarDatos;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.menu.MenuCargarDatos;
+import es.uji.al341823.telefonia.gui.console.menu.MenuGuardarDatos;
 import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
 
 /**
@@ -22,10 +21,13 @@ public class AppTelefonia {
 
 		AdministradorMenus.clearScreen();
 
-		Menu menuCargar = new CargarDatos(null);
+		Menu menuCargar = new MenuCargarDatos(null);
 		menuCargar.mostrar();
 
-		Menu menuGuardar = new GuardarDatos(null);
+		Menu menuPrincipal = new MenuPrincipal(null);
+		menuPrincipal.mostrar();
+
+		Menu menuGuardar = new MenuGuardarDatos(null);
 		menuGuardar.mostrar();
 
 		AdministradorMenus.clearScreen();

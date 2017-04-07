@@ -1,0 +1,15 @@
+es.uji.al341823.telefonia
+es.uji.al341823.telefonia.api
+es.uji.al341823.telefonia.api.excepciones
+es.uji.al341823.telefonia.api.fabricas
+es.uji.al341823.telefonia.clientes
+es.uji.al341823.telefonia.datos
+es.uji.al341823.telefonia.facturacion
+es.uji.al341823.telefonia.facturacion.tarifas
+es.uji.al341823.telefonia.gui.console.menu
+es.uji.al341823.telefonia.gui.console.menu.clientes
+es.uji.al341823.telefonia.gui.console.menu.clientes.alta
+es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa
+es.uji.al341823.telefonia.gui.console.menu.facturas
+es.uji.al341823.telefonia.gui.console.menu.llamadas
+es.uji.al341823.telefonia.llamadas

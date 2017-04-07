@@ -17,30 +17,18 @@ public class Factura implements IFecha, Serializable {
 
 	private static final long serialVersionUID = -7711276290283216630L;
 
-	/**
-	 * Se utiliza para obtener el código unico de cada factura
-	 */
+	/** Se utiliza para obtener el código unico de cada factura */
 	private static int codigoUnico;
 
-	/**
-	 * Codigo identificativo unico de la factura
-	 */
+	/** Codigo identificativo unico de la factura */
 	private final int codigo;
-	/**
-	 * La tarifa usada para calcular la factura
-	 */
+	/** La tarifa usada para calcular la factura */
 	private final Tarifa tarifa;
-	/**
-	 * Fecha en la que se emitió la factura
-	 */
+	/** Fecha en la que se emitió la factura */
 	private final LocalDateTime fechaEmision;
-	/**
-	 * Periodo de tiempo que comprende la factura en dias
-	 */
+	/** Periodo de tiempo que comprende la factura en dias */
 	private final long periodoFactuacion;
-	/**
-	 * Importe total de la factura calculado en euros (€)
-	 */
+	/** Importe total de la factura calculado en euros (€) */
 	private final float importe;
 
 	/**
@@ -50,6 +38,8 @@ public class Factura implements IFecha, Serializable {
 	 * @param fechaUltimaEmision La fecha de emisión de la ultima fsctura
 	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
 	 * @param duracionLlamadas   La duración total en segundos de las llamadas
+	 *
+	 * @throws FechaNoValidaExcepcion Si la fecha de emision es anterior a la fecha de la última emisión
 	 */
 	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
 		super();
@@ -111,6 +101,11 @@ public class Factura implements IFecha, Serializable {
 		return this.fechaEmision;
 	}
 
+	/**
+	 * Devuelve toda la información de la factura
+	 *
+	 * @return Información de la factura
+	 */
 	@Override
 	public String toString() {
 		return "Factura{" +

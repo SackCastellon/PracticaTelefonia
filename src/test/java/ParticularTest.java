@@ -1,4 +1,3 @@
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;

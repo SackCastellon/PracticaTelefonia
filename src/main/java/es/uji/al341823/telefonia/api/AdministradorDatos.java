@@ -60,6 +60,8 @@ public class AdministradorDatos {
 	 * @param nif NIF del cliente
 	 *
 	 * @return El cliente con ese NIF
+	 *
+	 * @throws ClienteNoExisteExcepcion En caso de que el NIF no corresponda a ningún cliente
 	 */
 	public static Cliente getCliente(String nif) throws ClienteNoExisteExcepcion {
 		if (!exixteCliente(nif))
@@ -82,7 +84,7 @@ public class AdministradorDatos {
 	 *
 	 * @param cliente El cliende del cual se emitirá la factura
 	 *
-	 * @return La factura emitida, <code>null</code> si no se pudo emitir
+	 * @return La factura emitida, {@code null} si no se pudo emitir
 	 */
 	public static Factura emitirFactura(Cliente cliente) {
 		Factura factura = cliente.emitirFactura();
@@ -97,6 +99,8 @@ public class AdministradorDatos {
 	 * @param codigo Codigo de factura
 	 *
 	 * @return La factura correspondiente
+	 *
+	 * @throws FacturaNoExisteExcepcion Si el codigo no corresponde a ninguna factura
 	 */
 	public static Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
 		if ((codigo > datos.FACTURAS.size()) || (datos.FACTURAS.get(codigo) == null))
@@ -106,15 +110,17 @@ public class AdministradorDatos {
 	}
 
 	/**
-	 * Extrae, a partir de un conjunto de elementos que implemetan la <code>interface IFecha</code>, otro conjunto de
-	 * elementos cuyo valor <code>IFecha.getFecha()</code> esta comprendido enre las fechas especificadas
+	 * Extrae, a partir de un conjunto de elementos que implemetan la {@code interface IFecha}, otro conjunto de
+	 * elementos cuyo valor {@code IFecha.getFecha()} esta comprendido enre las fechas especificadas
 	 *
 	 * @param conjunto Conjunto de elemetos del cual se extraen los elementos
 	 * @param inico    Fecha de incio del periodo
 	 * @param fin      Fecha de fin del periodo
-	 * @param <T>      E tipo del elementos que implementa la <code>interface IFecha</code>
+	 * @param <T>      E tipo del elementos que implementa la {@code interface IFecha}
 	 *
 	 * @return El conjunto que se ha extraido del conjunto original
+	 *
+	 * @throws FechaNoValidaExcepcion Si inicio es posterior a fin
 	 */
 	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
 		if (inico.isAfter(fin))
@@ -137,7 +143,7 @@ public class AdministradorDatos {
 	 * @param dato     El dato
 	 * @param tipoDato El tipo de dato
 	 *
-	 * @return <code>true</code> si coincide con el patron de tipo de dato, <code>false</code> en caso contrario
+	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
 	 */
 	public static boolean esDatoValido(String dato, EnumTipoDato tipoDato) {
 		return dato.matches(tipoDato.getFormato());
@@ -148,16 +154,16 @@ public class AdministradorDatos {
 	 *
 	 * @param nif NIF a comprobar
 	 *
-	 * @return <code>true</code> si existe o <code>false</code> en caso contrario
+	 * @return {@code true} si existe o {@code false} en caso contrario
 	 */
 	private static boolean exixteCliente(String nif) {
 		return datos.CLIENTES.containsKey(nif);
 	}
 
 	/**
-	 * Carga los datos (clientes y facturas) desde el fichero especificado
+	 * Carga los datos de clientes, llamadas y facturas desde el fichero especificado
 	 *
-	 * @param nombreFichero El fichero de datos
+	 * @param nombreFichero La ruta al fichero de datos
 	 */
 	public static void cargarDatos(String nombreFichero) {
 		try {
@@ -178,9 +184,9 @@ public class AdministradorDatos {
 	}
 
 	/**
-	 * Guarda los datos (clientes y facturas) en el fichero especificado
+	 * Guarda los datos de clientes, llamadas y facturas en el fichero especificado
 	 *
-	 * @param nombreFichero El nombre del fichero de datos
+	 * @param nombreFichero La ruta al fichero de datos
 	 */
 	public static void guardarDatos(String nombreFichero) {
 		try {

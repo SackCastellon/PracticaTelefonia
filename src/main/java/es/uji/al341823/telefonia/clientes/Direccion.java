@@ -11,17 +11,11 @@ public class Direccion implements Serializable {
 
 	private static final long serialVersionUID = 3611141018118208923L;
 
-	/**
-	 * Codigo postal
-	 */
+	/** Codigo postal */
 	private final int codigoPostal;
-	/**
-	 * Provincia
-	 */
+	/** Provincia */
 	private final String provincia;
-	/**
-	 * Población
-	 */
+	/** Población */
 	private final String poblacion;
 
 	/**
@@ -66,6 +60,11 @@ public class Direccion implements Serializable {
 		return this.poblacion;
 	}
 
+	/**
+	 * Devuelve toda la información de la dirección
+	 *
+	 * @return Información de la dirección
+	 */
 	@Override
 	public String toString() {
 		return "Direccion{" +

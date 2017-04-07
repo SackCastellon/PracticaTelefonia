@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
+ * Almacena todos los datos que se pueden guardar y cargar de la aplicación
+ *
  * @author Juanjo González (al341823)
  * @since 0.2
  */

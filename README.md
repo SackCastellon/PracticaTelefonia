@@ -43,12 +43,6 @@
 - Recuperar los datos de una factura a partir de su código.
 - Recuperar todas las facturas de un cliente.
 
-### Diagrama de clases:
-
-![Diagrama Simple](./diagrams/DiagramaSimple.png "Diagrama Simple")
-
-> [Ver diagrama de clases completo](./diagrams/DiagramaCompleto.png)
-
 ### Cuestionario
 
 1. ¿Cuantas clases has definido?

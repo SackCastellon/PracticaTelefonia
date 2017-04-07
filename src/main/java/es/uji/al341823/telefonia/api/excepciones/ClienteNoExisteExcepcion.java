@@ -8,6 +8,9 @@ public class ClienteNoExisteExcepcion extends Exception {
 
 	private static final long serialVersionUID = -894414031355860023L;
 
+	/**
+	 * Excepción que se lanza cuando se intenta realizar alguna acción con un cliente que no existe
+	 */
 	public ClienteNoExisteExcepcion() {
 		super("Cliente no existe");
 	}

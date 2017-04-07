@@ -1,6 +1,5 @@
 package es.uji.al341823.telefonia.gui.console.menu.llamadas;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.menu.Menu;
 
 /**
@@ -11,11 +10,6 @@ public class MenuLlamadas extends Menu {
 
 	public MenuLlamadas(Menu padre) {
 		super(padre);
-	}
-
-	@Override
-	public void mostrar() {
-		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
 	@Override

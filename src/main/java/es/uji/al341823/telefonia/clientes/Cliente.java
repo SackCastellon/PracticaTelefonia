@@ -22,25 +22,15 @@ public abstract class Cliente implements IFecha, Serializable {
 
 	private static final long serialVersionUID = -6698454540590960908L;
 
-	/**
-	 * Nombre del cliente
-	 */
+	/** Nombre del cliente */
 	private final String nombre;
-	/**
-	 * NIF del cliente
-	 */
+	/** NIF del cliente */
 	private final String nif;
-	/**
-	 * Dirección del cliente
-	 */
+	/** Dirección del cliente */
 	private final Direccion direccion;
-	/**
-	 * Email del cliente
-	 */
+	/** Email del cliente */
 	private final String email;
-	/**
-	 * Fecha en la que se dió de alta el cliente
-	 */
+	/** Fecha en la que se dió de alta el cliente */
 	private final LocalDateTime fechaAlta;
 
 	/** Lista de llamadas que realizó el cliente */
@@ -48,13 +38,9 @@ public abstract class Cliente implements IFecha, Serializable {
 
 	/** Conjunto de codigos de las facturas correspondientes al cliente */
 	private final HashSet<Integer> codigosFacturas = new HashSet<>();
-	/**
-	 * Tarifa que tiene contratada el cliente
-	 */
+	/** Tarifa que tiene contratada el cliente */
 	private Tarifa tarifa;
-	/**
-	 * El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación
-	 */
+	/** El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación */
 	private LocalDateTime ultimaFacturacion;
 
 	/**
@@ -166,7 +152,7 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return La factura emitida
 	 */
-	public Factura emitirFactura() { //FIXME
+	public Factura emitirFactura() {
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
@@ -209,7 +195,7 @@ public abstract class Cliente implements IFecha, Serializable {
 	}
 
 	/**
-	 * Devuelve un <code>String</code> con toda la información del cliente
+	 * Devuelve toda la información del cliente
 	 *
 	 * @return Información del cliente
 	 */
