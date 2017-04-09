@@ -61,4 +61,19 @@ public abstract class Tarifa implements Serializable, IDescripcion {
 				"precio=" + this.precio +
 				'}';
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if ((o == null) || (this.getClass() != o.getClass())) return false;
+
+		Tarifa tarifa = (Tarifa) o;
+
+		return Float.compare(tarifa.precio, this.precio) == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		return ((this.precio != +0.0f) ? Float.floatToIntBits(this.precio) : 0);
+	}
 }

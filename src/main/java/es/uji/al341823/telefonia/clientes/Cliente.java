@@ -210,4 +210,19 @@ public abstract class Cliente implements IFecha, Serializable {
 				", tarifa=" + this.tarifa +
 				'}';
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if ((o == null) || (this.getClass() != o.getClass())) return false;
+
+		Cliente cliente = (Cliente) o;
+
+		return this.nif.equals(cliente.nif);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.nif.hashCode();
+	}
 }

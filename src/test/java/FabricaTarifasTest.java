@@ -31,6 +31,6 @@ public class FabricaTarifasTest {
 
 	@Test
 	public void getTarifaExtraDomingosTest() {
-		Assert.assertEquals(new TarifaDiasSemana(new TarifaBasica(0.15f), 0.05f, 7), fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.DOMINGOS));
+		Assert.assertEquals(new TarifaDiasSemana(new TarifaBasica(0.15f), 0, 7), fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.DOMINGOS));
 	}
 }

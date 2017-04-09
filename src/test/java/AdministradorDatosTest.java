@@ -51,10 +51,20 @@ public class AdministradorDatosTest {
 		LinkedList<Factura> facturas = new LinkedList<>();
 		LinkedList<Factura> facturasExtraidas = new LinkedList<>();
 
+		// FIXME El generador de datos está roto 👎
 		for (int i = 0; i < 100; i++) {
 			nombre = generador.getNombre();
 			prov = generador.getProvincia();
-			direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
+
+			while (true) {
+				try {
+					direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
+					break;
+				} catch (Exception e) {
+					prov = generador.getProvincia();
+				}
+			}
+
 			fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60));
 
 			Cliente cliente = new Particular(nombre, generador.getApellido() + ' ' + generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", fecha, new TarifaBasica(rand.nextFloat()));

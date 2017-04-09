@@ -16,15 +16,21 @@ public abstract class TarifaExtra extends Tarifa {
 	private static final long serialVersionUID = -8478572940082399433L;
 
 	private final Tarifa tarifaBase;
-	private final TemporalField unidadPeriodo;
+	private final TemporalField unidadTemporal;
 	private final int inicioPeriodo;
 	private final int finPeriodo;
 
-	TarifaExtra(Tarifa tarifaBase, float precio, TemporalField unidadPeriodo, int inicioPeriodo, int finPeriodo) {
+	TarifaExtra(Tarifa tarifaBase, float precio, TemporalField unidadTemporal, int inicioPeriodo, int finPeriodo) {
 		super(precio);
 
+		if (tarifaBase == null)
+			throw new IllegalArgumentException("La tarifa base no puede ser null");
+
+		if (unidadTemporal == null)
+			throw new IllegalArgumentException("La unidad temporal base no puede ser null");
+
 		this.tarifaBase = tarifaBase;
-		this.unidadPeriodo = unidadPeriodo;
+		this.unidadTemporal = unidadTemporal;
 		this.inicioPeriodo = inicioPeriodo;
 		this.finPeriodo = finPeriodo;
 	}
@@ -35,8 +41,8 @@ public abstract class TarifaExtra extends Tarifa {
 
 		LocalDateTime fecha = llamada.getFecha();
 
-		if ((fecha.get(this.unidadPeriodo) >= this.inicioPeriodo) &&
-				(fecha.get(this.unidadPeriodo) <= this.finPeriodo)) {
+		if ((fecha.get(this.unidadTemporal) >= this.inicioPeriodo) &&
+				(fecha.get(this.unidadTemporal) <= this.finPeriodo)) {
 			float costeExtra = this.getPrecio();
 
 			if (costeExtra < costeBase)
@@ -50,10 +56,10 @@ public abstract class TarifaExtra extends Tarifa {
 	public String getDescripcion() {
 		if (this.inicioPeriodo == this.finPeriodo)
 			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
-					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo);
+					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo);
 		else
 			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
-					this.unidadPeriodo.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo,
+					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo,
 					this.finPeriodo);
 	}
 
@@ -61,9 +67,32 @@ public abstract class TarifaExtra extends Tarifa {
 	public String toString() {
 		return "TarifaExtra{" +
 				"tarifaBase=" + this.tarifaBase +
-				", unidadPeriodo=" + this.unidadPeriodo.getDisplayName(new Locale("es", "ES")) +
+				", unidadTemporal=" + this.unidadTemporal.getDisplayName(new Locale("es", "ES")) +
 				", inicioPeriodo=" + this.inicioPeriodo +
 				", finPeriodo=" + this.finPeriodo +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if ((o == null) || (this.getClass() != o.getClass())) return false;
+		if (!super.equals(o)) return false;
+
+		TarifaExtra that = (TarifaExtra) o;
+
+		if (this.inicioPeriodo != that.inicioPeriodo) return false;
+		if (this.finPeriodo != that.finPeriodo) return false;
+		return this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = (31 * result) + this.tarifaBase.hashCode();
+		result = (31 * result) + this.unidadTemporal.hashCode();
+		result = (31 * result) + this.inicioPeriodo;
+		result = (31 * result) + this.finPeriodo;
+		return result;
 	}
 }
