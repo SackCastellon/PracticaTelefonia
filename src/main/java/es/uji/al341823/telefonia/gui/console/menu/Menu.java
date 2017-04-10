@@ -35,6 +35,7 @@ public abstract class Menu {
 	 */
 	public void mostrar() {
 		AdministradorMenus.clearScreen();
+		AdministradorMenus.imprimeTitulo(this);
 		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
