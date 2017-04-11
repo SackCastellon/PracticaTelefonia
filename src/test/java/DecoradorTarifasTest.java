@@ -55,7 +55,7 @@ public class DecoradorTarifasTest {
         tarifa = fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.TARDES);
         Assert.assertEquals(tarifa.getCosteLlamada(llamada1), is(0.15f*20));
         Assert.assertEquals(tarifa.getCosteLlamada(llamada2), is(0.05f*20));
-        Assert.assertEquals(tarifa.getCosteLlamada(llamada3), is(0));
+        Assert.assertEquals(tarifa.getCosteLlamada(llamada3), is(0.05f*20));
 
         tarifa = fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.DOMINGOS);
         Assert.assertEquals(tarifa.getCosteLlamada(llamada1), is(0.15f*20));
