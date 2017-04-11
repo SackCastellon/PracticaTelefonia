@@ -82,8 +82,7 @@ public abstract class TarifaExtra extends Tarifa {
 		TarifaExtra that = (TarifaExtra) o;
 
 		if (this.inicioPeriodo != that.inicioPeriodo) return false;
-		if (this.finPeriodo != that.finPeriodo) return false;
-		return this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
+		return this.finPeriodo == that.finPeriodo && this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
 	}
 
 	@Override

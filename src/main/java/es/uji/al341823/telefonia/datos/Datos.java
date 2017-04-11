@@ -2,7 +2,6 @@ package es.uji.al341823.telefonia.datos;
 
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,8 +19,8 @@ public class Datos implements Serializable {
 	/** Almacena todos los clientes que hay en el momento */
 	public final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
-	/** Almacena todas las llamadas realizadas hasta el momento */
-	public final HashMap<Integer, Llamada> LLAMADAS = new HashMap<>(); // TODO
+	///** Almacena todas las llamadas realizadas hasta el momento */
+	//public final HashMap<Integer, Llamada> LLAMADAS = new HashMap<>(); // TODO Implementar
 
 	/** Almacena todas las facturas emitidas hasta el momento */
 	public final HashMap<Integer, Factura> FACTURAS = new HashMap<>();

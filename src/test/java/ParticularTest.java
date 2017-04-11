@@ -27,7 +27,6 @@ public class ParticularTest {
 	private static LocalDateTime fecha;
 	private static LocalDateTime fechaUltimaEmision;
 	private static Tarifa tarifa;
-	private static LocalDateTime ultimaFacturacion;
 	private static Direccion direccion;
 	private static int duracionLlamadas;
 	private static LinkedList<Llamada> llamadas;
@@ -47,7 +46,6 @@ public class ParticularTest {
 		fecha = LocalDateTime.now();
 		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
 		tarifa = new TarifaBasica(rand.nextFloat());
-		ultimaFacturacion = LocalDateTime.of(2015, 6, 25, 3, 25);
 
 		String prov = generador.getProvincia();
 		direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
@@ -56,7 +54,6 @@ public class ParticularTest {
 
 		llamadas = new LinkedList<>();
 		facturas = new LinkedList<>();
-		LinkedList<String> info = new LinkedList<>();
 
 		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
 	}

@@ -16,31 +16,27 @@ import java.util.Random;
  */
 public class FacturaTest {
 
-	private static Random rand;
-	private static int codigoUnico;
 	private static int codigo;
 	private static Tarifa tarifa;
 	private static LocalDateTime fechaEmision;
-	private static LocalDateTime fechaUltimaEmision;
 	private static long periodoFactuacion;
-	private static int duracionLlamadas;
 	private static float importe;
 	private static Factura factura;
 
 	@BeforeClass
 	public static void first() throws FechaNoValidaExcepcion {
-		rand = new Random();
+		Random rand = new Random();
 
-		codigoUnico = 0;
+		int codigoUnico = 0;
 		codigo = codigoUnico++;
 
 		tarifa = new TarifaBasica(rand.nextFloat());
 
 		fechaEmision = LocalDateTime.now();
-		fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
+		LocalDateTime fechaUltimaEmision = LocalDateTime.of(2016, 12, 28, 2, 32);
 		periodoFactuacion = Duration.between(fechaUltimaEmision, fechaEmision).toDays();
 
-		duracionLlamadas = rand.nextInt();
+		int duracionLlamadas = rand.nextInt();
 		importe = tarifa.getPrecio() * duracionLlamadas;
 
 		factura = new Factura(tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);

@@ -17,7 +17,6 @@ import java.util.Random;
  */
 public class FabricaClientesTest {
 
-	private static Random rand;
 	private static FabricaClientes fabricaClientes;
 	private static String nombre;
 	private static String apellidos;
@@ -32,7 +31,7 @@ public class FabricaClientesTest {
 	@BeforeClass
 	public static void first() {
 		GeneradorDatosINE generador = new GeneradorDatosINE();
-		rand = new Random();
+		Random rand = new Random();
 
 		fabricaClientes = new FabricaClientes();
 

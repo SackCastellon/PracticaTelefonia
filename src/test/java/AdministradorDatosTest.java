@@ -21,14 +21,10 @@ import java.util.Random;
  */
 public class AdministradorDatosTest {
 	private static Random rand;
-	private static String nombre;
-	private static String prov;
-	private static Direccion direccion;
-	private static LocalDateTime fecha;
 	private static LocalDateTime fechaInicio;
 	private static LocalDateTime fechaFinal;
 	private static AdministradorDatos admin;
-	GeneradorDatosINE generador = new GeneradorDatosINE();
+	private final GeneradorDatosINE generador = new GeneradorDatosINE();
 
 	@BeforeClass
 	public static void first() {
@@ -53,21 +49,22 @@ public class AdministradorDatosTest {
 
 		// FIXME El generador de datos está roto 👎
 		for (int i = 0; i < 100; i++) {
-			nombre = generador.getNombre();
-			prov = generador.getProvincia();
+			String nombre = this.generador.getNombre();
+			String prov = this.generador.getProvincia();
 
+			Direccion direccion;
 			while (true) {
 				try {
-					direccion = new Direccion(12100, prov, generador.getPoblacion(prov));
+					direccion = new Direccion(12100, prov, this.generador.getPoblacion(prov));
 					break;
 				} catch (Exception e) {
-					prov = generador.getProvincia();
+					prov = this.generador.getProvincia();
 				}
 			}
 
-			fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60));
+			LocalDateTime fecha = LocalDateTime.of(2010 + rand.nextInt(10), 1 + rand.nextInt(12), 1 + rand.nextInt(28), rand.nextInt(24), rand.nextInt(60));
 
-			Cliente cliente = new Particular(nombre, generador.getApellido() + ' ' + generador.getApellido(), generador.getNIF(), direccion, nombre + "@uji.es", fecha, new TarifaBasica(rand.nextFloat()));
+			Cliente cliente = new Particular(nombre, this.generador.getApellido() + ' ' + this.generador.getApellido(), this.generador.getNIF(), direccion, nombre + "@uji.es", fecha, new TarifaBasica(rand.nextFloat()));
 			clientes.add(cliente);
 
 			if (cliente.getFecha().isAfter(fechaInicio) && cliente.getFecha().isBefore(fechaFinal))
@@ -87,7 +84,7 @@ public class AdministradorDatosTest {
 		}
 
 		Assert.assertEquals(AdministradorDatos.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
-		Assert.assertEquals(admin.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
-		Assert.assertEquals(admin.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
+		Assert.assertEquals(AdministradorDatos.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
+		Assert.assertEquals(AdministradorDatos.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
 	}
 }

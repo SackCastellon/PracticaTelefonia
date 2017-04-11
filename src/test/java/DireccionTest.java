@@ -11,27 +11,27 @@ import java.util.Random;
  */
 public class DireccionTest {
 
-	private final static Random rand = new Random();
-	private final static GeneradorDatosINE generador = new GeneradorDatosINE();
+	private static final Random rand = new Random();
+	private static final GeneradorDatosINE generador = new GeneradorDatosINE();
 
 	private final int codpostal = rand.nextInt(99999);
 	private final String prov = generador.getProvincia();
-	private final String poblacion = generador.getPoblacion(prov);
+	private final String poblacion = generador.getPoblacion(this.prov);
 
-	private final Direccion direccion = new Direccion(codpostal, prov, poblacion);
+	private final Direccion direccion = new Direccion(this.codpostal, this.prov, this.poblacion);
 
 	@Test
 	public void getCodigoPostalTest() {
-		Assert.assertEquals(codpostal, direccion.getCodigoPostal());
+		Assert.assertEquals(this.codpostal, this.direccion.getCodigoPostal());
 	}
 
 	@Test
 	public void getProvinciaTest() {
-		Assert.assertEquals(prov, direccion.getProvincia());
+		Assert.assertEquals(this.prov, this.direccion.getProvincia());
 	}
 
 	@Test
 	public void getPoblacionTest() {
-		Assert.assertEquals(poblacion, direccion.getPoblacion());
+		Assert.assertEquals(this.poblacion, this.direccion.getPoblacion());
 	}
 }

@@ -11,13 +11,12 @@ import java.util.Random;
  * @since 0.1
  */
 public class TarifaTest {
-	private static Random rand;
 	private static float precio;
 	private static Tarifa tarifa;
 
 	@BeforeClass
 	public static void first() {
-		rand = new Random();
+		Random rand = new Random();
 		precio = rand.nextFloat();
 
 		tarifa = new TarifaBasica(precio);

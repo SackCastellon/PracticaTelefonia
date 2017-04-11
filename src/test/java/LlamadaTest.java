@@ -12,7 +12,6 @@ import java.util.Random;
  */
 public class LlamadaTest {
 
-	private static Random rand;
 	private static String numeroOrigen;
 	private static String numeroDestino;
 	private static LocalDateTime fechaLlamada;
@@ -21,7 +20,7 @@ public class LlamadaTest {
 
 	@BeforeClass
 	public static void first() {
-		rand = new Random();
+		Random rand = new Random();
 
 		numeroOrigen = Integer.toString(rand.nextInt(5));
 		numeroDestino = Integer.toString(rand.nextInt(5));
