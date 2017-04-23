@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.api;
 
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
@@ -8,7 +13,13 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -173,7 +184,7 @@ public class AdministradorDatos {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			datos = (Datos) ois.readObject();
 
-			System.out.println("Datos cargados con éxito");
+			System.out.println("Datos cargados con éxito desde: " + fichero.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
@@ -192,8 +203,6 @@ public class AdministradorDatos {
 		try {
 			File fichero = new File(nombreFichero);
 
-			System.out.println();
-
 			if (fichero.createNewFile())
 				System.out.println("El fichero de datos no existia y se ha creado\n");
 
@@ -201,7 +210,7 @@ public class AdministradorDatos {
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(datos);
 
-			System.out.println("Datos guardados con éxito");
+			System.out.println("Datos guardados con éxito en: " + fichero.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {

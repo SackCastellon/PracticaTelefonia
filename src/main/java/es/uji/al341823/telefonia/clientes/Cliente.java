@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
@@ -35,9 +40,9 @@ public abstract class Cliente implements IFecha, Serializable {
 
 	/** Lista de llamadas que realizó el cliente */
 	private final LinkedList<Llamada> llamadas = new LinkedList<>(); //TODO cambiar para que sea como la facturas
-
 	/** Conjunto de codigos de las facturas correspondientes al cliente */
 	private final HashSet<Integer> codigosFacturas = new HashSet<>();
+
 	/** Tarifa que tiene contratada el cliente */
 	private Tarifa tarifa;
 	/** El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación */
@@ -192,23 +197,6 @@ public abstract class Cliente implements IFecha, Serializable {
 		}
 
 		return facturas;
-	}
-
-	/**
-	 * Devuelve toda la información del cliente
-	 *
-	 * @return Información del cliente
-	 */
-	@Override
-	public String toString() {
-		return "Cliente{" +
-				"nombre='" + this.nombre + '\'' +
-				", nif='" + this.nif + '\'' +
-				", dir=" + this.direccion +
-				", email='" + this.email + '\'' +
-				", alta=" + this.fechaAlta +
-				", tarifa=" + this.tarifa +
-				'}';
 	}
 
 	@Override

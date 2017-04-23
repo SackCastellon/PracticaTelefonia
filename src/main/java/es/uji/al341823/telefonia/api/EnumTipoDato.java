@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.api;
 
 /**
@@ -51,7 +56,7 @@ public enum EnumTipoDato {
 	ENTERO("[0-9]+"),
 
 	/** Formato de una ruta a un fichero (Windows/Linux) */
-	FICHERO("([a-zA-Z]:)?([\\\\/]?[a-zA-Z0-9_.-]+)+[\\\\/]?");
+	FICHERO_O_NINGUNO("([a-zA-Z]:)?([\\\\/]?[a-zA-Z0-9_.-]+)+[\\\\/]?|^$");
 
 	/**
 	 * La regla de formato del tipo de dato

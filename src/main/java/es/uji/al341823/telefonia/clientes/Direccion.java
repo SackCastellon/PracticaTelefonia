@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.clientes;
 
 import java.io.Serializable;
@@ -67,10 +72,8 @@ public class Direccion implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Direccion{" +
-				"cp=" + this.codigoPostal +
-				", prov='" + this.provincia + '\'' +
-				", pob='" + this.poblacion + '\'' +
-				'}';
+		return this.codigoPostal +
+				", " + this.provincia +
+				", " + this.poblacion;
 	}
 }

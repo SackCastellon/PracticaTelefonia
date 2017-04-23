@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -23,7 +28,6 @@ public class AdministradorDatosTest {
 	private static Random rand;
 	private static LocalDateTime fechaInicio;
 	private static LocalDateTime fechaFinal;
-	private static AdministradorDatos admin;
 	private final GeneradorDatosINE generador = new GeneradorDatosINE();
 
 	@BeforeClass
@@ -31,7 +35,7 @@ public class AdministradorDatosTest {
 
 		rand = new Random();
 
-		admin = new AdministradorDatos();
+		AdministradorDatos admin = new AdministradorDatos();
 
 		fechaInicio = LocalDateTime.of(2013, 1, 1, 1, 1);
 		fechaFinal = LocalDateTime.of(2016, 12, 31, 4, 30);
@@ -47,7 +51,7 @@ public class AdministradorDatosTest {
 		LinkedList<Factura> facturas = new LinkedList<>();
 		LinkedList<Factura> facturasExtraidas = new LinkedList<>();
 
-		// FIXME El generador de datos está roto 👎
+
 		for (int i = 0; i < 100; i++) {
 			String nombre = this.generador.getNombre();
 			String prov = this.generador.getProvincia();
@@ -55,7 +59,7 @@ public class AdministradorDatosTest {
 			Direccion direccion;
 			while (true) {
 				try {
-					direccion = new Direccion(12100, prov, this.generador.getPoblacion(prov));
+					direccion = new Direccion(12100, prov, this.generador.getPoblacion(prov)); // FIXME El generador de datos está roto. A veces no existe ninguna problación para la provincia
 					break;
 				} catch (Exception e) {
 					prov = this.generador.getProvincia();

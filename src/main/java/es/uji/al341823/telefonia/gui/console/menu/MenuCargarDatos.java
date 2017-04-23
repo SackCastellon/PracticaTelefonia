@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.gui.console.menu;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
@@ -20,9 +25,14 @@ public class MenuCargarDatos extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO);
+		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO_O_NINGUNO);
 
-		AdministradorDatos.cargarDatos(ruta);
+		System.out.println();
+
+		if (ruta.isEmpty())
+			System.out.println("Se canceló la carga de datos");
+		else
+			AdministradorDatos.cargarDatos(ruta);
 
 		AdministradorMenus.esperarParaContinuar();
 	}
@@ -30,10 +40,5 @@ public class MenuCargarDatos extends Menu {
 	@Override
 	public String getTitulo() {
 		return "Cargar datos desde fichero";
-	}
-
-	@Override
-	public Menu[] getSubmenus() {
-		return null;
 	}
 }

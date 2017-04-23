@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.api;
 
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
@@ -63,6 +68,9 @@ public class AdministradorMenus {
 	 */
 	public static void seleccionarSubmenu(Menu menu) { // TODO Actualizar para que use seleccionarOpciones()
 		while (true) {
+			AdministradorMenus.clearScreen();
+			AdministradorMenus.imprimeTitulo(menu);
+
 			System.out.println("Elige una opción:");
 
 			for (int i = 1; i <= menu.getSubmenus().length; i++)
@@ -105,11 +113,11 @@ public class AdministradorMenus {
 	 *
 	 * @return La opción seleccionada
 	 */
-	public static <T extends IDescripcion> T seleccionarOpciones(T[] opciones) {
+	public static <T> T seleccionarOpciones(T[] opciones) {
 		System.out.println("Elige una opción:");
 
 		for (int i = 0; i < opciones.length; i++)
-			System.out.printf("  %d - %s\n", i, opciones[i].getDescripcion());
+			System.out.printf("  %d - %s\n", i, opciones[i]);
 
 		while (true) {
 			System.out.print("> ");
@@ -197,8 +205,7 @@ public class AdministradorMenus {
 
 			String line = leerDato(mensaje, EnumTipoDato.FECHA);
 
-			if ("hoy".equalsIgnoreCase(line)) date = LocalDateTime.now();
-			else date = LocalDateTime.parse(line.replace(' ', 'T'));
+			date = "hoy".equalsIgnoreCase(line) ? LocalDateTime.now() : LocalDateTime.parse(line.replace(' ', 'T'));
 		}
 
 		return date;

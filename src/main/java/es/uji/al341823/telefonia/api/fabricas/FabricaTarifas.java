@@ -1,6 +1,15 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.api.fabricas;
 
-import es.uji.al341823.telefonia.facturacion.tarifas.*;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaDiasSemana;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaHoras;
 
 /**
  * Clase <i>Factory</i> para las tarifas:

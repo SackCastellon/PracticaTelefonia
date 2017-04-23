@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.gui.console.menu;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
@@ -34,8 +39,6 @@ public abstract class Menu {
 	 * El metodo que se ejecuta para mostrar información por pantalla
 	 */
 	public void mostrar() {
-		AdministradorMenus.clearScreen();
-		AdministradorMenus.imprimeTitulo(this);
 		AdministradorMenus.seleccionarSubmenu(this);
 	}
 
@@ -51,5 +54,7 @@ public abstract class Menu {
 	 *
 	 * @return Lista de submenus
 	 */
-	public abstract Menu[] getSubmenus();
+	public Menu[] getSubmenus() {
+		return new Menu[0];
+	}
 }

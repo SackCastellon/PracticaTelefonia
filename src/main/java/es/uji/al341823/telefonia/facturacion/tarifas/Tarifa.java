@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.facturacion.tarifas;
 
-import es.uji.al341823.telefonia.api.IDescripcion;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.Serializable;
@@ -10,7 +14,7 @@ import java.io.Serializable;
  * @author David Agost (al341819)
  * @since 0.1
  */
-public abstract class Tarifa implements Serializable, IDescripcion {
+public abstract class Tarifa implements Serializable {
 
 	private static final long serialVersionUID = 2027121994743403669L;
 
@@ -46,6 +50,7 @@ public abstract class Tarifa implements Serializable, IDescripcion {
 	 *
 	 * @return Coste de la llamada
 	 */
+	@SuppressWarnings("unused")
 	float getCosteLlamada(Llamada llamada) {
 		return this.precio * llamada.getDuracionLlamada();
 	}
@@ -57,9 +62,7 @@ public abstract class Tarifa implements Serializable, IDescripcion {
 	 */
 	@Override
 	public String toString() {
-		return "Tarifa{" +
-				"precio=" + this.precio +
-				'}';
+		return String.format("Tarifa Base: %.2f €/min", this.getPrecio());
 	}
 
 	@Override
@@ -74,6 +77,6 @@ public abstract class Tarifa implements Serializable, IDescripcion {
 
 	@Override
 	public int hashCode() {
-		return ((this.precio != +0.0f) ? Float.floatToIntBits(this.precio) : 0);
+		return ((this.precio == +0.0f) ? 0 : Float.floatToIntBits(this.precio));
 	}
 }

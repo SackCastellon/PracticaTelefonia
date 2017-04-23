@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
@@ -47,14 +52,14 @@ public class Particular extends Cliente {
 	 */
 	@Override
 	public String toString() {
-		return "Cliente{" +
-				"nombre='" + this.getNombre() + '\'' +
-				", apellidos='" + this.apellidos + '\'' +
-				", nif='" + this.getNif() + '\'' +
-				", dir=" + this.getDireccion() +
-				", email='" + this.getEmail() + '\'' +
-				", alta=" + this.getFecha() +
-				", tarifa=" + this.getTarifa() +
-				'}';
+		return "Particular:\n" +
+				"\tNombre: " + this.getNombre() + '\n' +
+				"\tApellidos: " + this.getApellidos() + '\n' +
+				"\tNIF: " + this.getNif() + '\n' +
+				"\tDirección: " + this.getDireccion() + '\n' +
+				"\tEmail: " + this.getEmail() + '\n' +
+				"\tFecha de Alta: " + this.getFecha() + '\n' +
+				"\tTarifas:\n" +
+				"\t\t" + this.getTarifa();
 	}
 }

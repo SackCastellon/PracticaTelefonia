@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.gui.console.menu;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
@@ -5,6 +10,8 @@ import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 
 /**
+ * Clase del menu para guardar los datos desde un fichero
+ *
  * @author Juanjo González (al341823)
  * @since 0.2
  */
@@ -18,9 +25,14 @@ public class MenuGuardarDatos extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO);
+		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO_O_NINGUNO);
 
-		AdministradorDatos.guardarDatos(ruta);
+		System.out.println();
+
+		if (ruta.isEmpty())
+			System.out.println("Se canceló el guardado de datos");
+		else
+			AdministradorDatos.guardarDatos(ruta);
 
 		AdministradorMenus.esperarParaContinuar();
 	}
@@ -28,10 +40,5 @@ public class MenuGuardarDatos extends Menu {
 	@Override
 	public String getTitulo() {
 		return "Guardar datos en fichero";
-	}
-
-	@Override
-	public Menu[] getSubmenus() {
-		return null;
 	}
 }

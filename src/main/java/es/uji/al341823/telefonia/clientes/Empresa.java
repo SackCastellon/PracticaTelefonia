@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
@@ -23,5 +28,17 @@ public class Empresa extends Cliente {
 	 */
 	public Empresa(String nombre, String nif, Direccion direccion, String email, LocalDateTime fechaAlta, Tarifa tarifaBase) {
 		super(nombre, nif, direccion, email, fechaAlta, tarifaBase);
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa:\n" +
+				"\tNombre: " + this.getNombre() + '\n' +
+				"\tNIF: " + this.getNif() + '\n' +
+				"\tDirección: " + this.getDireccion() + '\n' +
+				"\tEmail: " + this.getEmail() + '\n' +
+				"\tFecha de Alta: " + this.getFecha() + '\n' +
+				"\tTarifa:\n" +
+				"\t\t" + this.getTarifa();
 	}
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.gui.console.menu.facturas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
@@ -55,10 +60,5 @@ public class ExtraerFacturas extends Menu {
 	@Override
 	public String getTitulo() {
 		return "Ver faturas de un cliente emitidas entre dos fechas";
-	}
-
-	@Override
-	public Menu[] getSubmenus() {
-		return new Menu[0];
 	}
 }

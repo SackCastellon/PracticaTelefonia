@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
+ */
+
 package es.uji.al341823.telefonia.facturacion.tarifas;
 
 import es.uji.al341823.telefonia.llamadas.Llamada;
@@ -43,7 +48,7 @@ public abstract class TarifaExtra extends Tarifa {
 
 		if ((fecha.get(this.unidadTemporal) >= this.inicioPeriodo) &&
 				(fecha.get(this.unidadTemporal) <= this.finPeriodo)) {
-			float costeExtra = this.getPrecio();
+			float costeExtra = this.getPrecio() * llamada.getDuracionLlamada();
 
 			if (costeExtra < costeBase)
 				return costeExtra;
@@ -53,24 +58,17 @@ public abstract class TarifaExtra extends Tarifa {
 	}
 
 	@Override
-	public String getDescripcion() {
+	public String toString() {
+		String str = this.tarifaBase + "\n\t\t";
 		if (this.inicioPeriodo == this.finPeriodo)
-			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
+			str += String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
 					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo);
 		else
-			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
+			str += String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
 					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo,
 					this.finPeriodo);
-	}
 
-	@Override
-	public String toString() {
-		return "TarifaExtra{" +
-				"tarifaBase=" + this.tarifaBase +
-				", unidadTemporal=" + this.unidadTemporal.getDisplayName(new Locale("es", "ES")) +
-				", inicioPeriodo=" + this.inicioPeriodo +
-				", finPeriodo=" + this.finPeriodo +
-				'}';
+		return str;
 	}
 
 	@Override
@@ -81,8 +79,8 @@ public abstract class TarifaExtra extends Tarifa {
 
 		TarifaExtra that = (TarifaExtra) o;
 
-		if (this.inicioPeriodo != that.inicioPeriodo) return false;
-		return this.finPeriodo == that.finPeriodo && this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
+		return (this.inicioPeriodo == that.inicioPeriodo) && (this.finPeriodo == that.finPeriodo) &&
+				this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
 	}
 
 	@Override
