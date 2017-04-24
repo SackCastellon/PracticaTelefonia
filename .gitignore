@@ -8,8 +8,7 @@
 .settings/
 
 # Builds
-target/*
-!target/*.jar
+target/
 
 # Ficheros de datos
 *.data
