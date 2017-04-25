@@ -3,12 +3,12 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.llamadas;
+package es.uji.al341823.telefonia.gui.console.clientes;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
-import es.uji.al341823.telefonia.llamadas.Llamada;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 import java.util.LinkedList;
 
@@ -16,8 +16,9 @@ import java.util.LinkedList;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class VerLlamadasCliente extends Menu {
-	public VerLlamadasCliente(Menu padre) {
+public class VerDatosTodosClientes extends Menu {
+
+	public VerDatosTodosClientes(Menu padre) {
 		super(padre);
 	}
 
@@ -25,16 +26,12 @@ public class VerLlamadasCliente extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
+		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
 
-		if (cliente == null) return;
+		System.out.printf("Hay un total de %d clientes\n", clientes.size());
 
-		LinkedList<Llamada> llamadas = cliente.getLlamadas();
-
-		System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
-
-		for (Llamada llamada : llamadas) {
-			System.out.println(" - " + llamada);
+		for (Cliente cliente : clientes) {
+			System.out.println("\n - " + cliente);
 		}
 
 		AdministradorMenus.esperarParaContinuar();
@@ -42,6 +39,6 @@ public class VerLlamadasCliente extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Ver llamadas cliente";
+		return "Ver datos todos cliente";
 	}
 }

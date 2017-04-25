@@ -6,10 +6,10 @@
 package es.uji.al341823.telefonia;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
-import es.uji.al341823.telefonia.gui.console.menu.MenuCargarDatos;
-import es.uji.al341823.telefonia.gui.console.menu.MenuGuardarDatos;
-import es.uji.al341823.telefonia.gui.console.menu.MenuPrincipal;
+import es.uji.al341823.telefonia.gui.console.Menu;
+import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
+import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
+import es.uji.al341823.telefonia.gui.console.MenuPrincipal;
 
 /**
  * @author Juanjo González (al341823)
@@ -23,7 +23,14 @@ public class AppTelefonia {
 	 * @param args Argumentos de ejecución
 	 */
 	public static void main(String[] args) {
+		cargarInterfazGrafica();
+		//cargarInterfazConsola();
+	}
 
+	private static void cargarInterfazGrafica() {
+	}
+
+	private static void cargarInterfazConsola() {
 		AdministradorMenus.clearScreen();
 
 		Menu menuCargar = new MenuCargarDatos(null);

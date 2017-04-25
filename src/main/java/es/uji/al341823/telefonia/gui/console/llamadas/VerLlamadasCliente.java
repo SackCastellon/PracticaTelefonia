@@ -3,12 +3,12 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.facturas;
+package es.uji.al341823.telefonia.gui.console.llamadas;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.Menu;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.util.LinkedList;
 
@@ -16,8 +16,8 @@ import java.util.LinkedList;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class RecuperarFacturasCliente extends Menu {
-	public RecuperarFacturasCliente(Menu padre) {
+public class VerLlamadasCliente extends Menu {
+	public VerLlamadasCliente(Menu padre) {
 		super(padre);
 	}
 
@@ -29,14 +29,12 @@ public class RecuperarFacturasCliente extends Menu {
 
 		if (cliente == null) return;
 
-		LinkedList<Factura> facturas = cliente.getFacturas();
+		LinkedList<Llamada> llamadas = cliente.getLlamadas();
 
-		System.out.println("Se han emitido un total de " + facturas.size() + " facturas para este cliente:");
+		System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
 
-		System.out.println();
-
-		for (Factura factura : facturas) {
-			System.out.println(" - " + factura);
+		for (Llamada llamada : llamadas) {
+			System.out.println(" - " + llamada);
 		}
 
 		AdministradorMenus.esperarParaContinuar();
@@ -44,6 +42,6 @@ public class RecuperarFacturasCliente extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Recuperar facturas de cliente";
+		return "Ver llamadas cliente";
 	}
 }

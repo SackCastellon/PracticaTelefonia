@@ -3,11 +3,11 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.clientes;
+package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
-import es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa.CambiarTarifaBase;
-import es.uji.al341823.telefonia.gui.console.menu.clientes.tarifa.CambiarTarifaExtra;
+import es.uji.al341823.telefonia.gui.console.Menu;
+import es.uji.al341823.telefonia.gui.console.clientes.tarifa.CambiarTarifaBase;
+import es.uji.al341823.telefonia.gui.console.clientes.tarifa.CambiarTarifaExtra;
 
 /**
  * Clase del menu para cambiar la tarifa de un cliente

@@ -8,7 +8,7 @@ package es.uji.al341823.telefonia.api;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

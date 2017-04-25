@@ -11,7 +11,7 @@
 
     <groupId>es.uji.al341823</groupId>
     <artifactId>telefonia</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 
     <properties>
         <java.version>1.8</java.version>

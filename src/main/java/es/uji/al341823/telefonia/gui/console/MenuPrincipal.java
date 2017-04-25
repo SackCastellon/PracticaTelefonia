@@ -3,11 +3,11 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu;
+package es.uji.al341823.telefonia.gui.console;
 
-import es.uji.al341823.telefonia.gui.console.menu.clientes.MenuClientes;
-import es.uji.al341823.telefonia.gui.console.menu.facturas.MenuFacturas;
-import es.uji.al341823.telefonia.gui.console.menu.llamadas.MenuLlamadas;
+import es.uji.al341823.telefonia.gui.console.clientes.MenuClientes;
+import es.uji.al341823.telefonia.gui.console.facturas.MenuFacturas;
+import es.uji.al341823.telefonia.gui.console.llamadas.MenuLlamadas;
 
 /**
  * @author Juanjo González (al341823)

@@ -3,21 +3,21 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu;
+package es.uji.al341823.telefonia.gui.console;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 
 /**
- * Clase del menu para cargar los datos desde un fichero
+ * Clase del menu para guardar los datos desde un fichero
  *
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class MenuCargarDatos extends Menu {
+public class MenuGuardarDatos extends Menu {
 
-	public MenuCargarDatos(Menu padre) {
+	public MenuGuardarDatos(Menu padre) {
 		super(padre);
 	}
 
@@ -30,15 +30,15 @@ public class MenuCargarDatos extends Menu {
 		System.out.println();
 
 		if (ruta.isEmpty())
-			System.out.println("Se canceló la carga de datos");
+			System.out.println("Se canceló el guardado de datos");
 		else
-			AdministradorDatos.cargarDatos(ruta);
+			AdministradorDatos.guardarDatos(ruta);
 
 		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Cargar datos desde fichero";
+		return "Guardar datos en fichero";
 	}
 }

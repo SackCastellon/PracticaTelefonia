@@ -3,28 +3,28 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.llamadas;
+package es.uji.al341823.telefonia.gui.console.facturas;
 
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 /**
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class MenuLlamadas extends Menu {
+public class MenuFacturas extends Menu {
 
-	public MenuLlamadas(Menu padre) {
+	public MenuFacturas(Menu padre) {
 		super(padre);
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Menú llamadas";
+		return "Menú facturas";
 	}
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new AltaLlamada(this), new VerLlamadasCliente(this),
-				new ExtraerLlamadas(this)};
+		return new Menu[] {new EmitirFactura(this), new RecuperarDatosFactura(this),
+				new RecuperarFacturasCliente(this), new ExtraerFacturas(this)};
 	}
 }

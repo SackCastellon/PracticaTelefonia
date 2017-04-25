@@ -3,7 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.clientes.alta;
+package es.uji.al341823.telefonia.gui.console.clientes.alta;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
@@ -13,7 +13,7 @@ import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 import java.time.LocalDateTime;
 

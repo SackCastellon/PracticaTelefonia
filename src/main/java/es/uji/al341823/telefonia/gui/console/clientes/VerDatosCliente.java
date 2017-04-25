@@ -3,22 +3,19 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.clientes;
+package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
-
-import java.util.LinkedList;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 /**
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class VerDatosTodosClientes extends Menu {
+public class VerDatosCliente extends Menu {
 
-	public VerDatosTodosClientes(Menu padre) {
+	public VerDatosCliente(Menu padre) {
 		super(padre);
 	}
 
@@ -26,19 +23,19 @@ public class VerDatosTodosClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
+		Cliente cliente = AdministradorMenus.leerClienteNIF();
 
-		System.out.printf("Hay un total de %d clientes\n", clientes.size());
+		if (cliente == null) return;
 
-		for (Cliente cliente : clientes) {
-			System.out.println("\n - " + cliente);
-		}
+		System.out.println("Información del cliente: " + cliente);
+
+		System.out.println();
 
 		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Ver datos todos cliente";
+		return "Ver datos cliente";
 	}
 }

@@ -3,14 +3,13 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.menu.facturas;
+package es.uji.al341823.telefonia.gui.console.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.gui.console.menu.Menu;
+import es.uji.al341823.telefonia.gui.console.Menu;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +18,8 @@ import java.util.Collection;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class ExtraerFacturas extends Menu {
-	public ExtraerFacturas(Menu padre) {
+public class ExtraerClientes extends Menu {
+	public ExtraerClientes(Menu padre) {
 		super(padre);
 	}
 
@@ -28,17 +27,13 @@ public class ExtraerFacturas extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
-
-		if (cliente == null) return;
-
 		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
 		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
-		Collection<Factura> facturas;
+		Collection<Cliente> clientes;
 
 		try {
-			facturas = AdministradorDatos.extraerConjunto(cliente.getFacturas(), inicio, fin);
+			clientes = AdministradorDatos.extraerConjunto(AdministradorDatos.getClientes(), inicio, fin);
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
 			AdministradorMenus.esperarParaContinuar();
@@ -47,10 +42,10 @@ public class ExtraerFacturas extends Menu {
 
 		System.out.println();
 
-		System.out.println("Durante este periodo de tiempo se un total de " + facturas.size() + " factura(s) para este cliente");
+		System.out.println("Durante este periodo de tiempo se direon de alta un total de " + clientes.size() + " cliente(s)");
 
-		for (Factura factura : facturas) {
-			System.out.println(" - " + factura);
+		for (Cliente cliente : clientes) {
+			System.out.println(" - " + cliente);
 		}
 
 		AdministradorMenus.esperarParaContinuar();
@@ -59,6 +54,6 @@ public class ExtraerFacturas extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Ver faturas de un cliente emitidas entre dos fechas";
+		return "Ver clientes dados de alta entre dos fechas";
 	}
 }
