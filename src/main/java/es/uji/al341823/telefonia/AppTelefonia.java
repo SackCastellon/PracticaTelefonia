@@ -10,6 +10,9 @@ import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuPrincipal;
+import es.uji.al341823.telefonia.gui.swing.Ventana;
+
+import javax.swing.*;
 
 /**
  * @author Juanjo González (al341823)
@@ -28,6 +31,13 @@ public class AppTelefonia {
 	}
 
 	private static void cargarInterfazGrafica() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Ventana ventana = new Ventana();
+				ventana.ejecutar();
+			}
+		});
 	}
 
 	private static void cargarInterfazConsola() {
