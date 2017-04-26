@@ -34,6 +34,12 @@ public class AppTelefonia {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 				Ventana ventana = new Ventana();
 				ventana.ejecutar();
 			}
