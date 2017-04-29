@@ -31,18 +31,15 @@ public class AppTelefonia {
 	}
 
 	private static void cargarInterfazGrafica() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				Ventana ventana = new Ventana();
-				ventana.ejecutar();
+		SwingUtilities.invokeLater(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				System.err.printf("Cannot load look and feel '%s', using cross platform look and feel", UIManager.getSystemLookAndFeelClassName());
 			}
+
+			Ventana ventana = new Ventana();
+			ventana.ejecutar();
 		});
 	}
 

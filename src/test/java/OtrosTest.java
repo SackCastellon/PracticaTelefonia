@@ -5,10 +5,17 @@
 
 import org.junit.Test;
 
+import javax.swing.*;
+
 public class OtrosTest {
 
 	@Test
 	@SuppressWarnings("EmptyMethod")
 	public void test() {
+		System.out.println(System.getProperty("os.name"));
+		System.out.println(UIManager.getLookAndFeel().getClass().getName());
+		for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
+			System.out.println(lookAndFeelInfo);
+		}
 	}
 }
