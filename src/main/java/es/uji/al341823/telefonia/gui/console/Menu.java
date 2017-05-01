@@ -26,6 +26,10 @@ public abstract class Menu {
 		this.padre = padre;
 	}
 
+	protected Menu() {
+		this(null);
+	}
+
 	/**
 	 * Devuelve el menú padre de este menú
 	 *

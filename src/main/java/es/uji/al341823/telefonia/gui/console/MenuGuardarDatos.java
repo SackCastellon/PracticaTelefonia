@@ -17,10 +17,6 @@ import es.uji.al341823.telefonia.api.EnumTipoDato;
  */
 public class MenuGuardarDatos extends Menu {
 
-	public MenuGuardarDatos(Menu padre) {
-		super(padre);
-	}
-
 	@Override
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);

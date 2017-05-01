@@ -38,7 +38,7 @@ public enum EnumTipoDato {
 	TELEFONO("((\\+)(\\d)*)?(\\s|\\d)*"),
 
 	/** Formato de una dirección de correo electronico: alguien@ejemplo.es, alguien@ejemplo.com, ... */
-	EMAIL("[a-zA-Z0-9]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?"),
+	EMAIL("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.([a-zA-Z0-9]+)?"),
 
 	/**
 	 * Formato de una fecha: {@code AAAA-MM-DD hh:mm:ss}<br>

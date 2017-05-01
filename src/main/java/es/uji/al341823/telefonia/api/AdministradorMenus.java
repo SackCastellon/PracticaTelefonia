@@ -246,14 +246,14 @@ public class AdministradorMenus {
 	/**
 	 * Limpia toda la pantalla de la consola y posiciona el cursor en la esquina superior izquierda
 	 */
-	public static void clearScreen() {
+	private static void clearScreen() {
 		System.out.print("\033[2J\033[H");
 	}
 
 	/**
 	 * Borra la linea anterior y posiciona el cursor al principio de esa linea
 	 */
-	public static void clearLine() {
+	private static void clearLine() {
 		System.out.print("\033[F\033[J");
 	}
 }

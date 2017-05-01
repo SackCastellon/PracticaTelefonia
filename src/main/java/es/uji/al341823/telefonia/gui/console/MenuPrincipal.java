@@ -15,10 +15,6 @@ import es.uji.al341823.telefonia.gui.console.llamadas.MenuLlamadas;
  */
 public class MenuPrincipal extends Menu {
 
-	public MenuPrincipal(Menu padre) {
-		super(padre);
-	}
-
 	@Override
 	public String getTitulo() {
 		return "Menú principal";
