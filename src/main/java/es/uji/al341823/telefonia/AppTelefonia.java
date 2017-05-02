@@ -9,7 +9,7 @@ import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuPrincipal;
-import es.uji.al341823.telefonia.gui.swing.VentanaPrincipal;
+import es.uji.al341823.telefonia.gui.swing.vista.VentanaPrincipal;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;

@@ -3,12 +3,13 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.swing;
+package es.uji.al341823.telefonia.gui.swing.vista;
 
 import es.uji.al341823.telefonia.api.EnumTipoDato;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.gui.swing.controlador.ValidadorDatos;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;

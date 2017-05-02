@@ -3,7 +3,11 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.swing;
+package es.uji.al341823.telefonia.gui.swing.vista;
+
+import es.uji.al341823.telefonia.gui.swing.InfoColumna;
+import es.uji.al341823.telefonia.gui.swing.InfoTabla;
+import es.uji.al341823.telefonia.gui.swing.controlador.Escuchador;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -39,10 +43,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static es.uji.al341823.telefonia.api.EnumTipoDato.DIRECCION;
 import static es.uji.al341823.telefonia.api.EnumTipoDato.EMAIL;
@@ -59,12 +64,11 @@ public class VentanaPrincipal {
 
 	private final JFrame frame;
 
-	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
-
 	private final JPanel panelIzquierda = new JPanel();
-	private final JPanel panelDerecha = new JPanel();
-
+	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
 	private final JPanel panelBotonesClientes = new JPanel();
+
+	private final JPanel panelDerecha = new JPanel();
 	private final JPanel panelBotonesInfo = new JPanel();
 
 	public VentanaPrincipal() {
@@ -261,7 +265,6 @@ public class VentanaPrincipal {
 		// Separador
 		submenuTema.add(new JSeparator());
 
-
 		// Panel para el aviso
 		JPanel avisoTemaPanel = new JPanel();
 		submenuTema.add(avisoTemaPanel);
@@ -395,17 +398,17 @@ public class VentanaPrincipal {
 	}
 
 	private void generarPanelInfo() {
-		JScrollPane scrollInfo = new JScrollPane();
-		scrollInfo.setBorder(new TitledBorder("Información detallada"));
-		scrollInfo.setPreferredSize(new Dimension(250, 350));
-		scrollInfo.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollInfo.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		this.panelDerecha.add(scrollInfo);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setBorder(new TitledBorder("Información detallada"));
+		scroll.setPreferredSize(new Dimension(250, 350));
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.panelDerecha.add(scroll);
 
 		JPanel panelInfo = new JPanel();
 		panelInfo.setLayout(new GridLayout(0, 1));
 		panelInfo.setBorder(new EmptyBorder(5, 5, 5, 5));
-		scrollInfo.setViewportView(panelInfo);
+		scroll.setViewportView(panelInfo);
 	}
 
 	private void generarBotonesInfo() {
@@ -425,39 +428,44 @@ public class VentanaPrincipal {
 	}
 
 	private void generarMenusContexto() {
-//		this.generarMenuContextoTabla(this.tablaParticulares);
-//		this.generarMenuContextoTabla(this.tablaEmpresas);
+		// Tablas
+		for (int i = 0; i < this.tabbedPaneClientes.getComponentCount(); i++) {
+			JScrollPane scroll = (JScrollPane) this.tabbedPaneClientes.getComponent(i);
+			JTable tabla = (JTable) scroll.getViewport().getView();
+			this.generarMenuContextoTabla(tabla);
+		}
 	}
 
 	// FIXME Cuando se oculta no aparece en el dialogo de "editar" o "nuevo"
 	private void generarMenuContextoTabla(JTable tabla) {
-		// Lista de columnas ocultas
-		ArrayList<TableColumn> hiddenColumns = new ArrayList<>();
-		// Columna que se va a ocultar
-		TableColumn[] columnToHide = new TableColumn[1];
+		// Columnas ocultas
+		HashSet<TableColumn> columnasOcultas = new HashSet<>();
+		// Columnas a ocultar
+		HashSet<TableColumn> columnasParaOcultar = new HashSet<>();
+
+		TableColumnModel columnModel = tabla.getColumnModel();
 
 		// Menú contextual para las columnas
-		JPopupMenu popupTabla = new JPopupMenu();
+		JPopupMenu popupMenu = new JPopupMenu();
 
 		// Opción para ocultar la columna selecionada
-		JMenuItem itemHideColumn = new JMenuItem();
-		itemHideColumn.addActionListener(e -> {
-			TableColumnModel columnModel = tabla.getColumnModel();
-			columnModel.removeColumn(columnToHide[0]);
-			hiddenColumns.add(columnToHide[0]);
+		JMenuItem itemOcultar = new JMenuItem();
+		itemOcultar.addActionListener(e -> {
+			columnasParaOcultar.stream().forEach(col -> {
+				columnModel.removeColumn(col);
+				columnasOcultas.add(col);
+			});
+			columnasParaOcultar.clear();
 		});
-		popupTabla.add(itemHideColumn);
+		popupMenu.add(itemOcultar);
 
 		// Opción para mostrar columnas ocultas
-		JMenu menuShowColumn = new JMenu("Mostrar columna");
-		popupTabla.add(menuShowColumn);
+		JMenu menuMostrar = new JMenu("Mostrar columna");
+		popupMenu.add(menuMostrar);
 
 		// Escuchador ratón para mostrar el menú contextual
-		JTableHeader tableHeader = tabla.getTableHeader();
-		tableHeader.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-			}
+		JTableHeader tablaHeader = tabla.getTableHeader();
+		tablaHeader.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mousePressed(MouseEvent event) {
@@ -469,16 +477,6 @@ public class VentanaPrincipal {
 				this.showPopup(event);
 			}
 
-			@Override
-			public void mouseEntered(MouseEvent event) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent event) {
-
-			}
-
 			private void showPopup(MouseEvent event) {
 				// Detecta si es un click derecho
 				if (!event.isPopupTrigger()) return;
@@ -487,42 +485,36 @@ public class VentanaPrincipal {
 				int col = tabla.columnAtPoint(event.getPoint());
 
 				// Actualiza la opción de ocultar columna
-				itemHideColumn.setText("Ocultar columna: " + tabla.getColumnName(col));
+				itemOcultar.setText("Ocultar columna: " + tabla.getColumnName(col));
+				columnasParaOcultar.add(columnModel.getColumn(col));
 
-				TableColumnModel columnModel = tabla.getColumnModel();
-				columnToHide[0] = columnModel.getColumn(col);
-
-				itemHideColumn.setEnabled(columnModel.getColumnCount() > 1);
-				menuShowColumn.setEnabled(!hiddenColumns.isEmpty());
+				itemOcultar.setEnabled(columnModel.getColumnCount() > 1);
+				menuMostrar.setEnabled(!columnasOcultas.isEmpty());
 
 				// Actualiza la opción de mostrar columnas ocultas
-				menuShowColumn.removeAll();
-				for (TableColumn hiddenColumn : hiddenColumns) {
+				menuMostrar.removeAll();
+				for (TableColumn columnaOculta : columnasOcultas) {
 					JMenuItem item = new JMenuItem();
-					item.setText(hiddenColumn.getHeaderValue().toString());
+					item.setText((String) columnaOculta.getHeaderValue());
 					item.addActionListener(e -> {
-						tabla.getColumnModel().addColumn(hiddenColumn);
-						hiddenColumns.remove(hiddenColumn);
+						tabla.getColumnModel().addColumn(columnaOculta);
+						columnasOcultas.remove(columnaOculta);
 					});
-
-					menuShowColumn.add(item);
+					menuMostrar.add(item);
 				}
-
-				menuShowColumn.add(new JSeparator());
+				menuMostrar.add(new JSeparator());
 
 				// Actualiza la opción mostrar todas la columnas
 				JMenuItem mostrarTodas = new JMenuItem("Mostrar todas");
 				mostrarTodas.addActionListener(e -> {
-					for (TableColumn hiddenColumn : hiddenColumns) {
-						tabla.getColumnModel().addColumn(hiddenColumn);
-					}
-					hiddenColumns.clear();
+					columnasOcultas.stream().forEach(columnaOculta -> tabla.getColumnModel().addColumn(columnaOculta));
+					columnasOcultas.clear();
 				});
-				menuShowColumn.add(mostrarTodas);
+				menuMostrar.add(mostrarTodas);
 
-				SwingUtilities.updateComponentTreeUI(popupTabla);
-				popupTabla.show(event.getComponent(), event.getX(), event.getY());
-				popupTabla.setVisible(true);
+				SwingUtilities.updateComponentTreeUI(popupMenu);
+				popupMenu.show(event.getComponent(), event.getX(), event.getY());
+				popupMenu.setVisible(true);
 			}
 		});
 	}
@@ -531,7 +523,7 @@ public class VentanaPrincipal {
 		this.frame.setTitle(titulo);
 		ImageIcon icon = this.getIcon("phone_ring");
 		this.frame.setIconImage(icon.getImage());
-		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // FIXME
 		this.frame.setResizable(true);
 
 		this.frame.setMinimumSize(new Dimension(650, 400));

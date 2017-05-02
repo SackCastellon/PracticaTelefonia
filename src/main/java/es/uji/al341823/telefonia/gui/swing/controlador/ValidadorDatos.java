@@ -3,10 +3,11 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.swing;
+package es.uji.al341823.telefonia.gui.swing.controlador;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.EnumTipoDato;
+import es.uji.al341823.telefonia.gui.swing.vista.DialogoEditar;
 
 import javax.swing.JTextField;
 import javax.swing.UIManager;
