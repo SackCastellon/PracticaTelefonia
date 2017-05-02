@@ -44,10 +44,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Objects;
+
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_CANCELAR;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_GUARDAR;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_EDITAR;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_NUEVO;
 
 /**
- * Created by Juanjo on 30/04/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.4
  */
 public class DialogoEditar extends JDialog {
 
@@ -57,7 +62,8 @@ public class DialogoEditar extends JDialog {
 
 	private final ArrayList<Boolean> camposValidos;
 
-	private final ArrayList<JTextComponent> inputs = new ArrayList<>(); // TODO
+	private final ArrayList<JTextComponent> inputs = new ArrayList<>();
+
 	private JSpinner spinnerFecha;
 	private JComboBox<Tarifa> comboBoxTarifas;
 
@@ -119,7 +125,7 @@ public class DialogoEditar extends JDialog {
 			if (col >= (this.tabla.getColumnCount() - 2)) continue;
 
 			JTextField textField = new JTextField();
-			if (Objects.equals(this.accion, "edit_client")) textField.setText((String) this.tabla.getValueAt(row, col));
+			if (this.accion.equals(TABLA_EDITAR)) textField.setText((String) this.tabla.getValueAt(row, col));
 			textField.setPreferredSize(new Dimension(250, textField.getPreferredSize().height));
 			textField.setCaretPosition(0);
 			textField.addFocusListener(new ValidadorDatos(this.tipoDatos.get(col), col));
@@ -132,7 +138,7 @@ public class DialogoEditar extends JDialog {
 		// Selector fecha
 		this.spinnerFecha = new JSpinner(new SpinnerDateModel());
 		this.spinnerFecha.setEditor(new JSpinner.DateEditor(this.spinnerFecha, "yyyy-MM-dd HH:mm:ss"));
-		if (Objects.equals(this.accion, "new_client"))
+		if (this.accion.equals(TABLA_NUEVO))
 			this.spinnerFecha.setValue(new Date());
 		else {
 			LocalDateTime date = LocalDateTime.parse((String) this.tabla.getValueAt(row, constraints.gridy), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -156,12 +162,12 @@ public class DialogoEditar extends JDialog {
 
 		this.btnGuardar = new JButton("Guardar");
 		this.btnGuardar.setEnabled(false);
-		this.btnGuardar.setActionCommand("save");
+		this.btnGuardar.setActionCommand(DIALOGO_GUARDAR);
 		this.btnGuardar.addActionListener(new EscuchadorDialogoEditar());
 		buttonPanel.add(this.btnGuardar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setActionCommand("cancel");
+		btnCancelar.setActionCommand(DIALOGO_CANCELAR);
 		btnCancelar.addActionListener(new EscuchadorDialogoEditar());
 		buttonPanel.add(btnCancelar);
 
@@ -172,9 +178,9 @@ public class DialogoEditar extends JDialog {
 		// ============================================================ //
 
 
-		if (Objects.equals(this.accion, "new_client"))
+		if (this.accion.equals(TABLA_NUEVO))
 			this.setTitle("Nuevo cliente");
-		else if (Objects.equals(this.accion, "edit_client"))
+		else if (this.accion.equals(TABLA_EDITAR))
 			this.setTitle("Editar cliente");
 
 		this.setResizable(false);
@@ -185,6 +191,10 @@ public class DialogoEditar extends JDialog {
 		this.setVisible(true);
 	}
 
+	/**
+	 * @author Juanjo González (al341823)
+	 * @since 0.4
+	 */
 	private class ValidadorDatos implements FocusListener {
 		private final TipoDato tipoDato;
 		private final int campo;
@@ -223,11 +233,15 @@ public class DialogoEditar extends JDialog {
 		}
 	}
 
+	/**
+	 * @author Juanjo González (al341823)
+	 * @since 0.4
+	 */
 	private class EscuchadorDialogoEditar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
-				case "save":
+				case DIALOGO_GUARDAR:
 					String[] textos = DialogoEditar.this.inputs.stream().map(JTextComponent::getText).toArray(String[]::new);
 
 					try {
@@ -240,7 +254,7 @@ public class DialogoEditar extends JDialog {
 								"Error al añadir",
 								JOptionPane.ERROR_MESSAGE);
 					}
-				case "cancel":
+				case DIALOGO_CANCELAR:
 					DialogoEditar.this.dispose();
 			}
 		}

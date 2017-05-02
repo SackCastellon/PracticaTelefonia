@@ -26,7 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by al341819 on 25/04/17.
+ * @author Juanjo González (al341823)
+ * @since 0.4
  */
 public class Controlador {
 
@@ -48,13 +49,13 @@ public class Controlador {
 			Integer i = Integer.parseInt(split[0]);
 			Direccion direccion = new Direccion(i, split[1], split[2]);
 
-			AdministradorDatos.altaCliente(new Particular(textos[0], textos[1], textos[2], direccion, textos[4], fechaLocal, tarifa));
+			AdministradorDatos.altaCliente(new Particular(textos[1], textos[2], textos[0], direccion, textos[4], fechaLocal, tarifa));
 		} else {
 			String[] split = textos[2].split(",", 3);
 			Integer i = Integer.parseInt(split[0]);
 			Direccion direccion = new Direccion(i, split[1], split[2]);
 
-			AdministradorDatos.altaCliente(new Empresa(textos[0], textos[1], direccion, textos[3], fechaLocal, tarifa));
+			AdministradorDatos.altaCliente(new Empresa(textos[1], textos[0], direccion, textos[3], fechaLocal, tarifa));
 		}
 
 		this.mostrarDatos();
@@ -128,12 +129,11 @@ public class Controlador {
 		AdministradorDatos.guardarDatos(this.ficheroDatos.getAbsolutePath());
 	}
 
-	public void mostrarDatos() {
+	private void mostrarDatos() {
 		this.limpiarDatos();
 
 		DefaultTableModel modeloPart = (DefaultTableModel) this.ventana.tablaParticulares.getModel();
 		for (Particular part : this.getParticulares()) {
-			System.out.println(part);
 			modeloPart.addRow(new String[] {
 					part.getNif(),
 					part.getNombre(),
@@ -147,7 +147,6 @@ public class Controlador {
 
 		DefaultTableModel modeloEmpr = (DefaultTableModel) this.ventana.tablaEmpresas.getModel();
 		for (Empresa empr : this.getEmpresas()) {
-			System.out.println(empr);
 			modeloEmpr.addRow(new String[] {
 					empr.getNif(),
 					empr.getNombre(),
