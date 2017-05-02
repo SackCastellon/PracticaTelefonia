@@ -3,7 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.swing.controlador;
+package es.uji.al341823.telefonia.gui.swing.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -7,7 +7,6 @@ package es.uji.al341823.telefonia.gui.swing.vista;
 
 import es.uji.al341823.telefonia.gui.swing.InfoColumna;
 import es.uji.al341823.telefonia.gui.swing.InfoTabla;
-import es.uji.al341823.telefonia.gui.swing.controlador.Escuchador;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
