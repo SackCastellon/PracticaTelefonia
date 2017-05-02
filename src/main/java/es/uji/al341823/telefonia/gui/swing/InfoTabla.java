@@ -13,21 +13,29 @@ import java.util.ArrayList;
 public class InfoTabla {
 
 	private final String nombre;
-	private final ArrayList<InfoColumna> columnas = new ArrayList<>();
+	private final ArrayList<InfoColumna> columns = new ArrayList<>();
 
 	public InfoTabla(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public void addColumna(InfoColumna infoColumna) {
-		this.columnas.add(infoColumna);
+	public void addColumn(InfoColumna infoColumna) {
+		this.columns.add(infoColumna);
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
-	public ArrayList<InfoColumna> getColumnas() {
-		return columnas;
+	public ArrayList<InfoColumna> getColumns() {
+		return this.columns;
+	}
+
+	public InfoColumna getColumn(int i) {
+		return this.columns.get(i);
+	}
+
+	public int getColumnCount() {
+		return this.columns.size();
 	}
 }

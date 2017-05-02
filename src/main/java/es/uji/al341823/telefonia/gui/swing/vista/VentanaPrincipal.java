@@ -17,8 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -34,24 +34,24 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static es.uji.al341823.telefonia.api.EnumTipoDato.DIRECCION;
 import static es.uji.al341823.telefonia.api.EnumTipoDato.EMAIL;
 import static es.uji.al341823.telefonia.api.EnumTipoDato.NIF;
 import static es.uji.al341823.telefonia.api.EnumTipoDato.TEXTO;
+import static es.uji.al341823.telefonia.gui.swing.vista.AccionTabla.BORRAR;
+import static es.uji.al341823.telefonia.gui.swing.vista.AccionTabla.EDITAR;
+import static es.uji.al341823.telefonia.gui.swing.vista.AccionTabla.NUEVO;
 
 /**
  * @author Juanjo González (al341823)
@@ -65,6 +65,7 @@ public class VentanaPrincipal {
 
 	private final JPanel panelIzquierda = new JPanel();
 	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
+	private final ArrayList<InfoTabla> infoTablas = new ArrayList<>();
 	private final JPanel panelBotonesClientes = new JPanel();
 
 	private final JPanel panelDerecha = new JPanel();
@@ -297,32 +298,30 @@ public class VentanaPrincipal {
 	}
 
 	private void generarTablas() {
-		ArrayList<InfoTabla> infoTablas = new ArrayList<>();
-
 		InfoTabla tabla1 = new InfoTabla("Particulares");
-		tabla1.addColumna(new InfoColumna(80, "NIF", NIF));
-		tabla1.addColumna(new InfoColumna(100, "Nombre", TEXTO));
-		tabla1.addColumna(new InfoColumna(125, "Apellido", TEXTO));
-		tabla1.addColumna(new InfoColumna(250, "Dirección", DIRECCION));
-		tabla1.addColumna(new InfoColumna(125, "Email", EMAIL));
-		tabla1.addColumna(new InfoColumna(125, "Fecha de alta"));
-		tabla1.addColumna(new InfoColumna(150, "Tarifa contratada"));
-		infoTablas.add(tabla1);
+		tabla1.addColumn(new InfoColumna(80, "NIF", NIF));
+		tabla1.addColumn(new InfoColumna(100, "Nombre", TEXTO));
+		tabla1.addColumn(new InfoColumna(125, "Apellido", TEXTO));
+		tabla1.addColumn(new InfoColumna(250, "Dirección", DIRECCION));
+		tabla1.addColumn(new InfoColumna(125, "Email", EMAIL));
+		tabla1.addColumn(new InfoColumna(125, "Fecha de alta"));
+		tabla1.addColumn(new InfoColumna(150, "Tarifa contratada"));
+		this.infoTablas.add(tabla1);
 
 		InfoTabla tabla2 = new InfoTabla("Empresas");
-		tabla2.addColumna(new InfoColumna(80, "NIF", NIF));
-		tabla2.addColumna(new InfoColumna(100, "Nombre", TEXTO));
-		tabla2.addColumna(new InfoColumna(250, "Dirección", DIRECCION));
-		tabla2.addColumna(new InfoColumna(125, "Email", EMAIL));
-		tabla2.addColumna(new InfoColumna(125, "Fecha de alta"));
-		tabla2.addColumna(new InfoColumna(150, "Tarifa contratada"));
-		infoTablas.add(tabla2);
+		tabla2.addColumn(new InfoColumna(80, "NIF", NIF));
+		tabla2.addColumn(new InfoColumna(100, "Nombre", TEXTO));
+		tabla2.addColumn(new InfoColumna(250, "Dirección", DIRECCION));
+		tabla2.addColumn(new InfoColumna(125, "Email", EMAIL));
+		tabla2.addColumn(new InfoColumna(125, "Fecha de alta"));
+		tabla2.addColumn(new InfoColumna(150, "Tarifa contratada"));
+		this.infoTablas.add(tabla2);
 
 		// Panel de pestañas con clientes
 		this.tabbedPaneClientes.setPreferredSize(new Dimension(550, 350));
 		this.panelIzquierda.add(this.tabbedPaneClientes);
 
-		for (InfoTabla infoTabla : infoTablas) {
+		for (InfoTabla infoTabla : this.infoTablas) {
 			// Scroll pane
 			JScrollPane scroll = new JScrollPane();
 			this.tabbedPaneClientes.addTab(infoTabla.getNombre(), scroll);
@@ -339,13 +338,13 @@ public class VentanaPrincipal {
 
 			// Establece el nombre de la columna
 			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-			for (InfoColumna columna : infoTabla.getColumnas())
+			for (InfoColumna columna : infoTabla.getColumns())
 				modelo.addColumn(columna.getNombre());
 
 			// Establece el ancho de la columna
 			TableColumnModel modeloColumna = tabla.getColumnModel();
 			for (int i = 0; i < modeloColumna.getColumnCount(); i++) {
-				int ancho = infoTabla.getColumnas().get(i).getAncho();
+				int ancho = infoTabla.getColumns().get(i).getAncho();
 				modeloColumna.getColumn(i).setPreferredWidth(ancho);
 			}
 
@@ -359,28 +358,22 @@ public class VentanaPrincipal {
 
 		// Botón Nuevo
 		JButton btnNuevo = new JButton("Nuevo");
-		btnNuevo.addActionListener(e -> { // FIXME
-			JScrollPane scroll = (JScrollPane) this.tabbedPaneClientes.getSelectedComponent();
-			JTable tabla = (JTable) scroll.getViewport().getView();
-
-			new DialogoEditar(this.frame, tabla, DialogoEditar.Accion.NUEVO);
-		});
+		btnNuevo.setActionCommand(String.valueOf(NUEVO));
+		btnNuevo.addActionListener(new EscuchadorBotonesTabla());
 		this.panelBotonesClientes.add(btnNuevo);
 
 		// Botón Editar
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
-		btnEditar.addActionListener(e -> { // FIXME
-			JScrollPane scroll = (JScrollPane) this.tabbedPaneClientes.getSelectedComponent();
-			JTable tabla = (JTable) scroll.getViewport().getView();
-
-			new DialogoEditar(this.frame, tabla, DialogoEditar.Accion.EDITAR);
-		});
+		btnEditar.setActionCommand(String.valueOf(EDITAR));
+		btnEditar.addActionListener(new EscuchadorBotonesTabla());
 		this.panelBotonesClientes.add(btnEditar);
 
 		// Botón Borrar
 		JButton btnBorrar = new JButton("Borrar");
-		btnBorrar.setEnabled(false);
+//		btnBorrar.setEnabled(false);
+		btnBorrar.setActionCommand(String.valueOf(BORRAR));
+		btnBorrar.addActionListener(new EscuchadorBotonesTabla());
 		this.panelBotonesClientes.add(btnBorrar);
 
 		// Fija el tamaño del panel botones de acción
@@ -427,95 +420,6 @@ public class VentanaPrincipal {
 	}
 
 	private void generarMenusContexto() {
-		// Tablas
-		for (int i = 0; i < this.tabbedPaneClientes.getComponentCount(); i++) {
-			JScrollPane scroll = (JScrollPane) this.tabbedPaneClientes.getComponent(i);
-			JTable tabla = (JTable) scroll.getViewport().getView();
-			this.generarMenuContextoTabla(tabla);
-		}
-	}
-
-	// FIXME Cuando se oculta no aparece en el dialogo de "editar" o "nuevo"
-	private void generarMenuContextoTabla(JTable tabla) {
-		// Columnas ocultas
-		HashSet<TableColumn> columnasOcultas = new HashSet<>();
-		// Columnas a ocultar
-		HashSet<TableColumn> columnasParaOcultar = new HashSet<>();
-
-		TableColumnModel columnModel = tabla.getColumnModel();
-
-		// Menú contextual para las columnas
-		JPopupMenu popupMenu = new JPopupMenu();
-
-		// Opción para ocultar la columna selecionada
-		JMenuItem itemOcultar = new JMenuItem();
-		itemOcultar.addActionListener(e -> {
-			columnasParaOcultar.stream().forEach(col -> {
-				columnModel.removeColumn(col);
-				columnasOcultas.add(col);
-			});
-			columnasParaOcultar.clear();
-		});
-		popupMenu.add(itemOcultar);
-
-		// Opción para mostrar columnas ocultas
-		JMenu menuMostrar = new JMenu("Mostrar columna");
-		popupMenu.add(menuMostrar);
-
-		// Escuchador ratón para mostrar el menú contextual
-		JTableHeader tablaHeader = tabla.getTableHeader();
-		tablaHeader.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent event) {
-				this.showPopup(event);
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent event) {
-				this.showPopup(event);
-			}
-
-			private void showPopup(MouseEvent event) {
-				// Detecta si es un click derecho
-				if (!event.isPopupTrigger()) return;
-
-				// Columna sobre la que se hizo click
-				int col = tabla.columnAtPoint(event.getPoint());
-
-				// Actualiza la opción de ocultar columna
-				itemOcultar.setText("Ocultar columna: " + tabla.getColumnName(col));
-				columnasParaOcultar.add(columnModel.getColumn(col));
-
-				itemOcultar.setEnabled(columnModel.getColumnCount() > 1);
-				menuMostrar.setEnabled(!columnasOcultas.isEmpty());
-
-				// Actualiza la opción de mostrar columnas ocultas
-				menuMostrar.removeAll();
-				for (TableColumn columnaOculta : columnasOcultas) {
-					JMenuItem item = new JMenuItem();
-					item.setText((String) columnaOculta.getHeaderValue());
-					item.addActionListener(e -> {
-						tabla.getColumnModel().addColumn(columnaOculta);
-						columnasOcultas.remove(columnaOculta);
-					});
-					menuMostrar.add(item);
-				}
-				menuMostrar.add(new JSeparator());
-
-				// Actualiza la opción mostrar todas la columnas
-				JMenuItem mostrarTodas = new JMenuItem("Mostrar todas");
-				mostrarTodas.addActionListener(e -> {
-					columnasOcultas.stream().forEach(columnaOculta -> tabla.getColumnModel().addColumn(columnaOculta));
-					columnasOcultas.clear();
-				});
-				menuMostrar.add(mostrarTodas);
-
-				SwingUtilities.updateComponentTreeUI(popupMenu);
-				popupMenu.show(event.getComponent(), event.getX(), event.getY());
-				popupMenu.setVisible(true);
-			}
-		});
 	}
 
 	private void generarVentana() {
@@ -560,5 +464,33 @@ public class VentanaPrincipal {
 		}
 
 		return new ImageIcon(url);
+	}
+
+	private class EscuchadorBotonesTabla implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			AccionTabla accion = AccionTabla.valueOf(e.getActionCommand());
+
+			int i = VentanaPrincipal.this.tabbedPaneClientes.getSelectedIndex();
+			InfoTabla infoTabla = VentanaPrincipal.this.infoTablas.get(i);
+
+			JScrollPane scroll = (JScrollPane) VentanaPrincipal.this.tabbedPaneClientes.getSelectedComponent();
+			JTable tabla = (JTable) scroll.getViewport().getView();
+
+			if ((accion == NUEVO) || (accion == EDITAR))
+				new DialogoEditar(VentanaPrincipal.this.frame, tabla, infoTabla, accion);
+			else if (accion == BORRAR) {
+				int response = JOptionPane.showConfirmDialog(VentanaPrincipal.this.frame,
+						"Está seguro de que desea borrar el cliente?",
+						"Borrar cliente",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (response == JOptionPane.YES_OPTION)
+					System.out.println("Borrar"); // TODO
+			}
+
+		}
 	}
 }
