@@ -7,7 +7,7 @@ package es.uji.al341823.telefonia.gui.console.clientes.alta;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.EnumTipoDato;
+import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
@@ -36,11 +36,11 @@ public class AltaClienteParticular extends Menu {
 
 		System.out.println();
 
-		String nombre = AdministradorMenus.leerDato(" - Nombre: ", EnumTipoDato.TEXTO);
-		String apellidos = AdministradorMenus.leerDato(" - Apellidos: ", EnumTipoDato.TEXTO);
-		String nif = AdministradorMenus.leerDato(" - NIF: ", EnumTipoDato.NIF);
+		String nombre = AdministradorMenus.leerDato(" - Nombre: ", TipoDato.TEXTO);
+		String apellidos = AdministradorMenus.leerDato(" - Apellidos: ", TipoDato.TEXTO);
+		String nif = AdministradorMenus.leerDato(" - NIF: ", TipoDato.NIF);
 		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección (CP, Provincia, Problación): ");
-		String email = AdministradorMenus.leerDato(" - E-mail: ", EnumTipoDato.EMAIL);
+		String email = AdministradorMenus.leerDato(" - E-mail: ", TipoDato.EMAIL);
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		System.out.println();

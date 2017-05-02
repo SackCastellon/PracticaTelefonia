@@ -7,7 +7,7 @@ package es.uji.al341823.telefonia.gui.console;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.EnumTipoDato;
+import es.uji.al341823.telefonia.api.TipoDato;
 
 /**
  * Clase del menu para guardar los datos desde un fichero
@@ -21,7 +21,7 @@ public class MenuGuardarDatos extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", EnumTipoDato.FICHERO_O_NINGUNO);
+		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", TipoDato.FICHERO_O_NINGUNO);
 
 		System.out.println();
 

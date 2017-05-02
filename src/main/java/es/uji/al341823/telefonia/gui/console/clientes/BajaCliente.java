@@ -7,7 +7,7 @@ package es.uji.al341823.telefonia.gui.console.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.EnumTipoDato;
+import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.gui.console.Menu;
 
@@ -27,7 +27,7 @@ public class BajaCliente extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerDato("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
+		String nif = AdministradorMenus.leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
 
 		System.out.println();
 

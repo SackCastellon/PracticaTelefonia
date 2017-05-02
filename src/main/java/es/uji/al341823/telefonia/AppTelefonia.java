@@ -9,7 +9,8 @@ import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuPrincipal;
-import es.uji.al341823.telefonia.gui.swing.vista.VentanaPrincipal;
+import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
+import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -42,7 +43,11 @@ public class AppTelefonia {
 				System.err.printf("Cannot load look and feel '%s', using cross platform look and feel", UIManager.getSystemLookAndFeelClassName());
 			}
 
+
 			VentanaPrincipal ventana = new VentanaPrincipal();
+			Controlador controlador = new Controlador(ventana);
+
+			ventana.setControlador(controlador);
 			ventana.generar();
 		});
 	}

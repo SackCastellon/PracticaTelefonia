@@ -6,7 +6,7 @@
 package es.uji.al341823.telefonia.gui.console.llamadas;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.EnumTipoDato;
+import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.llamadas.Llamada;
@@ -34,8 +34,8 @@ public class AltaLlamada extends Menu {
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
-		String origen = AdministradorMenus.leerDato(" - Numero de origen: ", EnumTipoDato.TELEFONO);
-		String destino = AdministradorMenus.leerDato(" - Numero de destino: ", EnumTipoDato.TELEFONO);
+		String origen = AdministradorMenus.leerDato(" - Numero de origen: ", TipoDato.TELEFONO);
+		String destino = AdministradorMenus.leerDato(" - Numero de destino: ", TipoDato.TELEFONO);
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de la llamada (AAAA-MM-DD hh:mm:ss | hoy): ");
 		int duracion = AdministradorMenus.leerEntero(" - Duracion de la llamada en segundos: ");
 

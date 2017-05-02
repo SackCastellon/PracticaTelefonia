@@ -156,7 +156,7 @@ public class AdministradorDatos {
 	 *
 	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
 	 */
-	public static boolean esDatoValido(String dato, EnumTipoDato tipoDato) {
+	public static boolean esDatoValido(String dato, TipoDato tipoDato) {
 		return dato.matches(tipoDato.getFormato());
 	}
 

@@ -140,7 +140,7 @@ public class AdministradorMenus {
 	 *
 	 * @return El dato introducido
 	 */
-	public static String leerDato(String mensaje, EnumTipoDato tipoDato) {
+	public static String leerDato(String mensaje, TipoDato tipoDato) {
 
 		System.out.print(mensaje);
 		String line = Menu.scanner.nextLine();
@@ -161,11 +161,11 @@ public class AdministradorMenus {
 	 *
 	 * @return El entero introducido
 	 *
-	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
 	public static int leerEntero(String mensaje) {
 
-		String line = leerDato(mensaje, EnumTipoDato.ENTERO);
+		String line = leerDato(mensaje, TipoDato.ENTERO);
 
 		return Integer.parseInt(line);
 	}
@@ -177,11 +177,11 @@ public class AdministradorMenus {
 	 *
 	 * @return La {@link Direccion} introducida
 	 *
-	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
 	public static Direccion leerDireccion(String mensaje) {
 
-		String line = leerDato(mensaje, EnumTipoDato.DIRECCION);
+		String line = leerDato(mensaje, TipoDato.DIRECCION);
 		String[] direccion = line.split(", ");
 
 		return new Direccion(Integer.parseInt(direccion[0]), direccion[1], direccion[2]);
@@ -195,7 +195,7 @@ public class AdministradorMenus {
 	 *
 	 * @return La fecha introducida ({@link LocalDateTime})
 	 *
-	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
 	public static LocalDateTime leerFecha(String mensaje) {
 
@@ -203,7 +203,7 @@ public class AdministradorMenus {
 
 		while (date == null) {
 
-			String line = leerDato(mensaje, EnumTipoDato.FECHA);
+			String line = leerDato(mensaje, TipoDato.FECHA);
 
 			date = "hoy".equalsIgnoreCase(line) ? LocalDateTime.now() : LocalDateTime.parse(line.replace(' ', 'T'));
 		}
@@ -217,11 +217,11 @@ public class AdministradorMenus {
 	 * @return El cliente correspondiente al NIF introducido, {@code null} ni el NIF no corresponde a ningún
 	 * cliente
 	 *
-	 * @see AdministradorMenus#leerDato(String, EnumTipoDato)
+	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
 	public static Cliente leerClienteNIF() {
 
-		String nif = leerDato("Introduce el NIF del cliente: ", EnumTipoDato.NIF);
+		String nif = leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
 
 		try {
 			return AdministradorDatos.getCliente(nif);

@@ -11,7 +11,7 @@ package es.uji.al341823.telefonia.api;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public enum EnumTipoDato {
+public enum TipoDato {
 
 	/** Formato sin restricciones */
 	TEXTO(".+"),
@@ -68,7 +68,7 @@ public enum EnumTipoDato {
 	 *
 	 * @param formato La regla de formato correspondiente
 	 */
-	EnumTipoDato(String formato) {
+	TipoDato(String formato) {
 		this.formato = formato;
 	}
 
