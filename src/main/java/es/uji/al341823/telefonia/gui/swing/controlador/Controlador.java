@@ -14,8 +14,10 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
@@ -24,6 +26,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * @author Juanjo González (al341823)
@@ -156,5 +159,25 @@ public class Controlador {
 					empr.getTarifa().toString()
 			});
 		}
+	}
+
+	public void emitirFactura(String nif) throws ClienteNoExisteExcepcion {
+		Cliente cliente = AdministradorDatos.getCliente(nif);
+		AdministradorDatos.emitirFactura(cliente);
+	}
+
+	public void altaLlamada(String nif, Llamada llamada) throws ClienteNoExisteExcepcion {
+		Cliente cliente = AdministradorDatos.getCliente(nif);
+		cliente.altaLlamada(llamada);
+	}
+
+	public LinkedList<Llamada> getLlamadas(String nif) throws ClienteNoExisteExcepcion {
+		Cliente cliente = AdministradorDatos.getCliente(nif);
+		return cliente.getLlamadas();
+	}
+
+	public LinkedList<Factura> getFacturas(String nif) throws ClienteNoExisteExcepcion {
+		Cliente cliente = AdministradorDatos.getCliente(nif);
+		return cliente.getFacturas();
 	}
 }

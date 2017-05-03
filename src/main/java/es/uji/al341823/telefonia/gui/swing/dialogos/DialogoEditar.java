@@ -250,7 +250,7 @@ public class DialogoEditar extends JDialog {
 								(Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
 					} catch (ClienteYaExisteExcepcion clienteYaExisteExcepcion) {
 						JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
-								"No se puedo añadir el cliente especificado",
+								"No se pudo añadir el cliente especificado",
 								"Error al añadir",
 								JOptionPane.ERROR_MESSAGE);
 					}
