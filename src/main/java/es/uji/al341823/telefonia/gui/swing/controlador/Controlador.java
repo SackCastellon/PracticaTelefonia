@@ -180,4 +180,8 @@ public class Controlador {
 		Cliente cliente = AdministradorDatos.getCliente(nif);
 		return cliente.getFacturas();
 	}
+
+	public void setTarifa(String nif, Tarifa tarifa) throws ClienteNoExisteExcepcion {
+		AdministradorDatos.getCliente(nif).setTarifa(tarifa);
+	}
 }

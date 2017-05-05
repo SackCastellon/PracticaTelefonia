@@ -6,6 +6,7 @@
 package es.uji.al341823.telefonia.gui.swing.ventanas;
 
 import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
+import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoBuscar;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoEditar;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoInfo;
 
@@ -20,9 +21,12 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -97,7 +101,7 @@ public class VentanaPrincipal {
 
 		// Item Nuevo
 		JMenuItem itemNuevo = new JMenuItem("Nuevo...");
-		itemNuevo.setIcon(this.getIcon("new"));
+		itemNuevo.setIcon(VentanaPrincipal.getIcon("new"));
 		itemNuevo.setMnemonic('N');
 		itemNuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK)); // Ctrl + N
 		itemNuevo.setActionCommand(ARCHIVO_NUEVO);
@@ -106,7 +110,7 @@ public class VentanaPrincipal {
 
 		// Item Cargar
 		JMenuItem itemCargar = new JMenuItem("Abrir...");
-		itemCargar.setIcon(this.getIcon("open"));
+		itemCargar.setIcon(VentanaPrincipal.getIcon("open"));
 		itemCargar.setMnemonic('B');
 		itemCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK)); // Ctrl + O
 		itemCargar.setActionCommand(ARCHIVO_ABRIR);
@@ -115,7 +119,7 @@ public class VentanaPrincipal {
 
 		// Item Guardar
 		JMenuItem itemGuardar = new JMenuItem("Guardar");
-		itemGuardar.setIcon(this.getIcon("save"));
+		itemGuardar.setIcon(VentanaPrincipal.getIcon("save"));
 		itemGuardar.setMnemonic('G');
 		itemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK)); // Ctrl + S
 		itemGuardar.setActionCommand(ARCHIVO_GUARDAR);
@@ -136,12 +140,28 @@ public class VentanaPrincipal {
 
 		// Item Salir
 		JMenuItem itemSalir = new JMenuItem("Salir");
-		itemSalir.setIcon(this.getIcon("exit"));
+		itemSalir.setIcon(VentanaPrincipal.getIcon("exit"));
 		itemSalir.setMnemonic('S');
 		itemSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK)); // Alt + F4
 		itemSalir.setActionCommand(ARCHIVO_SALIR);
 		itemSalir.addActionListener(new EscuchadorVentanaPrincipal());
 		menuArchivo.add(itemSalir);
+
+		// ============================================================ //
+
+		// Menu Editar
+		JMenu menuEditar = new JMenu("Editar");
+		menuEditar.setMnemonic('E');
+		menu.add(menuEditar);
+
+		// Item Buscar
+		JMenuItem itemBuscar = new JMenuItem("Buscar");
+		itemBuscar.setIcon(VentanaPrincipal.getIcon("find"));
+		itemBuscar.setMnemonic('B');
+		itemBuscar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK)); // Ctrl + N
+		itemBuscar.setActionCommand(EDITAR_BUSCAR);
+		itemBuscar.addActionListener(new EscuchadorVentanaPrincipal());
+		menuEditar.add(itemBuscar);
 
 		// ============================================================ //
 
@@ -153,7 +173,7 @@ public class VentanaPrincipal {
 		// Submenú temas
 		JMenu submenuTema = new JMenu("Tema");
 		submenuTema.setMnemonic('T');
-		submenuTema.setIcon(this.getIcon("theme"));
+		submenuTema.setIcon(VentanaPrincipal.getIcon("theme"));
 		submenuTema.addActionListener(new EscuchadorVentanaPrincipal());
 		menuVer.add(submenuTema);
 
@@ -192,7 +212,7 @@ public class VentanaPrincipal {
 
 		// Item Sobre telefonía
 		JMenuItem itemSobre = new JMenuItem("Sobre Telefonía...");
-		itemSobre.setIcon(this.getIcon("info"));
+		itemSobre.setIcon(VentanaPrincipal.getIcon("info"));
 		itemSobre.setMnemonic('S');
 		itemSobre.setActionCommand(AYUDA_SOBRE);
 		itemSobre.addActionListener(new EscuchadorVentanaPrincipal());
@@ -293,7 +313,7 @@ public class VentanaPrincipal {
 		// Botón Editar
 		this.btnEditar.setText("Editar");
 		this.btnEditar.setEnabled(false);
-		this.btnEditar.setActionCommand(TABLA_EDITAR);
+		this.btnEditar.setActionCommand(TABLA_EDITAR_TARIFA);
 		this.btnEditar.addActionListener(new EscuchadorBotonesTabla());
 		this.panelBotonesClientes.add(this.btnEditar);
 
@@ -364,7 +384,7 @@ public class VentanaPrincipal {
 					constraints.gridy++;
 
 					JTextField textField = new JTextField();
-					textField.setEnabled(false);
+					textField.setEditable(false);
 					textField.setText((String) tabla.getValueAt(row, col));
 					textField.setPreferredSize(new Dimension(200, textField.getPreferredSize().height));
 					this.panelInfo.add(textField, constraints);
@@ -399,8 +419,7 @@ public class VentanaPrincipal {
 
 	private void generarVentana() {
 		this.frame.setTitle(titulo);
-		ImageIcon icon = this.getIcon("phone_ring_big");
-		this.frame.setIconImage(icon.getImage());
+		this.frame.setIconImage(VentanaPrincipal.getImage("phone_ring"));
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.frame.setResizable(true);
 
@@ -428,18 +447,30 @@ public class VentanaPrincipal {
 		}
 	}
 
-	private ImageIcon getIcon(String icon) {
-		Class clazz = this.frame.getClass();
+	public static ImageIcon getIcon(String icon) {
 		String name = String.format("/icons/%s.png", icon);
 
-		URL url = clazz.getResource(name);
+		URL url = VentanaPrincipal.class.getResource(name);
 
 		if (url == null) {
 			System.err.println("Missing icon: " + icon);
-			url = clazz.getResource("/icons/missing.png");
+			url = VentanaPrincipal.class.getResource("/icons/missing.png");
 		}
 
 		return new ImageIcon(url);
+	}
+
+	public static Image getImage(String image) {
+		String name = String.format("/images/%s.png", image);
+
+		URL url = VentanaPrincipal.class.getResource(name);
+
+		if (url == null) {
+			System.err.println("Missing image: " + image);
+			url = VentanaPrincipal.class.getResource("/images/missing.png");
+		}
+
+		return new ImageIcon(url).getImage();
 	}
 
 	/**
@@ -468,6 +499,10 @@ public class VentanaPrincipal {
 					this.salir();
 					break;
 
+				case EDITAR_BUSCAR:
+					this.buscar();
+					break;
+
 				case AYUDA_SOBRE:
 					this.sobre();
 					break;
@@ -480,7 +515,14 @@ public class VentanaPrincipal {
 		}
 
 		private void abrir() {
-			JFileChooser chooser = new JFileChooser();
+			JFileChooser chooser = new JFileChooser() {
+				@Override
+				protected JDialog createDialog(Component parent) throws HeadlessException {
+					JDialog dialog = super.createDialog(parent);
+					dialog.setIconImage(VentanaPrincipal.getImage("open"));
+					return dialog;
+				}
+			};
 			chooser.setDialogTitle("Abrir...");
 			chooser.setFileFilter(new FicherosData());
 			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
@@ -507,7 +549,14 @@ public class VentanaPrincipal {
 		}
 
 		private void guardarComo() {
-			JFileChooser chooser = new JFileChooser();
+			JFileChooser chooser = new JFileChooser() {
+				@Override
+				protected JDialog createDialog(Component parent) throws HeadlessException {
+					JDialog dialog = super.createDialog(parent);
+					dialog.setIconImage(VentanaPrincipal.getImage("save"));
+					return dialog;
+				}
+			};
 			chooser.setDialogTitle("Guardar como...");
 			chooser.setFileFilter(new FicherosData());
 			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
@@ -536,6 +585,11 @@ public class VentanaPrincipal {
 				VentanaPrincipal.this.frame.dispose();
 				System.exit(0);
 			}
+		}
+
+		private void buscar() {
+			DialogoBuscar dialogo = new DialogoBuscar(frame, controlador);
+			dialogo.generar();
 		}
 
 		private void sobre() {
@@ -616,7 +670,7 @@ public class VentanaPrincipal {
 			JScrollPane scrollPane = (JScrollPane) VentanaPrincipal.this.tabbedPaneClientes.getSelectedComponent();
 			JTable tabla = (JTable) scrollPane.getViewport().getView();
 
-			if (accion.equals(TABLA_NUEVO) || accion.equals(TABLA_EDITAR)) {
+			if (accion.equals(TABLA_NUEVO) || accion.equals(TABLA_EDITAR_TARIFA)) {
 				DialogoEditar dialogo = new DialogoEditar(owner, tabla, accion, VentanaPrincipal.this.controlador);
 				dialogo.generar();
 			} else if (accion.equals(TABLA_BORRAR)) {

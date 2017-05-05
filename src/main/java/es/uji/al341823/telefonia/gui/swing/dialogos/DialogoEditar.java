@@ -7,9 +7,11 @@ package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.TipoDato;
+import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
+import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -47,7 +49,7 @@ import java.util.LinkedList;
 
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_CANCELAR;
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_GUARDAR;
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_EDITAR;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_EDITAR_TARIFA;
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_NUEVO;
 
 /**
@@ -57,7 +59,7 @@ import static es.uji.al341823.telefonia.gui.swing.ActionCommands.TABLA_NUEVO;
 public class DialogoEditar extends JDialog {
 
 	private final JTable tabla;
-	private final String accion;
+	private final String actionCommand;
 	private final Controlador controlador;
 
 	private final ArrayList<Boolean> camposValidos;
@@ -71,14 +73,17 @@ public class DialogoEditar extends JDialog {
 
 	private final LinkedList<TipoDato> tipoDatos = new LinkedList<>();
 
-	public DialogoEditar(Window owner, JTable tabla, String accion, Controlador controlador) {
+	public DialogoEditar(Window owner, JTable tabla, String actionCommand, Controlador controlador) {
 		super(owner, ModalityType.APPLICATION_MODAL);
 
 		this.tabla = tabla;
-		this.accion = accion;
+		this.actionCommand = actionCommand;
 		this.controlador = controlador;
 
-		this.camposValidos = new ArrayList<>(Collections.nCopies(tabla.getColumnCount() - 2, false));
+		if (!actionCommand.equals(TABLA_EDITAR_TARIFA))
+			this.camposValidos = new ArrayList<>(Collections.nCopies(tabla.getColumnCount() - 2, false));
+		else
+			this.camposValidos = new ArrayList<>();
 
 		if (tabla.getColumnCount() == 7) {
 			this.tipoDatos.add(TipoDato.NIF);
@@ -124,8 +129,12 @@ public class DialogoEditar extends JDialog {
 
 			if (col >= (this.tabla.getColumnCount() - 2)) continue;
 
+			boolean editable = !this.actionCommand.equals(TABLA_EDITAR_TARIFA);
+
 			JTextField textField = new JTextField();
-			if (this.accion.equals(TABLA_EDITAR)) textField.setText((String) this.tabla.getValueAt(row, col));
+			if (this.actionCommand.equals(TABLA_EDITAR_TARIFA))
+				textField.setText((String) this.tabla.getValueAt(row, col));
+			textField.setEditable(editable);
 			textField.setPreferredSize(new Dimension(250, textField.getPreferredSize().height));
 			textField.setCaretPosition(0);
 			textField.addFocusListener(new ValidadorDatos(this.tipoDatos.get(col), col));
@@ -138,12 +147,13 @@ public class DialogoEditar extends JDialog {
 		// Selector fecha
 		this.spinnerFecha = new JSpinner(new SpinnerDateModel());
 		this.spinnerFecha.setEditor(new JSpinner.DateEditor(this.spinnerFecha, "yyyy-MM-dd HH:mm:ss"));
-		if (this.accion.equals(TABLA_NUEVO))
+		if (this.actionCommand.equals(TABLA_NUEVO))
 			this.spinnerFecha.setValue(new Date());
 		else {
 			LocalDateTime date = LocalDateTime.parse((String) this.tabla.getValueAt(row, constraints.gridy), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 			this.spinnerFecha.setValue(Date.from(date.atZone(ZoneId.systemDefault()).toInstant())); // FIXME
 		}
+		this.spinnerFecha.setEnabled(!this.actionCommand.equals(TABLA_EDITAR_TARIFA));
 		inputPanel.add(this.spinnerFecha, constraints);
 
 		constraints.gridy++;
@@ -161,7 +171,7 @@ public class DialogoEditar extends JDialog {
 		this.add(buttonPanel, BorderLayout.SOUTH);
 
 		this.btnGuardar = new JButton("Guardar");
-		this.btnGuardar.setEnabled(false);
+		this.btnGuardar.setEnabled(this.actionCommand.equals(TABLA_EDITAR_TARIFA));
 		this.btnGuardar.setActionCommand(DIALOGO_GUARDAR);
 		this.btnGuardar.addActionListener(new EscuchadorDialogoEditar());
 		buttonPanel.add(this.btnGuardar);
@@ -178,10 +188,13 @@ public class DialogoEditar extends JDialog {
 		// ============================================================ //
 
 
-		if (this.accion.equals(TABLA_NUEVO))
+		if (this.actionCommand.equals(TABLA_NUEVO)) {
 			this.setTitle("Nuevo cliente");
-		else if (this.accion.equals(TABLA_EDITAR))
-			this.setTitle("Editar cliente");
+			this.setIconImage(VentanaPrincipal.getImage("add"));
+		} else if (this.actionCommand.equals(TABLA_EDITAR_TARIFA)) {
+			this.setTitle("Editar tarifa");
+			this.setIconImage(VentanaPrincipal.getImage("edit"));
+		}
 
 		this.setResizable(false);
 
@@ -209,6 +222,8 @@ public class DialogoEditar extends JDialog {
 
 		@Override
 		public void focusGained(FocusEvent e) {
+			if (DialogoEditar.this.actionCommand.equals(TABLA_EDITAR_TARIFA)) return;
+
 			JTextField textField = ((JTextField) e.getComponent());
 			textField.setBackground(UIManager.getColor("TextField.background"));
 			DialogoEditar.this.camposValidos.set(this.campo, false);
@@ -219,6 +234,8 @@ public class DialogoEditar extends JDialog {
 
 		@Override
 		public void focusLost(FocusEvent e) {
+			if (DialogoEditar.this.actionCommand.equals(TABLA_EDITAR_TARIFA)) return;
+
 			JTextField textField = ((JTextField) e.getComponent());
 
 			if (AdministradorDatos.esDatoValido(textField.getText(), this.tipoDato)) {
@@ -242,17 +259,30 @@ public class DialogoEditar extends JDialog {
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
 				case DIALOGO_GUARDAR:
-					String[] textos = DialogoEditar.this.inputs.stream().map(JTextComponent::getText).toArray(String[]::new);
+					if (actionCommand.equals(TABLA_EDITAR_TARIFA)) {
+						try {
+							int row = tabla.getSelectedRow();
+							String nif = (String) tabla.getValueAt(row, 0);
+							controlador.setTarifa(nif, (Tarifa) comboBoxTarifas.getSelectedItem()); // TODO añadir para tarifa extra
+						} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
+							JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
+									"No se pudo cambiar la tarifa del cliente especificado",
+									"Error al cambiar la tarifa",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						String[] textos = DialogoEditar.this.inputs.stream().map(JTextComponent::getText).toArray(String[]::new);
 
-					try {
-						DialogoEditar.this.controlador.guardarCliente(textos,
-								(Date) DialogoEditar.this.spinnerFecha.getValue(),
-								(Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
-					} catch (ClienteYaExisteExcepcion clienteYaExisteExcepcion) {
-						JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
-								"No se pudo añadir el cliente especificado",
-								"Error al añadir",
-								JOptionPane.ERROR_MESSAGE);
+						try {
+							DialogoEditar.this.controlador.guardarCliente(textos,
+									(Date) DialogoEditar.this.spinnerFecha.getValue(),
+									(Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
+						} catch (ClienteYaExisteExcepcion clienteYaExisteExcepcion) {
+							JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
+									"No se pudo añadir el cliente especificado",
+									"Error al añadir",
+									JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				case DIALOGO_CANCELAR:
 					DialogoEditar.this.dispose();

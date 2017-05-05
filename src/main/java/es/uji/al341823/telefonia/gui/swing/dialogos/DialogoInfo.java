@@ -8,6 +8,7 @@ package es.uji.al341823.telefonia.gui.swing.dialogos;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
+import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.JButton;
@@ -89,10 +90,15 @@ public class DialogoInfo extends JDialog {
 		// ============================================================ //
 		// ============================================================ //
 
-		if (this.actionCommand.equals(INFO_VER_LLAMADAS))
+		if (this.actionCommand.equals(INFO_VER_LLAMADAS)) {
 			this.setTitle("Llamadas del cliente: " + this.nif);
-		else
+			this.setIconImage(VentanaPrincipal.getImage("phone"));
+		} else if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
 			this.setTitle("Facturas del cliente: " + this.nif);
+			this.setIconImage(VentanaPrincipal.getImage("receipt"));
+		}
+
+		this.setMinimumSize(new Dimension(300, 200));
 
 		this.pack();
 
@@ -124,7 +130,7 @@ public class DialogoInfo extends JDialog {
 						llamada.getNumeroOrigen(),
 						llamada.getNumeroDestino(),
 						llamada.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-						llamada.getDuracionLlamada()
+						llamada.getDuracionLlamada() + " segundos"
 				});
 			}
 
@@ -164,8 +170,8 @@ public class DialogoInfo extends JDialog {
 						factura.getCodigo(),
 						factura.getTarifa(),
 						factura.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-						factura.getPeriodoFactuacion(),
-						factura.getImporte()
+						factura.getPeriodoFactuacion() + " días",
+						factura.getImporte() + "€"
 				});
 			}
 

@@ -16,10 +16,12 @@ public class ActionCommands {
 	public static final String ARCHIVO_GUARDAR_COMO = "file_save_as";
 	public static final String ARCHIVO_SALIR = "file_exit";
 
+	public static final String EDITAR_BUSCAR = "edit_find";
+
 	public static final String AYUDA_SOBRE = "help_about";
 
 	public static final String TABLA_NUEVO = "table_new";
-	public static final String TABLA_EDITAR = "table_edit";
+	public static final String TABLA_EDITAR_TARIFA = "table_edit";
 	public static final String TABLA_BORRAR = "table_delete";
 
 	public static final String DIALOGO_GUARDAR = "dialog_save";

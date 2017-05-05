@@ -7,6 +7,7 @@ package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.TipoDato;
+import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.JButton;
@@ -96,6 +97,7 @@ public class DialogoLlamada extends JDialog {
 
 
 		this.setTitle("Nueva llamada");
+		this.setIconImage(VentanaPrincipal.getImage("phone_add"));
 
 		this.setResizable(false);
 
