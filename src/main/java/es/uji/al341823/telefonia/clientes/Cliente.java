@@ -157,7 +157,7 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return La factura emitida
 	 */
-	public Factura emitirFactura() {
+	public Factura emitirFactura() throws FechaNoValidaExcepcion {
 		LocalDateTime hoy = LocalDateTime.now();
 		int duracionLlamadas = 0;
 
@@ -167,12 +167,7 @@ public abstract class Cliente implements IFecha, Serializable {
 				duracionLlamadas += llamada.getDuracionLlamada();
 		}
 
-		Factura factura;
-		try {
-			factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
-		} catch (FechaNoValidaExcepcion e) {
-			return null;
-		}
+		Factura factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
 
 		this.ultimaFacturacion = hoy;
 

@@ -97,7 +97,7 @@ public class AdministradorDatos {
 	 *
 	 * @return La factura emitida, {@code null} si no se pudo emitir
 	 */
-	public static Factura emitirFactura(Cliente cliente) {
+	public static Factura emitirFactura(Cliente cliente) throws FechaNoValidaExcepcion {
 		Factura factura = cliente.emitirFactura();
 		datos.FACTURAS.put(factura.getCodigo(), factura);
 

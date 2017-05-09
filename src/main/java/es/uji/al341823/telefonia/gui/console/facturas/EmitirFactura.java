@@ -7,6 +7,7 @@ package es.uji.al341823.telefonia.gui.console.facturas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -28,14 +29,13 @@ public class EmitirFactura extends Menu {
 
 		if (cliente == null) return;
 
-		Factura factura = AdministradorDatos.emitirFactura(cliente);
-
-		System.out.println();
-
-		if (factura == null)
-			System.out.println("No se pudo emitir la factura");
-		else
+		try {
+			Factura factura = AdministradorDatos.emitirFactura(cliente);
+			System.out.println();
 			System.out.println("Información de la factura emitida: " + factura);
+		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
+			System.out.println("No se pudo emitir la factura");
+		}
 
 		AdministradorMenus.esperarParaContinuar();
 	}

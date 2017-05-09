@@ -193,7 +193,7 @@ public class DialogoInfo extends JDialog {
 				case DIALOGO_EMITIR_FACTURA:
 					try {
 						DialogoInfo.this.controlador.emitirFactura(DialogoInfo.this.nif);
-					} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
+					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(DialogoInfo.this,
 								"No se pudo emitir una factura para el cliente especificado",
 								"Error al emitir factura",

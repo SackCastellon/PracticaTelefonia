@@ -8,6 +8,7 @@ package es.uji.al341823.telefonia.gui.swing.controlador;
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -34,9 +36,8 @@ import java.util.LinkedList;
  */
 public class Controlador {
 
-	private File ficheroDatos;
-
 	private final VentanaPrincipal ventana;
+	private File ficheroDatos;
 
 	public Controlador(VentanaPrincipal ventana) {
 		super();
@@ -110,12 +111,12 @@ public class Controlador {
 		return empresas;
 	}
 
-	public void setFicheroDatos(File ficheroDatos) {
-		this.ficheroDatos = ficheroDatos;
-	}
-
 	public File getFicheroDatos() {
 		return this.ficheroDatos;
+	}
+
+	public void setFicheroDatos(File ficheroDatos) {
+		this.ficheroDatos = ficheroDatos;
 	}
 
 	public void limpiarDatos() {
@@ -161,7 +162,7 @@ public class Controlador {
 		}
 	}
 
-	public void emitirFactura(String nif) throws ClienteNoExisteExcepcion {
+	public void emitirFactura(String nif) throws ClienteNoExisteExcepcion, FechaNoValidaExcepcion {
 		Cliente cliente = AdministradorDatos.getCliente(nif);
 		AdministradorDatos.emitirFactura(cliente);
 	}
@@ -183,5 +184,36 @@ public class Controlador {
 
 	public void setTarifa(String nif, Tarifa tarifa) throws ClienteNoExisteExcepcion {
 		AdministradorDatos.getCliente(nif).setTarifa(tarifa);
+	}
+
+	public Collection<Cliente> extraerClientes(Date inicio, Date fin) throws FechaNoValidaExcepcion {
+		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
+		LocalDateTime inicioLocal = LocalDateTime.ofInstant(inicio.toInstant(), ZoneId.systemDefault());
+		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
+		return AdministradorDatos.extraerConjunto(clientes, inicioLocal, finLocal);
+	}
+
+	public Collection<Llamada> extraerLlamadas(Date inicio, Date fin) throws FechaNoValidaExcepcion {
+		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
+		LinkedList<Llamada> llamadas = new LinkedList<>();
+
+		for (Cliente cliente : clientes)
+			llamadas.addAll(cliente.getLlamadas());
+
+		LocalDateTime inicioLocal = LocalDateTime.ofInstant(inicio.toInstant(), ZoneId.systemDefault());
+		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
+		return AdministradorDatos.extraerConjunto(llamadas, inicioLocal, finLocal);
+	}
+
+	public Collection<Factura> extraerFacturas(Date inicio, Date fin) throws FechaNoValidaExcepcion {
+		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
+		LinkedList<Factura> facturas = new LinkedList<>();
+
+		for (Cliente cliente : clientes)
+			facturas.addAll(cliente.getFacturas());
+
+		LocalDateTime inicioLocal = LocalDateTime.ofInstant(inicio.toInstant(), ZoneId.systemDefault());
+		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
+		return AdministradorDatos.extraerConjunto(facturas, inicioLocal, finLocal);
 	}
 }
