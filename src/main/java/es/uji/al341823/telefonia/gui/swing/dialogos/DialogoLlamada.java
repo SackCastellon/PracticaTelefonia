@@ -117,21 +117,21 @@ public class DialogoLlamada extends JDialog {
 
 		i++;
 
-		JLabel lblNumDestino = new JLabel("Numero de origen:");
+		JLabel lblNumDestino = new JLabel("Numero de destino:");
 		this.txtNumDestino.setPreferredSize(new Dimension(250, this.txtNumDestino.getPreferredSize().height));
 		this.txtNumDestino.addFocusListener(new ValidadorDatos(TipoDato.TELEFONO, i));
 		this.addLine(lblNumDestino, this.txtNumDestino, i);
 
 		i++;
 
-		JLabel lblFecha = new JLabel("Numero de origen:");
+		JLabel lblFecha = new JLabel("Fecha de la llamada:");
 		this.spinnerFecha.setEditor(new JSpinner.DateEditor(this.spinnerFecha, "yyyy-MM-dd HH:mm:ss"));
 		this.spinnerFecha.setValue(new Date());
 		this.addLine(lblFecha, this.spinnerFecha, i);
 
 		i++;
 
-		JLabel lblDuracion = new JLabel("Numero de origen:");
+		JLabel lblDuracion = new JLabel("Duración de la llamada:");
 		this.spinnerDuracion.setEditor(new JSpinner.NumberEditor(this.spinnerDuracion));
 		this.addLine(lblDuracion, this.spinnerDuracion, i);
 	}
