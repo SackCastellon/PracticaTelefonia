@@ -27,11 +27,13 @@ public class ActionCommands {
 	public static final String DIALOGO_GUARDAR = "dialog_save";
 	public static final String DIALOGO_CANCELAR = "dialog_cancel";
 
-
 	public static final String INFO_VER_LLAMADAS = "info_view_calls";
 	public static final String INFO_VER_FACTURAS = "info_view_invoices";
 
 	public static final String DIALOGO_EMITIR_FACTURA = "dialog_new_invoice";
 	public static final String DIALOGO_NUEVA_LLAMADA = "dialog_new_call";
 	public static final String DIALOGO_CERRAR = "dialog_close";
+
+
+	public static final String DIALOGO_BUSCAR = "dialog_find";
 }

@@ -17,7 +17,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.BorderLayout;
@@ -524,7 +524,7 @@ public class VentanaPrincipal {
 				}
 			};
 			chooser.setDialogTitle("Abrir...");
-			chooser.setFileFilter(new FicherosData());
+			chooser.setFileFilter(new FileNameExtensionFilter("Fichero de datos (*.data)", "data"));
 			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
 
 			int option = chooser.showOpenDialog(VentanaPrincipal.this.frame);
@@ -558,7 +558,7 @@ public class VentanaPrincipal {
 				}
 			};
 			chooser.setDialogTitle("Guardar como...");
-			chooser.setFileFilter(new FicherosData());
+			chooser.setFileFilter(new FileNameExtensionFilter("Fichero de datos (*.data)", "data"));
 			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
 
 			int option = chooser.showSaveDialog(VentanaPrincipal.this.frame);
@@ -605,22 +605,6 @@ public class VentanaPrincipal {
 					message,
 					"Sobre Telefonía",
 					JOptionPane.PLAIN_MESSAGE);
-		}
-
-		private class FicherosData extends FileFilter {
-			@Override
-			public boolean accept(File file) {
-				if (file.isDirectory())
-					return true;
-
-				String filename = file.getName().toLowerCase();
-				return filename.endsWith(".data");
-			}
-
-			@Override
-			public String getDescription() {
-				return "Fichero de datos (*.data)";
-			}
 		}
 	}
 
