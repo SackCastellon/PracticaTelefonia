@@ -220,7 +220,7 @@ public class VentanaPrincipal {
 		submenuTema.add(avisoTemaPanel);
 
 		// Etiqueta aviso
-		JLabel avisoTema = new JLabel("<html>Si cambia el tema se reestablcerán<br>el tamaño y la posición iniciales de<br>la ventana</html>");
+		JLabel avisoTema = new JLabel("<html>Si cambia el tema se reestablecerán<br>el tamaño y la posición iniciales de<br>la ventana</html>");
 		avisoTemaPanel.add(avisoTema);
 
 		// ============================================================ //

@@ -11,27 +11,15 @@ import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
 import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_CERRAR;
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_EMITIR_FACTURA;
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_NUEVA_LLAMADA;
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.INFO_VER_FACTURAS;
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.INFO_VER_LLAMADAS;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
 
 /**
  * @author Juanjo González (al341823)
@@ -208,7 +196,8 @@ public class DialogoInfo extends JDialog {
 					dialogo.generar();
 					try {
 						Llamada llamada = dialogo.getLlamada();
-						DialogoInfo.this.controlador.altaLlamada(DialogoInfo.this.nif, llamada);
+						if (llamada!= null)
+							DialogoInfo.this.controlador.altaLlamada(DialogoInfo.this.nif, llamada);
 					} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
 						JOptionPane.showMessageDialog(DialogoInfo.this,
 								"No se pudo añadir la llamada al cliente especificado",

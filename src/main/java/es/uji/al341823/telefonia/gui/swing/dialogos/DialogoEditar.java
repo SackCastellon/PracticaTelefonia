@@ -72,6 +72,7 @@ public class DialogoEditar extends JDialog {
 	private JButton btnGuardar;
 
 	private final LinkedList<TipoDato> tipoDatos = new LinkedList<>();
+	private JComboBox comboBoxTarifasExtra;
 
 	public DialogoEditar(Window owner, JTable tabla, String actionCommand, Controlador controlador) {
 		super(owner, ModalityType.APPLICATION_MODAL);
@@ -164,6 +165,16 @@ public class DialogoEditar extends JDialog {
 		for (Tarifa tarifa : tarifas)
 			this.comboBoxTarifas.addItem(tarifa);
 		inputPanel.add(this.comboBoxTarifas, constraints);
+
+		constraints.gridy++;
+
+		if(actionCommand.equals(TABLA_EDITAR_TARIFA)){
+			this.comboBoxTarifasExtra = new JComboBox<>();
+			ArrayList<Tarifa> tarifasExtra = this.controlador.getTarifasExtra((Tarifa) this.comboBoxTarifas.getSelectedItem());
+			for (Tarifa tarifa : tarifasExtra)
+				this.comboBoxTarifasExtra.addItem(tarifa);
+			inputPanel.add(this.comboBoxTarifasExtra, constraints);
+		}
 
 		// ============================================================ //
 
@@ -263,7 +274,7 @@ public class DialogoEditar extends JDialog {
 						try {
 							int row = tabla.getSelectedRow();
 							String nif = (String) tabla.getValueAt(row, 0);
-							controlador.setTarifa(nif, (Tarifa) comboBoxTarifas.getSelectedItem()); // TODO añadir para tarifa extra
+							controlador.setTarifa(nif, (Tarifa) comboBoxTarifasExtra.getSelectedItem()); // TODO añadir para tarifa extra
 						} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
 							JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
 									"No se pudo cambiar la tarifa del cliente especificado",
