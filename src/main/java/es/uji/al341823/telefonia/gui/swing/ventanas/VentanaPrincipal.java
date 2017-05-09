@@ -45,31 +45,51 @@ import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
 public class VentanaPrincipal {
 
 	private static final String titulo = "Telefonía";
-
+	public final JTable tablaParticulares = new JTable();
+	public final JTable tablaEmpresas = new JTable();
 	private final JFrame frame;
-
 	private final JPanel panelIzquierda = new JPanel();
 	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
 	private final JPanel panelBotonesClientes = new JPanel();
-
 	private final JPanel panelDerecha = new JPanel();
 	private final JPanel panelInfo = new JPanel();
 	private final JPanel panelBotonesInfo = new JPanel();
 	private final JButton btnVerLlamadas = new JButton();
 	private final JButton btnVerFacturas = new JButton();
-
-	public final JTable tablaParticulares = new JTable();
-	public final JTable tablaEmpresas = new JTable();
-
-	private Controlador controlador;
-
 	private final JButton btnEditar = new JButton();
 	private final JButton btnBorrar = new JButton();
+	private Controlador controlador;
 
 	public VentanaPrincipal() {
 		super();
 		this.frame = new JFrame();
 		this.frame.setLayout(new BorderLayout(5, 5));
+	}
+
+	public static ImageIcon getIcon(String icon) {
+		String name = String.format("/icons/%s.png", icon);
+
+		URL url = VentanaPrincipal.class.getResource(name);
+
+		if (url == null) {
+			System.err.println("Missing icon: " + icon);
+			url = VentanaPrincipal.class.getResource("/icons/missing.png");
+		}
+
+		return new ImageIcon(url);
+	}
+
+	public static Image getImage(String image) {
+		String name = String.format("/images/%s.png", image);
+
+		URL url = VentanaPrincipal.class.getResource(name);
+
+		if (url == null) {
+			System.err.println("Missing image: " + image);
+			url = VentanaPrincipal.class.getResource("/images/missing.png");
+		}
+
+		return new ImageIcon(url).getImage();
 	}
 
 	public void setControlador(Controlador controlador) {
@@ -253,6 +273,7 @@ public class VentanaPrincipal {
 		this.tablaParticulares.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.tablaParticulares.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.tablaParticulares.getSelectionModel().addListSelectionListener(new EscuchadorTablas());
+		this.tablaParticulares.setAutoCreateRowSorter(true);
 
 		// Establece el nombre de la columna
 		DefaultTableModel modelo = (DefaultTableModel) this.tablaParticulares.getModel();
@@ -286,6 +307,7 @@ public class VentanaPrincipal {
 		this.tablaEmpresas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.tablaEmpresas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.tablaEmpresas.getSelectionModel().addListSelectionListener(new EscuchadorTablas());
+		this.tablaEmpresas.setAutoCreateRowSorter(true);
 
 		// Establece el nombre de la columna
 		DefaultTableModel modelo = (DefaultTableModel) this.tablaEmpresas.getModel();
@@ -445,32 +467,6 @@ public class VentanaPrincipal {
 		} catch (IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException | ClassNotFoundException e) {
 			System.err.println("No se pudo aplicar el LaF: " + className);
 		}
-	}
-
-	public static ImageIcon getIcon(String icon) {
-		String name = String.format("/icons/%s.png", icon);
-
-		URL url = VentanaPrincipal.class.getResource(name);
-
-		if (url == null) {
-			System.err.println("Missing icon: " + icon);
-			url = VentanaPrincipal.class.getResource("/icons/missing.png");
-		}
-
-		return new ImageIcon(url);
-	}
-
-	public static Image getImage(String image) {
-		String name = String.format("/images/%s.png", image);
-
-		URL url = VentanaPrincipal.class.getResource(name);
-
-		if (url == null) {
-			System.err.println("Missing image: " + image);
-			url = VentanaPrincipal.class.getResource("/images/missing.png");
-		}
-
-		return new ImageIcon(url).getImage();
 	}
 
 	/**

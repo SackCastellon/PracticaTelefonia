@@ -59,16 +59,13 @@ public abstract class TarifaExtra extends Tarifa {
 
 	@Override
 	public String toString() {
-		String str = this.tarifaBase + "\n\t\t";
 		if (this.inicioPeriodo == this.finPeriodo)
-			str += String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
+			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d", this.getPrecio(),
 					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo);
 		else
-			str += String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
+			return String.format("Tarifa Extra: %.2f €/min - Durante %s %d-%d", this.getPrecio(),
 					this.unidadTemporal.getDisplayName(new Locale("es", "ES")), this.inicioPeriodo,
 					this.finPeriodo);
-
-		return str;
 	}
 
 	@Override

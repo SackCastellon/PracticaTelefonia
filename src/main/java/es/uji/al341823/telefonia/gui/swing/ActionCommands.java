@@ -36,4 +36,8 @@ public class ActionCommands {
 
 
 	public static final String DIALOGO_BUSCAR = "dialog_find";
+
+	public static final String BUSCAR_CLIENTES = "find_client";
+	public static final String BUSCAR_LLAMADAS = "find_call";
+	public static final String BUSCAR_FACTURAS = "find_invoice";
 }
