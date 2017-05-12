@@ -216,4 +216,8 @@ public class Controlador {
 		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
 		return AdministradorDatos.extraerConjunto(facturas, inicioLocal, finLocal);
 	}
+
+	public Tarifa getTarifa(String nif) throws ClienteNoExisteExcepcion {
+		return AdministradorDatos.getCliente(nif).getTarifa();
+	}
 }

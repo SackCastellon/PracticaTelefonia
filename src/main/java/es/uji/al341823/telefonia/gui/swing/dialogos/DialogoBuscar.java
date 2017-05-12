@@ -79,21 +79,21 @@ public class DialogoBuscar extends JDialog {
 		radioClientes.setAlignmentX(CENTER_ALIGNMENT);
 		radioClientes.setActionCommand(BUSCAR_CLIENTES);
 		inputPanel.add(radioClientes);
-		buttonGroup.add(radioClientes);
+		this.buttonGroup.add(radioClientes);
 
 		JRadioButton radioLlamadas = new JRadioButton();
 		radioLlamadas.setText("Llamadas realizadas ...");
 		radioLlamadas.setAlignmentX(CENTER_ALIGNMENT);
 		radioLlamadas.setActionCommand(BUSCAR_LLAMADAS);
 		inputPanel.add(radioLlamadas);
-		buttonGroup.add(radioLlamadas);
+		this.buttonGroup.add(radioLlamadas);
 
 		JRadioButton radioFacturas = new JRadioButton();
 		radioFacturas.setText("Facturas emitidas ...");
 		radioFacturas.setAlignmentX(CENTER_ALIGNMENT);
 		radioFacturas.setActionCommand(BUSCAR_FACTURAS);
 		inputPanel.add(radioFacturas);
-		buttonGroup.add(radioFacturas);
+		this.buttonGroup.add(radioFacturas);
 
 
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -107,19 +107,19 @@ public class DialogoBuscar extends JDialog {
 
 		datePanel.add(new JLabel("... entre "));
 
-		spinnerFechaInicio.setEditor(new JSpinner.DateEditor(spinnerFechaInicio, "yyyy-MM-dd HH:mm:ss"));
-		spinnerFechaInicio.addChangeListener(new EcuchadorFechas());
+		this.spinnerFechaInicio.setEditor(new JSpinner.DateEditor(this.spinnerFechaInicio, "yyyy-MM-dd HH:mm:ss"));
+		this.spinnerFechaInicio.addChangeListener(new EcuchadorFechas());
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -1);
 		Date result = cal.getTime();
-		spinnerFechaInicio.setValue(result);
-		datePanel.add(spinnerFechaInicio);
+		this.spinnerFechaInicio.setValue(result);
+		datePanel.add(this.spinnerFechaInicio);
 
 		datePanel.add(new JLabel(" y "));
 
-		spinnerFechaFinal.setEditor(new JSpinner.DateEditor(spinnerFechaFinal, "yyyy-MM-dd HH:mm:ss"));
-		spinnerFechaFinal.addChangeListener(new EcuchadorFechas());
-		datePanel.add(spinnerFechaFinal);
+		this.spinnerFechaFinal.setEditor(new JSpinner.DateEditor(this.spinnerFechaFinal, "yyyy-MM-dd HH:mm:ss"));
+		this.spinnerFechaFinal.addChangeListener(new EcuchadorFechas());
+		datePanel.add(this.spinnerFechaFinal);
 
 		datePanel.add(Box.createRigidArea(new Dimension(20, 0)));
 
@@ -134,15 +134,21 @@ public class DialogoBuscar extends JDialog {
 
 		// ============================================================ //
 
-		JPanel displayPanel = new JPanel();
-		this.add(displayPanel, BorderLayout.CENTER);
-
 		JScrollPane scrollPane = new JScrollPane();
-		displayPanel.add(scrollPane, BorderLayout.CENTER);
+		Border border1 = new CompoundBorder(new EmptyBorder(5, 5, 5, 5), scrollPane.getBorder());
+		scrollPane.setBorder(border1);
+		this.add(scrollPane);
 
-		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tabla.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(tabla);
+		this.tabla.setModel(new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
+		this.tabla.getTableHeader().setReorderingAllowed(false);
+		this.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.tabla.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(this.tabla);
 
 		// ============================================================ //
 
@@ -162,7 +168,8 @@ public class DialogoBuscar extends JDialog {
 
 		this.setTitle("Buscar");
 		this.setIconImage(VentanaPrincipal.getImage("find"));
-		this.setMinimumSize(new Dimension(300, 200));
+		this.setPreferredSize(new Dimension(500, 500));
+		this.setMinimumSize(new Dimension(450, 300));
 
 		this.pack();
 
@@ -179,11 +186,11 @@ public class DialogoBuscar extends JDialog {
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
 				case DIALOGO_BUSCAR:
-					DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+					DefaultTableModel modelo = (DefaultTableModel) DialogoBuscar.this.tabla.getModel();
 					modelo.setColumnCount(0);
 					modelo.setRowCount(0);
 
-					switch (buttonGroup.getSelection().getActionCommand()) {
+					switch (DialogoBuscar.this.buttonGroup.getSelection().getActionCommand()) {
 						case BUSCAR_CLIENTES:
 							modelo.addColumn("NIF");
 							modelo.addColumn("Nombre");
@@ -194,7 +201,7 @@ public class DialogoBuscar extends JDialog {
 							modelo.addColumn("Tarifa contratada");
 
 							try {
-								Collection<Cliente> clientes = controlador.extraerClientes((Date) spinnerFechaInicio.getValue(), (Date) spinnerFechaFinal.getValue());
+								Collection<Cliente> clientes = DialogoBuscar.this.controlador.extraerClientes((Date) DialogoBuscar.this.spinnerFechaInicio.getValue(), (Date) DialogoBuscar.this.spinnerFechaFinal.getValue());
 								for (Cliente cliente : clientes) {
 									String apellidos = "";
 
@@ -227,7 +234,7 @@ public class DialogoBuscar extends JDialog {
 							modelo.addColumn("Duración");
 
 							try {
-								Collection<Llamada> llamadas = controlador.extraerLlamadas((Date) spinnerFechaInicio.getValue(), (Date) spinnerFechaFinal.getValue());
+								Collection<Llamada> llamadas = DialogoBuscar.this.controlador.extraerLlamadas((Date) DialogoBuscar.this.spinnerFechaInicio.getValue(), (Date) DialogoBuscar.this.spinnerFechaFinal.getValue());
 								for (Llamada llamada : llamadas) {
 									modelo.addRow(new Object[] {
 											llamada.getNumeroOrigen(),
@@ -252,7 +259,7 @@ public class DialogoBuscar extends JDialog {
 							modelo.addColumn("Importe");
 
 							try {
-								Collection<Factura> facturas = controlador.extraerFacturas((Date) spinnerFechaInicio.getValue(), (Date) spinnerFechaFinal.getValue());
+								Collection<Factura> facturas = DialogoBuscar.this.controlador.extraerFacturas((Date) DialogoBuscar.this.spinnerFechaInicio.getValue(), (Date) DialogoBuscar.this.spinnerFechaFinal.getValue());
 								for (Factura factura : facturas) {
 									modelo.addRow(new Object[] {
 											factura.getCodigo(),
@@ -281,8 +288,8 @@ public class DialogoBuscar extends JDialog {
 	private class EcuchadorFechas implements ChangeListener {
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			SpinnerDateModel modeloInicio = (SpinnerDateModel) spinnerFechaInicio.getModel();
-			SpinnerDateModel modeloFin = (SpinnerDateModel) spinnerFechaFinal.getModel();
+			SpinnerDateModel modeloInicio = (SpinnerDateModel) DialogoBuscar.this.spinnerFechaInicio.getModel();
+			SpinnerDateModel modeloFin = (SpinnerDateModel) DialogoBuscar.this.spinnerFechaFinal.getModel();
 
 			modeloInicio.setEnd((Date) modeloFin.getValue());
 			modeloFin.setStart((Date) modeloInicio.getValue());

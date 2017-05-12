@@ -168,9 +168,10 @@ public class DialogoEditar extends JDialog {
 
 		constraints.gridy++;
 
-		if(actionCommand.equals(TABLA_EDITAR_TARIFA)){
+		if (this.actionCommand.equals(TABLA_EDITAR_TARIFA)) {
 			this.comboBoxTarifasExtra = new JComboBox<>();
 			ArrayList<Tarifa> tarifasExtra = this.controlador.getTarifasExtra((Tarifa) this.comboBoxTarifas.getSelectedItem());
+			this.comboBoxTarifasExtra.addItem(null);
 			for (Tarifa tarifa : tarifasExtra)
 				this.comboBoxTarifasExtra.addItem(tarifa);
 			inputPanel.add(this.comboBoxTarifasExtra, constraints);
@@ -194,6 +195,16 @@ public class DialogoEditar extends JDialog {
 
 		buttonPanel.setPreferredSize(buttonPanel.getPreferredSize());
 
+
+		if (actionCommand.equals(TABLA_EDITAR_TARIFA)) {// TODO
+			try {
+				String nif = (String) tabla.getValueAt(tabla.getSelectedRow(), 0);
+				Tarifa tarifa = controlador.getTarifa(nif);
+				this.comboBoxTarifas.setSelectedItem(tarifa);
+			} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
+				clienteNoExisteExcepcion.printStackTrace();
+			}
+		}
 
 		// ============================================================ //
 		// ============================================================ //
@@ -223,7 +234,7 @@ public class DialogoEditar extends JDialog {
 		private final TipoDato tipoDato;
 		private final int campo;
 
-		private final Color colorValorIncorrecto = new Color(0xf2dede);
+		private final Color colorValorIncorrecto = new Color(0xea7070);
 
 		ValidadorDatos(TipoDato tipoDato, int campo) {
 			super();
@@ -270,11 +281,14 @@ public class DialogoEditar extends JDialog {
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
 				case DIALOGO_GUARDAR:
-					if (actionCommand.equals(TABLA_EDITAR_TARIFA)) {
+					if (DialogoEditar.this.actionCommand.equals(TABLA_EDITAR_TARIFA)) {
 						try {
-							int row = tabla.getSelectedRow();
-							String nif = (String) tabla.getValueAt(row, 0);
-							controlador.setTarifa(nif, (Tarifa) comboBoxTarifasExtra.getSelectedItem()); // TODO añadir para tarifa extra
+							int row = DialogoEditar.this.tabla.getSelectedRow();
+							String nif = (String) DialogoEditar.this.tabla.getValueAt(row, 0);
+							if (DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem() != null)
+								DialogoEditar.this.controlador.setTarifa(nif, (Tarifa) DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem());
+							else
+								DialogoEditar.this.controlador.setTarifa(nif, (Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
 						} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
 							JOptionPane.showMessageDialog(DialogoEditar.this.getOwner(),
 									"No se pudo cambiar la tarifa del cliente especificado",
