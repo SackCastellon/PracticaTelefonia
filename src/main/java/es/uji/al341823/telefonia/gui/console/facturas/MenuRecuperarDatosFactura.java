@@ -7,7 +7,7 @@ package es.uji.al341823.telefonia.gui.console.facturas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.Menu;
 
@@ -15,8 +15,8 @@ import es.uji.al341823.telefonia.gui.console.Menu;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class RecuperarDatosFactura extends Menu {
-	public RecuperarDatosFactura(Menu padre) {
+public class MenuRecuperarDatosFactura extends Menu {
+	public MenuRecuperarDatosFactura(Menu padre) {
 		super(padre);
 	}
 
@@ -31,7 +31,7 @@ public class RecuperarDatosFactura extends Menu {
 		try {
 			Factura factura = AdministradorDatos.getFactura(codigo);
 			System.out.println("Información de la factura: " + factura);
-		} catch (FacturaNoExisteExcepcion e) {
+		} catch (ObjetoNoExisteException e) {
 			System.out.println("No existe ninguna factura con ese codigo");
 		}
 

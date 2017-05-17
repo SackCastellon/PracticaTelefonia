@@ -19,8 +19,8 @@ public enum TipoDato {
 	/** Formato del NIF: 8 digitos y una letra */
 	NIF("[0-9]{8}[a-zA-Z]"),
 
-	/** Formato del NIF de una empresa: una letra, 7 digitos y una letra */
-	NIF_EMPRESA("[a-zA-Z][0-9]{7}[a-zA-Z]"),
+//	/** Formato del NIF de una empresa: una letra, 7 digitos y una letra */
+//	NIF_EMPRESA("[a-zA-Z][0-9]{7}[a-zA-Z]"),
 
 	/**
 	 * Formato de un numero de telefono. Por ejemplo:

@@ -5,10 +5,18 @@
 
 package es.uji.al341823.telefonia.gui.swing.ventanas;
 
-import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
+import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.clientes.Empresa;
+import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.gui.swing.Vista;
+import es.uji.al341823.telefonia.gui.swing.controladores.Controlador;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoBuscar;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoEditar;
+import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoFileChooser;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoInfo;
+import es.uji.al341823.telefonia.gui.swing.tablas.ModeloTablaClientes;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,24 +25,27 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
 
@@ -42,72 +53,126 @@ import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
  * @author Juanjo González (al341823)
  * @since 0.4
  */
-public class VentanaPrincipal {
+public class VentanaPrincipal extends Vista {
 
-	private static final String titulo = "Telefonía";
-	public final JTable tablaParticulares = new JTable();
-	public final JTable tablaEmpresas = new JTable();
 	private final JFrame frame;
-	private final JPanel panelIzquierda = new JPanel();
-	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
-	private final JPanel panelBotonesClientes = new JPanel();
-	private final JPanel panelDerecha = new JPanel();
+
 	private final JPanel panelInfo = new JPanel();
-	private final JPanel panelBotonesInfo = new JPanel();
-	private final JButton btnVerLlamadas = new JButton();
-	private final JButton btnVerFacturas = new JButton();
-	private final JButton btnEditar = new JButton();
-	private final JButton btnBorrar = new JButton();
-	private Controlador controlador;
+	private final JTabbedPane tabbedPaneClientes = new JTabbedPane();
+
+	private final HashSet<JComponent> componentsToAdjustSize = new HashSet<>();
+	private final HashSet<JButton> botonesInfoCliente = new HashSet<>();
+	private final HashSet<JTable> tablas = new HashSet<>();
 
 	public VentanaPrincipal() {
 		super();
 		this.frame = new JFrame();
-		this.frame.setLayout(new BorderLayout(5, 5));
 	}
 
-	public static ImageIcon getIcon(String icon) {
-		String name = String.format("/icons/%s.png", icon);
+	@Override
+	public void generarVista() {
+		this.generarBarraMenu();
+		this.generarPanelIzquierda();
+		this.generarPanelDerecha();
+		this.generarMenusContexto();
 
-		URL url = VentanaPrincipal.class.getResource(name);
+		this.frame.setTitle("Telefonía");
+		this.frame.setIconImage(AdministradorSwing.getImage("phone_ring"));
+		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.frame.setMinimumSize(new Dimension(650, 400));
+		this.frame.setResizable(true);
 
-		if (url == null) {
-			System.err.println("Missing icon: " + icon);
-			url = VentanaPrincipal.class.getResource("/icons/missing.png");
+		this.frame.pack();
+
+		this.frame.setLocationRelativeTo(null);
+		this.frame.setVisible(true);
+	}
+
+	@Override
+	public void actualizarVista() {
+		for (JTable tabla : this.tablas) {
+			ModeloTablaClientes modelo = (ModeloTablaClientes) tabla.getModel();
+			modelo.actualizarDatos();
+			modelo.fireTableDataChanged();
+		}
+	}
+
+	public void actualizarInfo() {
+		// Limpia el panel de información
+		this.panelInfo.removeAll();
+
+		// Obtiene el elemento seleccionado del panel de pestañas
+		Component component = this.tabbedPaneClientes.getSelectedComponent();
+
+		boolean isRowSelected = false;
+
+		if ((component != null) && (component instanceof JScrollPane)) {
+			JScrollPane scrollPane = (JScrollPane) component;
+
+			// Obtiene la tabla seleccionada
+			JTable tabla = (JTable) scrollPane.getViewport().getView();
+
+			if (tabla != null) {
+
+				// Fila seleccionada
+				int row = tabla.getSelectedRow();
+
+				// Comprueva si hay alguna fila seleccionada
+				isRowSelected = row != -1;
+
+				if (isRowSelected) {
+
+					row = tabla.convertRowIndexToModel(row);
+
+					ModeloTablaClientes model = (ModeloTablaClientes) tabla.getModel();
+					Cliente cliente = model.getClienteAt(row);
+
+					GridBagConstraints constraints = new GridBagConstraints();
+					constraints.anchor = GridBagConstraints.CENTER;
+					constraints.fill = GridBagConstraints.HORIZONTAL;
+					constraints.gridx = 0;
+					constraints.gridy = -1;
+
+					// Muestra toda la información de la tabla en el panel de información
+					for (Pair<String, Object> pair : cliente.getDatos()) {
+						constraints.insets = new Insets(3, 0, 1, 0);
+						constraints.gridy++;
+
+						// Etiqueta con el nombre del dato
+						JLabel label = new JLabel();
+						label.setText(pair.getKey() + ":");
+						this.panelInfo.add(label, constraints);
+
+						constraints.insets = new Insets(1, 0, 3, 0);
+						constraints.gridy++;
+
+						// Cuadro de texto con el valor del dato
+						JTextField textField = new JTextField();
+						textField.setEditable(false);
+
+						Object value = pair.getValue();
+						if (value instanceof LocalDateTime)
+							textField.setText(((LocalDateTime) value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+						else
+							textField.setText(value.toString());
+
+						textField.setPreferredSize(new Dimension(200, textField.getPreferredSize().height));
+						this.panelInfo.add(textField, constraints);
+					}
+				}
+			}
 		}
 
-		return new ImageIcon(url);
+		for (JButton btn : this.botonesInfoCliente)
+			btn.setEnabled(isRowSelected);
+
+		this.panelInfo.updateUI();
 	}
 
-	public static Image getImage(String image) {
-		String name = String.format("/images/%s.png", image);
-
-		URL url = VentanaPrincipal.class.getResource(name);
-
-		if (url == null) {
-			System.err.println("Missing image: " + image);
-			url = VentanaPrincipal.class.getResource("/images/missing.png");
-		}
-
-		return new ImageIcon(url).getImage();
-	}
-
-	public void setControlador(Controlador controlador) {
-		this.controlador = controlador;
-	}
-
-	public void generar() {
-
-		this.generarBarraMenu(); // Genera la barra de menú superior
-
-		this.generarPanelIzquierda(); // Genera el panel de la iquierda
-		this.generarPanelDerecha(); // Genera el panel de la derecha
-
-		this.generarVentana(); // Ultimos ajustes antes de mostrar la ventana
-	}
-
+	/**
+	 * Genera la barra de menú superior
+	 */
 	private void generarBarraMenu() {
-
 		// Barra de Menú
 		JMenuBar menu = new JMenuBar();
 		this.frame.setJMenuBar(menu);
@@ -121,7 +186,7 @@ public class VentanaPrincipal {
 
 		// Item Nuevo
 		JMenuItem itemNuevo = new JMenuItem("Nuevo...");
-		itemNuevo.setIcon(VentanaPrincipal.getIcon("new"));
+		itemNuevo.setIcon(AdministradorSwing.getIcon("new"));
 		itemNuevo.setMnemonic('N');
 		itemNuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK)); // Ctrl + N
 		itemNuevo.setActionCommand(ARCHIVO_NUEVO);
@@ -130,7 +195,7 @@ public class VentanaPrincipal {
 
 		// Item Cargar
 		JMenuItem itemCargar = new JMenuItem("Abrir...");
-		itemCargar.setIcon(VentanaPrincipal.getIcon("open"));
+		itemCargar.setIcon(AdministradorSwing.getIcon("open"));
 		itemCargar.setMnemonic('B');
 		itemCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK)); // Ctrl + O
 		itemCargar.setActionCommand(ARCHIVO_ABRIR);
@@ -139,7 +204,7 @@ public class VentanaPrincipal {
 
 		// Item Guardar
 		JMenuItem itemGuardar = new JMenuItem("Guardar");
-		itemGuardar.setIcon(VentanaPrincipal.getIcon("save"));
+		itemGuardar.setIcon(AdministradorSwing.getIcon("save"));
 		itemGuardar.setMnemonic('G');
 		itemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK)); // Ctrl + S
 		itemGuardar.setActionCommand(ARCHIVO_GUARDAR);
@@ -160,7 +225,7 @@ public class VentanaPrincipal {
 
 		// Item Salir
 		JMenuItem itemSalir = new JMenuItem("Salir");
-		itemSalir.setIcon(VentanaPrincipal.getIcon("exit"));
+		itemSalir.setIcon(AdministradorSwing.getIcon("exit"));
 		itemSalir.setMnemonic('S');
 		itemSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK)); // Alt + F4
 		itemSalir.setActionCommand(ARCHIVO_SALIR);
@@ -175,8 +240,8 @@ public class VentanaPrincipal {
 		menu.add(menuEditar);
 
 		// Item Buscar
-		JMenuItem itemBuscar = new JMenuItem("Buscar");
-		itemBuscar.setIcon(VentanaPrincipal.getIcon("find"));
+		JMenuItem itemBuscar = new JMenuItem("Buscar...");
+		itemBuscar.setIcon(AdministradorSwing.getIcon("find"));
 		itemBuscar.setMnemonic('B');
 		itemBuscar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK)); // Ctrl + N
 		itemBuscar.setActionCommand(EDITAR_BUSCAR);
@@ -193,7 +258,7 @@ public class VentanaPrincipal {
 		// Submenú temas
 		JMenu submenuTema = new JMenu("Tema");
 		submenuTema.setMnemonic('T');
-		submenuTema.setIcon(VentanaPrincipal.getIcon("theme"));
+		submenuTema.setIcon(AdministradorSwing.getIcon("theme"));
 		submenuTema.addActionListener(new EscuchadorVentanaPrincipal());
 		menuVer.add(submenuTema);
 
@@ -206,10 +271,10 @@ public class VentanaPrincipal {
 			String nombreTema = lookAndFeelInfo.getName();
 			boolean activo = temaActual.equals(lookAndFeelInfo.getClassName());
 
-			JRadioButtonMenuItem tema = new JRadioButtonMenuItem(nombreTema, activo);
-			tema.addActionListener(e -> this.cambiarTema(lookAndFeelInfo.getClassName()));
-			submenuTema.add(tema);
-			groupTema.add(tema);
+			JRadioButtonMenuItem btnTema = new JRadioButtonMenuItem(nombreTema, activo);
+			btnTema.addActionListener(e -> this.setTema(lookAndFeelInfo.getClassName()));
+			submenuTema.add(btnTema);
+			groupTema.add(btnTema);
 		}
 
 		// Separador
@@ -232,240 +297,224 @@ public class VentanaPrincipal {
 
 		// Item Sobre telefonía
 		JMenuItem itemSobre = new JMenuItem("Sobre Telefonía...");
-		itemSobre.setIcon(VentanaPrincipal.getIcon("info"));
+		itemSobre.setIcon(AdministradorSwing.getIcon("info"));
 		itemSobre.setMnemonic('S');
 		itemSobre.setActionCommand(AYUDA_SOBRE);
 		itemSobre.addActionListener(new EscuchadorVentanaPrincipal());
 		menuAyuda.add(itemSobre);
 	}
 
+	/**
+	 * Genera el panel de la iquierda
+	 */
 	private void generarPanelIzquierda() {
-		this.panelIzquierda.setBorder(new EmptyBorder(5, 5, 0, 0));
-		this.panelIzquierda.setLayout(new BoxLayout(this.panelIzquierda, BoxLayout.Y_AXIS));
-		this.frame.add(this.panelIzquierda, BorderLayout.CENTER);
+		// Panel con titulo
+		JPanel panelIzquierda = new JPanel();
+		panelIzquierda.setBorder(new EmptyBorder(5, 5, 0, 4));
+		panelIzquierda.setLayout(new BoxLayout(panelIzquierda, BoxLayout.Y_AXIS));
+		this.frame.add(panelIzquierda, BorderLayout.CENTER);
 
-		// Panel de pestañas con clientes
+		// Panel de pestañas para particulares y empresas
 		this.tabbedPaneClientes.setPreferredSize(new Dimension(550, 350));
 		this.tabbedPaneClientes.addChangeListener(new EscuchadorTablas());
-		this.panelIzquierda.add(this.tabbedPaneClientes);
+		panelIzquierda.add(this.tabbedPaneClientes);
 
-		this.generarTablaParticulares();
-		this.generarTablaEmpresas();
-		this.generarBotonesTablas();
+		int[] anchoParticular = {80, 100, 125, 250, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
+		this.generarTabla(this.tabbedPaneClientes, "Particulares", Particular.class, anchoParticular);
+
+		int[] anchoEmpresa = {80, 100, 250, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
+		this.generarTabla(this.tabbedPaneClientes, "Empresas", Empresa.class, anchoEmpresa);
+
+		this.generarBotonesTablas(panelIzquierda);
 	}
 
-	private void generarTablaParticulares() {
-		int[] anchos = {80, 100, 125, 250, 125, 125, 150};
-		String[] nombres = {"NIF", "Nombre", "Apellido", "Dirección", "Email", "Fecha de alta", "Tarifa contratada"};
-
-		// Scroll pane
+	/**
+	 * Genera una tabla a partir de la información suministrada y la añade a una nueva pestaña
+	 *
+	 * @param nombre        Nombre de la pestaña
+	 * @param claseCliente  La clase de los clientes
+	 * @param anchoColumnas El ancho para cada columna de la tabla
+	 */
+	private void generarTabla(JTabbedPane parent, String nombre, Class<? extends Cliente> claseCliente, int[] anchoColumnas) {
+		// Panel con scroll
 		JScrollPane scroll = new JScrollPane();
-		this.tabbedPaneClientes.addTab("Particulares", scroll);
+		parent.addTab(nombre, scroll);
 
-		// Tabla
-		this.tablaParticulares.setModel(new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		});
-		this.tablaParticulares.getTableHeader().setReorderingAllowed(false);
-		this.tablaParticulares.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.tablaParticulares.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.tablaParticulares.getSelectionModel().addListSelectionListener(new EscuchadorTablas());
-		this.tablaParticulares.setAutoCreateRowSorter(true);
-
-		// Establece el nombre de la columna
-		DefaultTableModel modelo = (DefaultTableModel) this.tablaParticulares.getModel();
-		for (String nombre : nombres) modelo.addColumn(nombre);
+		// Configuración de la Tabla de Particulares
+		JTable tabla = new JTable();
+		tabla.setModel(new ModeloTablaClientes(claseCliente));
+		tabla.setAutoCreateRowSorter(true);
+		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabla.getTableHeader().setReorderingAllowed(true);
+		tabla.getSelectionModel().addListSelectionListener(new EscuchadorTablas());
 
 		// Establece el ancho de la columna
-		TableColumnModel modeloColumna = this.tablaParticulares.getColumnModel();
-		for (int i = 0; i < anchos.length; i++) {
-			modeloColumna.getColumn(i).setPreferredWidth(anchos[i]);
-		}
+		TableColumnModel modeloColumna = tabla.getColumnModel();
+		for (int i = 0; i < anchoColumnas.length; i++)
+			modeloColumna.getColumn(i).setPreferredWidth(anchoColumnas[i]);
 
-		scroll.setViewportView(this.tablaParticulares);
+		// Establece la tabla como contenido del panel con scroll
+		scroll.setViewportView(tabla);
+
+		this.tablas.add(tabla);
 	}
 
-	private void generarTablaEmpresas() {
-		int[] anchos = {80, 100, 250, 125, 125, 150};
-		String[] nombres = {"NIF", "Nombre", "Dirección", "Email", "Fecha de alta", "Tarifa contratada"};
+	/**
+	 * Genera el panel con los botones relativos a las tablas de clientes
+	 *
+	 * @param parent El componente padre del panel de los botones
+	 */
+	private void generarBotonesTablas(JPanel parent) {
+		// Panel con los botones
+		JPanel panelBotonesClientes = new JPanel();
+		parent.add(panelBotonesClientes);
 
-		// Scroll pane
-		JScrollPane scroll = new JScrollPane();
-		this.tabbedPaneClientes.addTab("Empresas", scroll);
-
-		// Tabla
-		this.tablaEmpresas.setModel(new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		});
-		this.tablaEmpresas.getTableHeader().setReorderingAllowed(false);
-		this.tablaEmpresas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.tablaEmpresas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.tablaEmpresas.getSelectionModel().addListSelectionListener(new EscuchadorTablas());
-		this.tablaEmpresas.setAutoCreateRowSorter(true);
-
-		// Establece el nombre de la columna
-		DefaultTableModel modelo = (DefaultTableModel) this.tablaEmpresas.getModel();
-		for (String nombre : nombres) modelo.addColumn(nombre);
-
-		// Establece el ancho de la columna
-		TableColumnModel modeloColumna = this.tablaEmpresas.getColumnModel();
-		for (int i = 0; i < anchos.length; i++) {
-			modeloColumna.getColumn(i).setPreferredWidth(anchos[i]);
-		}
-
-		scroll.setViewportView(this.tablaEmpresas);
-	}
-
-	private void generarBotonesTablas() {
-		this.panelBotonesClientes.setBorder(new EmptyBorder(2, 2, 2, 2));
-		this.panelIzquierda.add(this.panelBotonesClientes);
+		this.componentsToAdjustSize.add(panelBotonesClientes);
 
 		// Botón Nuevo
 		JButton btnNuevo = new JButton("Nuevo");
 		btnNuevo.setActionCommand(TABLA_NUEVO);
 		btnNuevo.addActionListener(new EscuchadorBotonesTabla());
-		this.panelBotonesClientes.add(btnNuevo);
+		panelBotonesClientes.add(btnNuevo);
 
 		// Botón Editar
-		this.btnEditar.setText("Editar");
-		this.btnEditar.setEnabled(false);
-		this.btnEditar.setActionCommand(TABLA_EDITAR_TARIFA);
-		this.btnEditar.addActionListener(new EscuchadorBotonesTabla());
-		this.panelBotonesClientes.add(this.btnEditar);
+		JButton btnEditar = new JButton();
+		btnEditar.setText("Editar");
+		btnEditar.setEnabled(false);
+		btnEditar.setActionCommand(TABLA_EDITAR_TARIFA);
+		btnEditar.addActionListener(new EscuchadorBotonesTabla());
+		panelBotonesClientes.add(btnEditar);
+
+		this.botonesInfoCliente.add(btnEditar);
 
 		// Botón Borrar
-		this.btnBorrar.setText("Borrar");
-		this.btnBorrar.setEnabled(false);
-		this.btnBorrar.setActionCommand(TABLA_BORRAR);
-		this.btnBorrar.addActionListener(new EscuchadorBotonesTabla());
-		this.panelBotonesClientes.add(this.btnBorrar);
+		JButton btnBorrar = new JButton();
+		btnBorrar.setText("Borrar");
+		btnBorrar.setEnabled(false);
+		btnBorrar.setActionCommand(TABLA_BORRAR);
+		btnBorrar.addActionListener(new EscuchadorBotonesTabla());
+		panelBotonesClientes.add(btnBorrar);
 
-		// Fija el tamaño del panel botones de acción
-		this.panelBotonesClientes.setMaximumSize(this.panelBotonesClientes.getPreferredSize());
+		this.botonesInfoCliente.add(btnBorrar);
 	}
 
+	/**
+	 * Genera el panel de la derecha
+	 */
 	private void generarPanelDerecha() {
-		this.panelDerecha.setBorder(new EmptyBorder(5, 0, 0, 5));
-		this.panelDerecha.setLayout(new BoxLayout(this.panelDerecha, BoxLayout.Y_AXIS));
-		this.frame.add(this.panelDerecha, BorderLayout.EAST);
+		// Panel con titulo
+		JPanel panelDerecha = new JPanel();
+		panelDerecha.setBorder(new EmptyBorder(5, 4, 0, 5));
+		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
+		this.frame.add(panelDerecha, BorderLayout.EAST);
 
-		this.generarPanelInfo();
-		this.generarBotonesInfo();
+		this.generarPanelInfo(panelDerecha);
+		this.generarBotonesInfo(panelDerecha);
 	}
 
-	private void generarPanelInfo() {
+	/**
+	 * Genera el panel qeu mostrará la información del cliente seleccionado
+	 *
+	 * @param parent El componente padre del panel de información
+	 */
+	private void generarPanelInfo(JPanel parent) {
+		// Panel con scroll
 		JScrollPane scroll = new JScrollPane();
 		scroll.setBorder(new TitledBorder("Información detallada"));
 		scroll.setPreferredSize(new Dimension(250, 350));
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		this.panelDerecha.add(scroll);
+		parent.add(scroll);
 
+		// Panel con la información del cliente selecionado
 		this.panelInfo.setLayout(new GridBagLayout());
-		this.panelInfo.setBorder(new EmptyBorder(2, 0, 2, 0));
+		this.panelInfo.setBorder(new EmptyBorder(3, 3, 3, 3));
 		scroll.setViewportView(this.panelInfo);
 	}
 
-	private void actualizarPanelInfo() {
-		this.panelInfo.removeAll();
+	/**
+	 * Genera los botones del panel de información de cliente
+	 *
+	 * @param parent El componente padre del panel de los botones
+	 */
+	private void generarBotonesInfo(JPanel parent) {
+		// Panel con los botones
+		JPanel panelBotonesInfo = new JPanel();
+		parent.add(panelBotonesInfo);
 
-		JScrollPane scrollPane = (JScrollPane) this.tabbedPaneClientes.getSelectedComponent();
-		JTable tabla = (JTable) scrollPane.getViewport().getView();
-
-		if (tabla != null) {
-
-			int row = tabla.getSelectedRow();
-
-			boolean enabled = row != -1;
-
-			this.btnVerLlamadas.setEnabled(enabled);
-			this.btnVerFacturas.setEnabled(enabled);
-
-			if (enabled) {
-
-				GridBagConstraints constraints = new GridBagConstraints();
-				constraints.anchor = GridBagConstraints.CENTER;
-				constraints.fill = GridBagConstraints.HORIZONTAL;
-
-				for (int col = 0; col < tabla.getColumnCount(); col++) {
-					constraints.insets = new Insets(3, 0, 1, 0);
-					constraints.gridx = 0;
-					constraints.gridy = col * 2;
-
-					JLabel label = new JLabel();
-					label.setText(tabla.getColumnName(col) + ":");
-					this.panelInfo.add(label, constraints);
-
-					constraints.insets = new Insets(1, 0, 3, 0);
-					constraints.gridy++;
-
-					JTextField textField = new JTextField();
-					textField.setEditable(false);
-					textField.setText((String) tabla.getValueAt(row, col));
-					textField.setPreferredSize(new Dimension(200, textField.getPreferredSize().height));
-					this.panelInfo.add(textField, constraints);
-				}
-			}
-		}
-
-		this.panelInfo.updateUI();
-	}
-
-	private void generarBotonesInfo() {
-		this.panelBotonesInfo.setBorder(new EmptyBorder(2, 2, 2, 2));
-		this.panelDerecha.add(this.panelBotonesInfo);
+		this.componentsToAdjustSize.add(panelBotonesInfo);
 
 		// Botón Ver Llamadas
-		this.btnVerLlamadas.setText("Ver llamadas");
-		this.btnVerLlamadas.setEnabled(false);
-		this.btnVerLlamadas.setActionCommand(INFO_VER_LLAMADAS);
-		this.btnVerLlamadas.addActionListener(new EscuchadorBotonesInfo());
-		this.panelBotonesInfo.add(this.btnVerLlamadas);
+		JButton btnVerLlamadas = new JButton();
+		btnVerLlamadas.setText("Ver llamadas");
+		btnVerLlamadas.setEnabled(false);
+		btnVerLlamadas.setActionCommand(INFO_VER_LLAMADAS);
+		btnVerLlamadas.addActionListener(new EscuchadorBotonesInfo());
+		panelBotonesInfo.add(btnVerLlamadas);
+
+		this.botonesInfoCliente.add(btnVerLlamadas);
 
 		// Botón Ver Facturas
-		this.btnVerFacturas.setText("Ver facturas");
-		this.btnVerFacturas.setEnabled(false);
-		this.btnVerFacturas.setActionCommand(INFO_VER_FACTURAS);
-		this.btnVerFacturas.addActionListener(new EscuchadorBotonesInfo());
-		this.panelBotonesInfo.add(this.btnVerFacturas);
+		JButton btnVerFacturas = new JButton();
+		btnVerFacturas.setText("Ver facturas");
+		btnVerFacturas.setEnabled(false);
+		btnVerFacturas.setActionCommand(INFO_VER_FACTURAS);
+		btnVerFacturas.addActionListener(new EscuchadorBotonesInfo());
+		panelBotonesInfo.add(btnVerFacturas);
 
-		// Fija el tamaño del panel botones de acción
-		this.panelBotonesInfo.setMaximumSize(this.panelBotonesInfo.getPreferredSize());
+		this.botonesInfoCliente.add(btnVerFacturas);
 	}
 
-	private void generarVentana() {
-		this.frame.setTitle(titulo);
-		this.frame.setIconImage(VentanaPrincipal.getImage("phone_ring"));
-		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.frame.setResizable(true);
-
-		this.frame.setMinimumSize(new Dimension(650, 400));
-
-		this.frame.pack();
-
-		this.frame.setLocationRelativeTo(null);
-		this.frame.setVisible(true);
+	private void generarMenusContexto() {
+		for (JTable tabla : this.tablas)
+			this.generarMenuContextoTabla(tabla);
 	}
 
-	private void cambiarTema(String className) {
+	private void generarMenuContextoTabla(JTable tabla) {
+		// Lista de columnas ocultas
+		ArrayList<TableColumn> hiddenColumns = new ArrayList<>();
+		// Columna que se va a ocultar
+		TableColumn[] columnToHide = new TableColumn[1];
+
+		// Menú contextual para las columnas
+		JPopupMenu popupTabla = new JPopupMenu();
+
+		// Opción para ocultar la columna selecionada
+		JMenuItem itemHideColumn = new JMenuItem();
+		itemHideColumn.addActionListener(e -> {
+			TableColumnModel columnModel = tabla.getColumnModel();
+			columnModel.removeColumn(columnToHide[0]);
+			hiddenColumns.add(columnToHide[0]);
+		});
+		popupTabla.add(itemHideColumn);
+
+		// Opción para mostrar columnas ocultas
+		JMenu menuShowColumn = new JMenu("Mostrar columna");
+		popupTabla.add(menuShowColumn);
+
+		// Escuchador ratón para mostrar el menú contextual
+		JTableHeader tableHeader = tabla.getTableHeader();
+		tableHeader.addMouseListener(new EscuchadorCabeceraTabla(tabla, itemHideColumn, columnToHide, menuShowColumn, hiddenColumns, popupTabla));
+	}
+
+	private void setTema(String className) {
 		try {
 			UIManager.setLookAndFeel(className);
 			SwingUtilities.updateComponentTreeUI(this.frame);
 
-			this.panelBotonesClientes.setMaximumSize(this.panelBotonesClientes.getPreferredSize());
-			this.panelBotonesInfo.setMaximumSize(this.panelBotonesInfo.getPreferredSize());
-			this.actualizarPanelInfo();
+			for (JComponent component : this.componentsToAdjustSize)
+				component.setMaximumSize(component.getPreferredSize());
 
 			this.frame.pack();
 			this.frame.setLocationRelativeTo(null);
 		} catch (IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException | ClassNotFoundException e) {
-			System.err.println("No se pudo aplicar el LaF: " + className);
+			JOptionPane.showMessageDialog(this.frame,
+					"No se pudo aplicar el tema seleccionado",
+					"Error al cambiar el tema",
+					JOptionPane.ERROR_MESSAGE);
+		} finally {
+			this.actualizarVista();
 		}
 	}
 
@@ -475,6 +524,8 @@ public class VentanaPrincipal {
 	 * @since 0.4
 	 */
 	private class EscuchadorVentanaPrincipal implements ActionListener {
+
+		private final Controlador controlador = VentanaPrincipal.this.getControlador();
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -505,71 +556,64 @@ public class VentanaPrincipal {
 			}
 		}
 
+		/**
+		 * Borra los datos existentes, loo nuevos datos son independientes de los borrados
+		 */
 		private void nuevo() {
-			VentanaPrincipal.this.controlador.setFicheroDatos(null);
-			VentanaPrincipal.this.controlador.limpiarDatos();
+			this.controlador.nuevosDatos();
 		}
 
+		/**
+		 * Carga los datos del fichero que se seleccione
+		 */
 		private void abrir() {
-			JFileChooser chooser = new JFileChooser() {
-				@Override
-				protected JDialog createDialog(Component parent) throws HeadlessException {
-					JDialog dialog = super.createDialog(parent);
-					dialog.setIconImage(VentanaPrincipal.getImage("open"));
-					return dialog;
-				}
-			};
+			DialogoFileChooser chooser = new DialogoFileChooser();
 			chooser.setDialogTitle("Abrir...");
-			chooser.setFileFilter(new FileNameExtensionFilter("Fichero de datos (*.data)", "data"));
-			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
+			chooser.setIcon(AdministradorSwing.getImage("open"));
+			chooser.setSelectedFile(this.controlador.getFicheroDatos());
 
 			int option = chooser.showOpenDialog(VentanaPrincipal.this.frame);
 
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = chooser.getSelectedFile();
 
-				if (!file.getName().endsWith(".data"))
-					file = new File(file.getParent(), file.getName() + ".data");
-
-				VentanaPrincipal.this.controlador.setFicheroDatos(file);
-				VentanaPrincipal.this.controlador.cargarDatos();
+				this.controlador.setFicheroDatos(file);
+				this.controlador.cargarDatos();
 			}
 		}
 
+		/**
+		 * Guarda los datos en el fichero de datos existente, si no hay ninguno se pide que se seleccione uno
+		 */
 		private void guardar() {
-			if (VentanaPrincipal.this.controlador.getFicheroDatos() == null)
+			if (this.controlador.getFicheroDatos() == null)
 				this.guardarComo();
 			else
-				VentanaPrincipal.this.controlador.guardarDatos();
-
+				this.controlador.guardarDatos();
 		}
 
+		/**
+		 * Guarda los datos en el fichero que se seleccione
+		 */
 		private void guardarComo() {
-			JFileChooser chooser = new JFileChooser() {
-				@Override
-				protected JDialog createDialog(Component parent) throws HeadlessException {
-					JDialog dialog = super.createDialog(parent);
-					dialog.setIconImage(VentanaPrincipal.getImage("save"));
-					return dialog;
-				}
-			};
+			DialogoFileChooser chooser = new DialogoFileChooser();
 			chooser.setDialogTitle("Guardar como...");
-			chooser.setFileFilter(new FileNameExtensionFilter("Fichero de datos (*.data)", "data"));
-			chooser.setSelectedFile(VentanaPrincipal.this.controlador.getFicheroDatos());
+			chooser.setIcon(AdministradorSwing.getImage("save"));
+			chooser.setSelectedFile(this.controlador.getFicheroDatos());
 
 			int option = chooser.showSaveDialog(VentanaPrincipal.this.frame);
 
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = chooser.getSelectedFile();
 
-				if (!file.getName().endsWith(".data"))
-					file = new File(file.getParent(), file.getName() + ".data");
-
-				VentanaPrincipal.this.controlador.setFicheroDatos(file);
-				VentanaPrincipal.this.controlador.guardarDatos();
+				this.controlador.setFicheroDatos(file);
+				this.controlador.guardarDatos();
 			}
 		}
 
+		/**
+		 * Sale del programa
+		 */
 		private void salir() {
 			int option = JOptionPane.showConfirmDialog(VentanaPrincipal.this.frame,
 					"Está seguro de que desea salir de programa?",
@@ -584,15 +628,16 @@ public class VentanaPrincipal {
 		}
 
 		private void buscar() {
-			DialogoBuscar dialogo = new DialogoBuscar(frame, controlador);
-			dialogo.generar();
+			Vista dialogo = new DialogoBuscar(VentanaPrincipal.this.frame);
+			dialogo.setControlador(this.controlador);
+			dialogo.generarVista();
 		}
 
 		private void sobre() {
 			String message = "<html><center><h1>Telefonía</h1>" +
 					"Proyecto en lenguaje Java desarrollado para la asignatura de Programación Avanzada en la UJI<br>" +
 					"<br><hr><br>" +
-					"Copyright (c) 2017 Juan José González y David Agost<br>" +
+					"Copyright © 2017 Juan José González y David Agost<br>" +
 					"Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons<br>" +
 					"Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/" +
 					"</center></html>";
@@ -612,30 +657,14 @@ public class VentanaPrincipal {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting()) {
-				this.actualizarBotones();
-				VentanaPrincipal.this.actualizarPanelInfo();
-			}
+			if (!e.getValueIsAdjusting())
+				VentanaPrincipal.this.actualizarInfo();
 		}
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			this.actualizarBotones();
-			VentanaPrincipal.this.actualizarPanelInfo();
+			VentanaPrincipal.this.actualizarInfo();
 		}
-
-		private void actualizarBotones() {
-			JScrollPane scrollPane = (JScrollPane) VentanaPrincipal.this.tabbedPaneClientes.getSelectedComponent();
-			JTable tabla = (JTable) scrollPane.getViewport().getView();
-
-			if (tabla == null) return;
-
-			boolean enabled = tabla.getSelectedRow() != -1;
-
-			VentanaPrincipal.this.btnEditar.setEnabled(enabled);
-			VentanaPrincipal.this.btnBorrar.setEnabled(enabled);
-		}
-
 	}
 
 	/**
@@ -643,40 +672,55 @@ public class VentanaPrincipal {
 	 * @since 0.4
 	 */
 	private class EscuchadorBotonesTabla implements ActionListener {
+
+		private final Controlador controlador = VentanaPrincipal.this.getControlador();
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String accion = e.getActionCommand();
 			Window owner = VentanaPrincipal.this.frame;
 			JScrollPane scrollPane = (JScrollPane) VentanaPrincipal.this.tabbedPaneClientes.getSelectedComponent();
 			JTable tabla = (JTable) scrollPane.getViewport().getView();
+			ModeloTablaClientes modelo = (ModeloTablaClientes) tabla.getModel();
 
-			if (accion.equals(TABLA_NUEVO) || accion.equals(TABLA_EDITAR_TARIFA)) {
-				DialogoEditar dialogo = new DialogoEditar(owner, tabla, accion, VentanaPrincipal.this.controlador);
-				dialogo.generar();
-			} else if (accion.equals(TABLA_BORRAR)) {
-
-				int response = JOptionPane.showConfirmDialog(owner,
-						"Está seguro de que desea borrar el cliente?",
-						"Borrar cliente",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (response == JOptionPane.YES_OPTION) {
-					try {
-						int row = tabla.getSelectedRow();
-						String nif = (String) tabla.getValueAt(row, 0);
-						VentanaPrincipal.this.controlador.borrarCliente(nif);
-					} catch (Exception excepcion) {
-						JOptionPane.showMessageDialog(owner,
-								"No se pudo eliminar el cliente seleccionado",
-								"Error al borrar",
-								JOptionPane.ERROR_MESSAGE);
-					}
+			switch (accion) {
+				case TABLA_NUEVO: {
+					Vista dialogo = new DialogoEditar(owner, modelo.getTipoCliente());
+					dialogo.setControlador(this.controlador);
+					dialogo.generarVista();
+					break;
 				}
+				case TABLA_EDITAR_TARIFA: {
+					int row = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
+					Vista dialogo = new DialogoEditar(owner, modelo.getClienteAt(row));
+					dialogo.setControlador(this.controlador);
+					dialogo.generarVista();
+					break;
+				}
+				case TABLA_BORRAR:
+
+					int response = JOptionPane.showConfirmDialog(owner,
+							"Está seguro de que desea borrar el cliente?",
+							"Borrar cliente",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
+
+					if (response == JOptionPane.YES_OPTION) {
+						try {
+							int row = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+							Cliente cliente = modelo.getClienteAt(row);
+							this.controlador.borrarCliente(cliente);
+						} catch (Exception excepcion) {
+							JOptionPane.showMessageDialog(owner,
+									"No se pudo eliminar el cliente seleccionado",
+									"Error al borrar",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					break;
 			}
-
 		}
-
 	}
 
 	/**
@@ -689,24 +733,107 @@ public class VentanaPrincipal {
 			try {
 				JScrollPane scrollPane = (JScrollPane) VentanaPrincipal.this.tabbedPaneClientes.getSelectedComponent();
 				JTable tabla = (JTable) scrollPane.getViewport().getView();
-				int row = tabla.getSelectedRow();
-				String nif = (String) tabla.getValueAt(row, 0);
+				ModeloTablaClientes modelo = (ModeloTablaClientes) tabla.getModel();
+				int row = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+				Cliente cliente = modelo.getClienteAt(row);
 
-				DialogoInfo dialogo = new DialogoInfo(frame, nif, e.getActionCommand(), controlador);
-				dialogo.generar();
+				Vista dialogo = new DialogoInfo(VentanaPrincipal.this.frame, cliente, e.getActionCommand());
+				dialogo.setControlador(VentanaPrincipal.this.getControlador());
+				dialogo.generarVista();
 
 			} catch (Exception exception) {
 				if (e.getActionCommand().equals(INFO_VER_LLAMADAS))
-					JOptionPane.showMessageDialog(frame,
+					JOptionPane.showMessageDialog(VentanaPrincipal.this.frame,
 							"No se pudieron mostrar las llamadas del cliente seleccionado",
 							"Error al mostrar llamadas",
 							JOptionPane.ERROR_MESSAGE);
 				else
-					JOptionPane.showMessageDialog(frame,
+					JOptionPane.showMessageDialog(VentanaPrincipal.this.frame,
 							"No se pudieron mostrar las facturas del cliente seleccionado",
 							"Error al mostrar facturas",
 							JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+
+	/**
+	 * @author Juanjo González (al341823)
+	 * @since 0.4
+	 */
+	private class EscuchadorCabeceraTabla extends MouseAdapter {
+
+		private JTable tabla;
+		private JMenuItem itemHideColumn;
+		private TableColumn[] columnToHide;
+		private JMenu menuShowColumn;
+		private ArrayList<TableColumn> hiddenColumns;
+		private JPopupMenu popupTabla;
+
+		private EscuchadorCabeceraTabla(JTable tabla, JMenuItem itemHideColumn, TableColumn[] columnToHide, JMenu menuShowColumn, ArrayList<TableColumn> hiddenColumns, JPopupMenu popupTabla) {
+			super();
+			this.tabla = tabla;
+			this.itemHideColumn = itemHideColumn;
+			this.columnToHide = columnToHide;
+			this.menuShowColumn = menuShowColumn;
+			this.hiddenColumns = hiddenColumns;
+			this.popupTabla = popupTabla;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent event) {
+			this.showPopup(event);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent event) {
+			this.showPopup(event);
+		}
+
+		private void showPopup(MouseEvent event) {
+			// Detecta si es un click derecho
+			if (!event.isPopupTrigger()) return;
+
+			// Columna sobre la que se hizo click
+			int col = this.tabla.columnAtPoint(event.getPoint());
+
+			// Actualiza la opción de ocultar columna
+			this.itemHideColumn.setText("Ocultar columna: " + this.tabla.getColumnName(col));
+
+			TableColumnModel columnModel = this.tabla.getColumnModel();
+			this.columnToHide[0] = columnModel.getColumn(col);
+
+			this.itemHideColumn.setEnabled(columnModel.getColumnCount() > 1);
+			this.menuShowColumn.setEnabled(!this.hiddenColumns.isEmpty());
+
+			// Actualiza la opción de mostrar columnas ocultas
+			this.menuShowColumn.removeAll();
+			for (TableColumn hiddenColumn : this.hiddenColumns) {
+				JMenuItem item = new JMenuItem();
+				item.setText(hiddenColumn.getHeaderValue().toString());
+				item.addActionListener(e -> {
+					this.tabla.getColumnModel().addColumn(hiddenColumn);
+					this.hiddenColumns.remove(hiddenColumn);
+				});
+
+				this.menuShowColumn.add(item);
+			}
+
+			this.menuShowColumn.add(new JSeparator());
+
+			// Actualiza la opción mostrar todas la columnas
+			JMenuItem mostrarTodas = new JMenuItem("Mostrar todas");
+			mostrarTodas.addActionListener(e -> {
+				for (TableColumn hiddenColumn : this.hiddenColumns) {
+					this.tabla.getColumnModel().addColumn(hiddenColumn);
+				}
+				this.hiddenColumns.clear();
+			});
+			this.menuShowColumn.add(mostrarTodas);
+
+			SwingUtilities.updateComponentTreeUI(this.popupTabla);
+			this.popupTabla.show(event.getComponent(), event.getX(), event.getY());
+			this.popupTabla.setVisible(true);
+		}
+
 	}
 }

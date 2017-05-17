@@ -3,13 +3,14 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.clientes;
+package es.uji.al341823.telefonia.gui.console.llamadas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.gui.console.Menu;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -18,8 +19,8 @@ import java.util.Collection;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class ExtraerClientes extends Menu {
-	public ExtraerClientes(Menu padre) {
+public class MenuExtraerLlamadas extends Menu {
+	public MenuExtraerLlamadas(Menu padre) {
 		super(padre);
 	}
 
@@ -27,33 +28,31 @@ public class ExtraerClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
+		String nif = AdministradorMenus.leerNIF();
+
 		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
 		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
-		Collection<Cliente> clientes;
-
 		try {
-			clientes = AdministradorDatos.extraerConjunto(AdministradorDatos.getClientes(), inicio, fin);
+			System.out.println();
+			Collection<Llamada> llamadas = AdministradorDatos.extraerConjunto(AdministradorDatos.getLlamadasCliente(nif), inicio, fin);
+
+			System.out.println("Durante este periodo de tiempo se un total de " + llamadas.size() + " llamada(s) para este cliente");
+
+			for (Llamada llamada : llamadas)
+				System.out.println(" - " + llamada);
+
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
-			AdministradorMenus.esperarParaContinuar();
-			return;
-		}
-
-		System.out.println();
-
-		System.out.println("Durante este periodo de tiempo se direon de alta un total de " + clientes.size() + " cliente(s)");
-
-		for (Cliente cliente : clientes) {
-			System.out.println(" - " + cliente);
+		} catch (ObjetoNoExisteException e) {
+			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
 		AdministradorMenus.esperarParaContinuar();
-
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Ver clientes dados de alta entre dos fechas";
+		return "Ver llamadas de un cliente emitidas entre dos fechas";
 	}
 }

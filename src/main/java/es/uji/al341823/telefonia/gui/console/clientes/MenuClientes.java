@@ -24,8 +24,8 @@ public class MenuClientes extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new AltaCliente(this), new BajaCliente(this),
-				new CambiarTarifa(this), new VerDatosCliente(this),
-				new VerDatosTodosClientes(this), new ExtraerClientes(this)};
+		return new Menu[] {new MenuAltaCliente(this), new MenuBajaCliente(this),
+				new MenuCambiarTarifa(this), new MenuVerDatosCliente(this),
+				new MenuVerDatosTodosClientes(this), new MenuExtraerClientes(this)};
 	}
 }

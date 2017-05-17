@@ -8,6 +8,8 @@ package es.uji.al341823.telefonia.clientes;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
@@ -30,8 +32,22 @@ public class Empresa extends Cliente {
 		super(nombre, nif, direccion, email, fechaAlta, tarifaBase);
 	}
 
+	public static List<String> getNombreDatos() {
+		List<String> list = new LinkedList<>();
+
+		list.add("NIF");
+		list.add("Nombre");
+		list.add("Dirección");
+		list.add("Email");
+		list.add("Fecha de alta");
+		list.add("Tarifa");
+
+		return list;
+	}
+
 	@Override
 	public String toString() {
+		// TODO Hacer que use "getDatos()"
 		return "Empresa:\n" +
 				"\tNombre: " + this.getNombre() + '\n' +
 				"\tNIF: " + this.getNif() + '\n' +

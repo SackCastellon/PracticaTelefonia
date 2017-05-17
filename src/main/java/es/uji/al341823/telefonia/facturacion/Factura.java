@@ -5,20 +5,24 @@
 
 package es.uji.al341823.telefonia.facturacion;
 
+import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Factura implements IFecha, Serializable {
+public class Factura implements IFecha, IDatos, Serializable {
 
 	private static final long serialVersionUID = -7711276290283216630L;
 
@@ -29,7 +33,7 @@ public class Factura implements IFecha, Serializable {
 	private final int codigo;
 	/** La tarifa usada para calcular la factura */
 	private final Tarifa tarifa;
-	/** Fecha en la que se emitió la factura */
+	/** Fecha y hora a la que se emitió la factura */
 	private final LocalDateTime fechaEmision;
 	/** Periodo de tiempo que comprende la factura en dias */
 	private final long periodoFactuacion;
@@ -58,6 +62,22 @@ public class Factura implements IFecha, Serializable {
 		Duration periodo = Duration.between(fechaUltimaEmision, fechaEmision);
 		this.periodoFactuacion = periodo.toDays();
 		this.importe = tarifa.getPrecio() * duracionLlamadas;
+	}
+
+	public static void resetCodigo() {
+		codigoUnico = 0;// FIXME
+	}
+
+	public static List<String> getNombreDatos() {
+		List<String> list = new LinkedList<>();
+
+		list.add("Código");
+		list.add("Tarifa");
+		list.add("Fecha de emisión");
+		list.add("Periodo de facturación");
+		list.add("Importe");
+
+		return list;
 	}
 
 	/**
@@ -106,6 +126,19 @@ public class Factura implements IFecha, Serializable {
 		return this.fechaEmision;
 	}
 
+	@Override
+	public List<Pair<String, Object>> getDatos() {
+		List<Pair<String, Object>> list = new LinkedList<>();
+
+		list.add(new Pair<>("Código", this.getCodigo()));
+		list.add(new Pair<>("Tarifa", this.getTarifa()));
+		list.add(new Pair<>("Fecha de emisión", this.getFecha()));
+		list.add(new Pair<>("Periodo de facturación", this.getPeriodoFactuacion()));
+		list.add(new Pair<>("Importe", this.getImporte()));
+
+		return list;
+	}
+
 	/**
 	 * Devuelve toda la información de la factura
 	 *
@@ -113,6 +146,7 @@ public class Factura implements IFecha, Serializable {
 	 */
 	@Override
 	public String toString() {
+		// TODO Hacer que use "getDatos()"
 		return "Factura{" +
 				"cod=" + this.codigo +
 				", tarifa=" + this.tarifa +

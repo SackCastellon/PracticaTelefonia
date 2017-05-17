@@ -5,13 +5,13 @@
 
 package es.uji.al341823.telefonia.api;
 
-import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
-import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
-import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,17 +35,19 @@ public class AdministradorDatos {
 
 	private static Datos datos = new Datos();
 
+	private static File ficheroDatos;
+
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
 	 * Se entiende que un cliente ya está dado alta cuando su NIF está almacenado en el sistema
 	 *
 	 * @param cliente Nuevo cliente a dar de alta
 	 *
-	 * @throws ClienteYaExisteExcepcion En caso de que el cliente ya existiese
+	 * @throws ObjetoYaExisteException En caso de que el cliente ya existiese
 	 */
-	public static void altaCliente(Cliente cliente) throws ClienteYaExisteExcepcion {
+	public static void addCliente(Cliente cliente) throws ObjetoYaExisteException {
 		if (exixteCliente(cliente.getNif()))
-			throw new ClienteYaExisteExcepcion();
+			throw new ObjetoYaExisteException("Cliente");
 
 		datos.CLIENTES.put(cliente.getNif(), cliente);
 	}
@@ -56,11 +58,11 @@ public class AdministradorDatos {
 	 *
 	 * @param nif NIF del cliente a das de baja
 	 *
-	 * @throws ClienteNoExisteExcepcion En caso de que el cliente no exista
+	 * @throws ObjetoNoExisteException En caso de que el cliente no exista
 	 */
-	public static void bajaCliente(String nif) throws ClienteNoExisteExcepcion {
+	public static void removeCliente(String nif) throws ObjetoNoExisteException {
 		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
+			throw new ObjetoNoExisteException("Cliente");
 
 		datos.CLIENTES.remove(nif);
 	}
@@ -72,11 +74,11 @@ public class AdministradorDatos {
 	 *
 	 * @return El cliente con ese NIF
 	 *
-	 * @throws ClienteNoExisteExcepcion En caso de que el NIF no corresponda a ningún cliente
+	 * @throws ObjetoNoExisteException En caso de que el NIF no corresponda a ningún cliente
 	 */
-	public static Cliente getCliente(String nif) throws ClienteNoExisteExcepcion {
+	public static Cliente getCliente(String nif) throws ObjetoNoExisteException {
 		if (!exixteCliente(nif))
-			throw new ClienteNoExisteExcepcion();
+			throw new ObjetoNoExisteException("Cliente");
 
 		return datos.CLIENTES.get(nif);
 	}
@@ -86,19 +88,59 @@ public class AdministradorDatos {
 	 *
 	 * @return Lista de clientes
 	 */
-	public static LinkedList<Cliente> getClientes() {
-		return new LinkedList<>(datos.CLIENTES.values());
+	public static Collection<Cliente> getClientes() {
+		return datos.CLIENTES.values();
+	}
+
+	public static void addLlamada(String nif, Llamada llamada) throws ObjetoYaExisteException, ObjetoNoExisteException {
+		if (datos.LLAMADAS.containsKey(llamada.getCodigo()))
+			throw new ObjetoYaExisteException("Llamada");
+
+		Cliente cliente = getCliente(nif);
+		cliente.addLlamada(llamada.getCodigo());
+
+		datos.LLAMADAS.put(llamada.getCodigo(), llamada);
+	}
+
+	public static Llamada getLlamada(int codigo) throws ObjetoNoExisteException {
+		Llamada llamada = datos.LLAMADAS.get(codigo);
+
+		if (llamada == null)
+			throw new ObjetoNoExisteException("Llamada");
+
+		return llamada;
+	}
+
+	/**
+	 * Devuelve una lista con todas las facturas
+	 *
+	 * @return Lista de facturas
+	 */
+	public static Collection<Llamada> getLlamadas() {
+		return datos.LLAMADAS.values();
+	}
+
+	public static Collection<Llamada> getLlamadasCliente(String nif) throws ObjetoNoExisteException {
+		Cliente cliente = getCliente(nif);
+		Collection<Llamada> llamadas = new LinkedList<>();
+
+		for (Integer codigo : cliente.getCodigosLlamadas())
+			llamadas.add(getLlamada(codigo));
+
+		return llamadas;
 	}
 
 	/**
 	 * Emite una factura para el cliente especificado
 	 *
-	 * @param cliente El cliende del cual se emitirá la factura
+	 * @param nif NIF del cliende del cual se emitirá la factura
 	 *
 	 * @return La factura emitida, {@code null} si no se pudo emitir
 	 */
-	public static Factura emitirFactura(Cliente cliente) throws FechaNoValidaExcepcion {
-		Factura factura = cliente.emitirFactura();
+	public static Factura addFactura(String nif) throws ObjetoNoExisteException, FechaNoValidaExcepcion {
+		Cliente cliente = getCliente(nif);
+		Factura factura = cliente.generarFactura();
+
 		datos.FACTURAS.put(factura.getCodigo(), factura);
 
 		return factura;
@@ -111,18 +153,39 @@ public class AdministradorDatos {
 	 *
 	 * @return La factura correspondiente
 	 *
-	 * @throws FacturaNoExisteExcepcion Si el codigo no corresponde a ninguna factura
+	 * @throws ObjetoNoExisteException Si el codigo no corresponde a ninguna factura
 	 */
-	public static Factura getFactura(int codigo) throws FacturaNoExisteExcepcion {
-		if ((codigo > datos.FACTURAS.size()) || (datos.FACTURAS.get(codigo) == null))
-			throw new FacturaNoExisteExcepcion();
+	public static Factura getFactura(int codigo) throws ObjetoNoExisteException {
+		Factura factura = datos.FACTURAS.get(codigo);
 
-		return datos.FACTURAS.get(codigo);
+		if (factura == null)
+			throw new ObjetoNoExisteException("Factura");
+
+		return factura;
 	}
 
 	/**
-	 * Extrae, a partir de un conjunto de elementos que implemetan la {@code interface IFecha}, otro conjunto de
-	 * elementos cuyo valor {@code IFecha.getFecha()} esta comprendido enre las fechas especificadas
+	 * Devuelve una lista con todas las facturas
+	 *
+	 * @return Lista de facturas
+	 */
+	public static Collection<Factura> getFacturas() {
+		return datos.FACTURAS.values();
+	}
+
+	public static Collection<Factura> getFacturasCliente(String nif) throws ObjetoNoExisteException {
+		Cliente cliente = getCliente(nif);
+		Collection<Factura> facturas = new LinkedList<>();
+
+		for (Integer codigo : cliente.getCodigosFacturas())
+			facturas.add(getFactura(codigo));
+
+		return facturas;
+	}
+
+	/**
+	 * Extrae, a partir de un conjunto de elementos, otro conjunto de elementos cuya fecha
+	 * esta comprendida <b>exclusivamente</b> entre las fechas especificadas
 	 *
 	 * @param conjunto Conjunto de elemetos del cual se extraen los elementos
 	 * @param inico    Fecha de incio del periodo
@@ -132,6 +195,7 @@ public class AdministradorDatos {
 	 * @return El conjunto que se ha extraido del conjunto original
 	 *
 	 * @throws FechaNoValidaExcepcion Si inicio es posterior a fin
+	 * @see IFecha#getFecha()
 	 */
 	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
 		if (inico.isAfter(fin))
@@ -167,24 +231,20 @@ public class AdministradorDatos {
 	 *
 	 * @return {@code true} si existe o {@code false} en caso contrario
 	 */
-	private static boolean exixteCliente(String nif) {
+	public static boolean exixteCliente(String nif) {
 		return datos.CLIENTES.containsKey(nif);
 	}
 
 	/**
-	 * Carga los datos de clientes, llamadas y facturas desde el fichero especificado
-	 *
-	 * @param nombreFichero La ruta al fichero de datos
+	 * Carga los datos de clientes, llamadas y facturas
 	 */
-	public static void cargarDatos(String nombreFichero) {
+	public static void cargarDatos() {
 		try {
-			File fichero = new File(nombreFichero);
-
-			FileInputStream fis = new FileInputStream(fichero);
+			FileInputStream fis = new FileInputStream(ficheroDatos);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			datos = (Datos) ois.readObject();
 
-			System.out.println("Datos cargados con éxito desde: " + fichero.getAbsolutePath());
+			System.out.println("Datos cargados con éxito desde: " + ficheroDatos.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
@@ -195,26 +255,58 @@ public class AdministradorDatos {
 	}
 
 	/**
-	 * Guarda los datos de clientes, llamadas y facturas en el fichero especificado
-	 *
-	 * @param nombreFichero La ruta al fichero de datos
+	 * Guarda los datos de clientes, llamadas y facturas
 	 */
-	public static void guardarDatos(String nombreFichero) {
+	public static void guardarDatos() {
 		try {
-			File fichero = new File(nombreFichero);
-
-			if (fichero.createNewFile())
+			if (ficheroDatos.createNewFile())
 				System.out.println("El fichero de datos no existia y se ha creado\n");
 
-			FileOutputStream fos = new FileOutputStream(fichero);
+			FileOutputStream fos = new FileOutputStream(ficheroDatos);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(datos);
 
-			System.out.println("Datos guardados con éxito en: " + fichero.getAbsolutePath());
+			System.out.println("Datos guardados con éxito en: " + ficheroDatos.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
 			System.out.println("Error al guardar datos: No se pudo escribir en el fichero de datos");
 		}
+	}
+
+	/**
+	 * Borra todos los datos existentes
+	 */
+	public static void limpiarDatos() { //FIXME Problema con los codigos
+		datos.CLIENTES.clear();
+		datos.LLAMADAS.clear();
+		Llamada.resetCodigo();
+		datos.FACTURAS.clear();
+		Factura.resetCodigo();
+	}
+
+	/**
+	 * Devuelve el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 *
+	 * @return El fichero de datos
+	 */
+	public static File getFicheroDatos() {
+		return ficheroDatos;
+	}
+
+	/**
+	 * Establece el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 *
+	 * @param file El fichero de datos
+	 */
+	public static void setFicheroDatos(File file) {
+		if (file != null) {
+			String name = file.getName();
+
+			if (!name.endsWith(".data"))
+				file = new File(file.getParent(), name + ".data");
+		}
+
+		ficheroDatos = file; // FIXME
 	}
 }

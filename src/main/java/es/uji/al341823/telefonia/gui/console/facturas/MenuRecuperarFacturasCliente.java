@@ -7,17 +7,18 @@ package es.uji.al341823.telefonia.gui.console.facturas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.Menu;
+
+import java.util.Collection;
 
 /**
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class EmitirFactura extends Menu {
-	public EmitirFactura(Menu padre) {
+public class MenuRecuperarFacturasCliente extends Menu {
+	public MenuRecuperarFacturasCliente(Menu padre) {
 		super(padre);
 	}
 
@@ -25,16 +26,20 @@ public class EmitirFactura extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
-
-		if (cliente == null) return;
+		String nif = AdministradorMenus.leerNIF();
 
 		try {
-			Factura factura = AdministradorDatos.emitirFactura(cliente);
+			Collection<Factura> facturas = AdministradorDatos.getFacturasCliente(nif);
+
 			System.out.println();
-			System.out.println("Información de la factura emitida: " + factura);
-		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
-			System.out.println("No se pudo emitir la factura");
+			System.out.println("Se han emitido un total de " + facturas.size() + " facturas para el cliente con NIF '" + nif + "':");
+
+			for (Factura factura : facturas)
+				System.out.println(" - " + factura);
+
+		} catch (ObjetoNoExisteException e) {
+			System.out.println();
+			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
 		AdministradorMenus.esperarParaContinuar();
@@ -42,6 +47,6 @@ public class EmitirFactura extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Emitir factura";
+		return "Recuperar facturas de cliente";
 	}
 }

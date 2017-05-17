@@ -6,13 +6,16 @@
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.AdministradorSwing;
 import es.uji.al341823.telefonia.api.TipoDato;
-import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
+import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -25,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -44,40 +48,61 @@ import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_CANCELA
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_GUARDAR;
 
 /**
- * Created by Juanjo on 03/05/2017.
+ * @author Juanjo González (al341823)
+ * @since 0.4
  */
-public class DialogoLlamada extends JDialog {
+public class DialogoLlamada extends Vista {
+
+	private final JDialog dialog;
+
+	private final Cliente cliente;
 
 	private final ArrayList<Boolean> camposValidos;
 
 	private final JPanel inputPanel = new JPanel();
-
 	private final JTextField txtNumOrigen = new JTextField();
 	private final JTextField txtNumDestino = new JTextField();
 	private final JSpinner spinnerFecha = new JSpinner(new SpinnerDateModel());
+
 	private final JSpinner spinnerDuracion = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
 	private final JButton btnGuardar = new JButton();
 
-	private Llamada llamada;
+	public DialogoLlamada(Window owner, Cliente cliente) {
+		super();
 
-	public DialogoLlamada(Window owner) {
-		super(owner, ModalityType.APPLICATION_MODAL);
+		this.cliente = cliente;
+
+		this.dialog = new JDialog(owner, Dialog.ModalityType.APPLICATION_MODAL);
 
 		this.camposValidos = new ArrayList<>(Collections.nCopies(2, false));
 	}
 
-	public void generar() {
-		this.inputPanel.setLayout(new GridBagLayout());
-		this.inputPanel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 0, 5), new TitledBorder("Información de la llamada")));
-		this.add(this.inputPanel, BorderLayout.CENTER);
-
+	@Override
+	public void generarVista() {
 		this.generarCampos();
+		this.generarBotones();
 
-		// ============================================================ //
 
+		this.dialog.setTitle("Nueva llamada");
+		this.dialog.setIconImage(AdministradorSwing.getImage("phone_add"));
+
+		this.dialog.setResizable(false);
+
+		this.dialog.pack();
+
+		this.dialog.setLocationRelativeTo(this.dialog.getOwner());
+		this.dialog.setVisible(true);
+	}
+
+	@Override
+	public void actualizarVista() {
+
+	}
+
+	private void generarBotones() {
 		JPanel buttonPanel = new JPanel();
-		this.add(buttonPanel, BorderLayout.SOUTH);
+		this.dialog.add(buttonPanel, BorderLayout.SOUTH);
 
 		this.btnGuardar.setText("Guardar");
 		this.btnGuardar.setEnabled(false);
@@ -91,24 +116,14 @@ public class DialogoLlamada extends JDialog {
 		buttonPanel.add(btnCancelar);
 
 		buttonPanel.setPreferredSize(buttonPanel.getPreferredSize());
-
-		// ============================================================ //
-		// ============================================================ //
-
-
-		this.setTitle("Nueva llamada");
-		this.setIconImage(VentanaPrincipal.getImage("phone_add"));
-
-		this.setResizable(false);
-
-		this.pack();
-
-		this.setLocationRelativeTo(this.getOwner());
-		this.setVisible(true);
 	}
 
 	private void generarCampos() {
+		this.inputPanel.setLayout(new GridBagLayout());
+		this.inputPanel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 0, 5), new TitledBorder("Información de la llamada")));
+		this.dialog.add(this.inputPanel, BorderLayout.CENTER);
 		int i = 0;
+
 
 		JLabel lblNumOrigen = new JLabel("Numero de origen:");
 		this.txtNumOrigen.setPreferredSize(new Dimension(250, this.txtNumOrigen.getPreferredSize().height));
@@ -153,10 +168,6 @@ public class DialogoLlamada extends JDialog {
 		constraints.gridx = 1;
 
 		this.inputPanel.add(input, constraints);
-	}
-
-	public Llamada getLlamada() {
-		return this.llamada;
 	}
 
 	/**
@@ -212,10 +223,18 @@ public class DialogoLlamada extends JDialog {
 					LocalDateTime fechaLocal = LocalDateTime.ofInstant(fecha.toInstant(), ZoneId.systemDefault());
 					int duracion = (int) DialogoLlamada.this.spinnerDuracion.getValue();
 
-					DialogoLlamada.this.llamada = new Llamada(origen, destino, fechaLocal, duracion);
+					try {
+						Llamada llamada = new Llamada(origen, destino, fechaLocal, duracion);
+						DialogoLlamada.this.getControlador().altaLlamada(DialogoLlamada.this.cliente, llamada);
+					} catch (Exception exception) {
+						JOptionPane.showMessageDialog(DialogoLlamada.this.dialog,
+								"No se pudo añadir la llamada al cliente especificado",
+								"Error al añadir llamada",
+								JOptionPane.ERROR_MESSAGE);
+					}
 
 				case DIALOGO_CANCELAR:
-					DialogoLlamada.this.dispose();
+					DialogoLlamada.this.dialog.dispose();
 					break;
 			}
 		}

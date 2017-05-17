@@ -5,93 +5,92 @@
 
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
-import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
+import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Factura;
-import es.uji.al341823.telefonia.gui.swing.controlador.Controlador;
-import es.uji.al341823.telefonia.gui.swing.ventanas.VentanaPrincipal;
+import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
-import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_CERRAR;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_EMITIR_FACTURA;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.DIALOGO_NUEVA_LLAMADA;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.INFO_VER_FACTURAS;
+import static es.uji.al341823.telefonia.gui.swing.ActionCommands.INFO_VER_LLAMADAS;
 
 /**
  * @author Juanjo González (al341823)
  * @since 0.4
  */
-public class DialogoInfo extends JDialog {
+public class DialogoInfo extends Vista {
 
-	private final String nif;
-	private final String actionCommand;
-	private final Controlador controlador;
+	private final JDialog dialog;
+
 	private final JScrollPane scrollPane = new JScrollPane();
 
-	public DialogoInfo(Window owner, String nif, String actionCommand, Controlador controlador) {
-		super(owner, ModalityType.APPLICATION_MODAL);
+	private final Cliente cliente;
+	private final String actionCommand;
 
-		this.nif = nif;
+	public DialogoInfo(Window owner, Cliente cliente, String actionCommand) {
+		super();
+
+		this.dialog = new JDialog(owner, Dialog.ModalityType.APPLICATION_MODAL);
+
+		this.cliente = cliente;
 		this.actionCommand = actionCommand;
-		this.controlador = controlador;
 	}
 
-	public void generar() {
-		this.setMinimumSize(new Dimension(300, 200));
+	@Override
+	public void generarVista() {
+		this.scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 0, 5), this.scrollPane.getBorder()));
 		this.scrollPane.setPreferredSize(new Dimension(500, 250));
-		this.add(this.scrollPane, BorderLayout.CENTER);
+		this.dialog.add(this.scrollPane, BorderLayout.CENTER);
+
+		this.actualizarVista();
+		this.generarBotones();
+
+		if (this.actionCommand.equals(INFO_VER_LLAMADAS)) {
+			this.dialog.setTitle("Llamadas del cliente: " + this.cliente.getNif());
+			this.dialog.setIconImage(AdministradorSwing.getImage("phone"));
+		} else if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
+			this.dialog.setTitle("Facturas del cliente: " + this.cliente.getNif());
+			this.dialog.setIconImage(AdministradorSwing.getImage("receipt"));
+		}
+
+		this.dialog.setMinimumSize(new Dimension(300, 200));
+
+		this.dialog.pack();
+
+		this.dialog.setLocationRelativeTo(this.dialog.getOwner());
+		this.dialog.setVisible(true);
+	}
+
+	@Override
+	public void actualizarVista() {
 
 		if (this.actionCommand.equals(INFO_VER_LLAMADAS))
 			this.generarTablaLlamadas();
 		else
 			this.generarTablaFacturas();
-
-
-		// ============================================================ //
-
-		JPanel buttonPanel = new JPanel();
-		this.add(buttonPanel, BorderLayout.SOUTH);
-
-		if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
-			JButton btnEmitirFactura = new JButton("Emitir factura");
-			btnEmitirFactura.setActionCommand(DIALOGO_EMITIR_FACTURA);
-			btnEmitirFactura.addActionListener(new EscuchadorDialogoInfo());
-			buttonPanel.add(btnEmitirFactura);
-		} else {
-			JButton btnNuevaLlamada = new JButton("Añadir llamada");
-			btnNuevaLlamada.setActionCommand(DIALOGO_NUEVA_LLAMADA);
-			btnNuevaLlamada.addActionListener(new EscuchadorDialogoInfo());
-			buttonPanel.add(btnNuevaLlamada);
-		}
-
-		JButton btnCerrar = new JButton("Cerrar");
-		btnCerrar.setActionCommand(DIALOGO_CERRAR);
-		btnCerrar.addActionListener(new EscuchadorDialogoInfo());
-		buttonPanel.add(btnCerrar);
-
-		buttonPanel.setPreferredSize(buttonPanel.getPreferredSize());
-
-		// ============================================================ //
-		// ============================================================ //
-
-		if (this.actionCommand.equals(INFO_VER_LLAMADAS)) {
-			this.setTitle("Llamadas del cliente: " + this.nif);
-			this.setIconImage(VentanaPrincipal.getImage("phone"));
-		} else if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
-			this.setTitle("Facturas del cliente: " + this.nif);
-			this.setIconImage(VentanaPrincipal.getImage("receipt"));
-		}
-
-		this.setMinimumSize(new Dimension(300, 200));
-
-		this.pack();
-
-		this.setLocationRelativeTo(this.getOwner());
-		this.setVisible(true);
 	}
 
 	private void generarTablaLlamadas() {
@@ -111,7 +110,7 @@ public class DialogoInfo extends JDialog {
 		modelo.addColumn("Duración de llamada");
 
 		try {
-			LinkedList<Llamada> llamadas = this.controlador.getLlamadas(this.nif);
+			LinkedList<Llamada> llamadas = (LinkedList<Llamada>) this.getControlador().getLlamadas(this.cliente);
 
 			for (Llamada llamada : llamadas) {
 				modelo.addRow(new Object[] {
@@ -122,12 +121,12 @@ public class DialogoInfo extends JDialog {
 				});
 			}
 
-		} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
-			JOptionPane.showMessageDialog(this,
+		} catch (ObjetoNoExisteException exception) {
+			JOptionPane.showMessageDialog(this.dialog,
 					"No se pudieron mostrar las llamadas del cliente especificado",
 					"Error al mostrar llamadas",
 					JOptionPane.ERROR_MESSAGE);
-			this.dispose();
+			this.dialog.dispose();
 		}
 
 		this.scrollPane.setViewportView(tabla);
@@ -141,7 +140,9 @@ public class DialogoInfo extends JDialog {
 				return false;
 			}
 		});
+		tabla.getTableHeader().setReorderingAllowed(false);
 		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabla.setAutoCreateRowSorter(true);
 
 		DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 		modelo.addColumn("Codigo");
@@ -151,7 +152,7 @@ public class DialogoInfo extends JDialog {
 		modelo.addColumn("Importe");
 
 		try {
-			LinkedList<Factura> facturas = this.controlador.getFacturas(this.nif);
+			LinkedList<Factura> facturas = (LinkedList<Factura>) this.getControlador().getFacturas(this.cliente);
 
 			for (Factura factura : facturas) {
 				modelo.addRow(new Object[] {
@@ -163,15 +164,39 @@ public class DialogoInfo extends JDialog {
 				});
 			}
 
-		} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
-			JOptionPane.showMessageDialog(this,
+		} catch (ObjetoNoExisteException exception) {
+			JOptionPane.showMessageDialog(this.dialog,
 					"No se pudieron mostrar las facturas del cliente especificado",
 					"Error al mostrar facturas",
 					JOptionPane.ERROR_MESSAGE);
-			this.dispose();
+			this.dialog.dispose();
 		}
 
 		this.scrollPane.setViewportView(tabla);
+	}
+
+	private void generarBotones() {
+		JPanel buttonPanel = new JPanel();
+		this.dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+		if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
+			JButton btnEmitirFactura = new JButton("Emitir factura");
+			btnEmitirFactura.setActionCommand(DIALOGO_EMITIR_FACTURA);
+			btnEmitirFactura.addActionListener(new EscuchadorDialogoInfo());
+			buttonPanel.add(btnEmitirFactura);
+		} else {
+			JButton btnNuevaLlamada = new JButton("Añadir llamada");
+			btnNuevaLlamada.setActionCommand(DIALOGO_NUEVA_LLAMADA);
+			btnNuevaLlamada.addActionListener(new EscuchadorDialogoInfo());
+			buttonPanel.add(btnNuevaLlamada);
+		}
+
+		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.setActionCommand(DIALOGO_CERRAR);
+		btnCerrar.addActionListener(new EscuchadorDialogoInfo());
+		buttonPanel.add(btnCerrar);
+
+		buttonPanel.setPreferredSize(buttonPanel.getPreferredSize());
 	}
 
 	private class EscuchadorDialogoInfo implements ActionListener {
@@ -180,37 +205,27 @@ public class DialogoInfo extends JDialog {
 			switch (e.getActionCommand()) {
 				case DIALOGO_EMITIR_FACTURA:
 					try {
-						DialogoInfo.this.controlador.emitirFactura(DialogoInfo.this.nif);
+						DialogoInfo.this.getControlador().emitirFactura(DialogoInfo.this.cliente);
 					} catch (Exception ex) {
-						ex.printStackTrace();
-						JOptionPane.showMessageDialog(DialogoInfo.this,
+						JOptionPane.showMessageDialog(DialogoInfo.this.dialog,
 								"No se pudo emitir una factura para el cliente especificado",
 								"Error al emitir factura",
 								JOptionPane.ERROR_MESSAGE);
 					} finally {
-						DialogoInfo.this.generarTablaFacturas();
+						DialogoInfo.this.actualizarVista();
 					}
 					break;
 
 				case DIALOGO_NUEVA_LLAMADA:
-					DialogoLlamada dialogo = new DialogoLlamada(DialogoInfo.this);
-					dialogo.generar();
-					try {
-						Llamada llamada = dialogo.getLlamada();
-						if (llamada!= null)
-							DialogoInfo.this.controlador.altaLlamada(DialogoInfo.this.nif, llamada);
-					} catch (ClienteNoExisteExcepcion clienteNoExisteExcepcion) {
-						JOptionPane.showMessageDialog(DialogoInfo.this,
-								"No se pudo añadir la llamada al cliente especificado",
-								"Error al añadir llamada",
-								JOptionPane.ERROR_MESSAGE);
-					} finally {
-						DialogoInfo.this.generarTablaLlamadas();
-					}
+					Vista dialogo = new DialogoLlamada(DialogoInfo.this.dialog, DialogoInfo.this.cliente);
+					dialogo.setControlador(DialogoInfo.this.getControlador());
+					dialogo.generarVista();
+
+					DialogoInfo.this.actualizarVista();
 					break;
 
 				case DIALOGO_CERRAR:
-					DialogoInfo.this.dispose();
+					DialogoInfo.this.dialog.dispose();
 					break;
 			}
 		}

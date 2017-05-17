@@ -3,14 +3,14 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.llamadas;
+package es.uji.al341823.telefonia.gui.console.facturas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
+import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.Menu;
-import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +19,8 @@ import java.util.Collection;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class ExtraerLlamadas extends Menu {
-	public ExtraerLlamadas(Menu padre) {
+public class MenuExtraerFacturas extends Menu {
+	public MenuExtraerFacturas(Menu padre) {
 		super(padre);
 	}
 
@@ -28,37 +28,33 @@ public class ExtraerLlamadas extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
-
-		if (cliente == null) return;
+		String nif = AdministradorMenus.leerNIF();
 
 		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
 		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
-		Collection<Llamada> llamadas;
-
 		try {
-			llamadas = AdministradorDatos.extraerConjunto(cliente.getLlamadas(), inicio, fin);
+			Collection<Factura> facturas = AdministradorDatos.extraerConjunto(AdministradorDatos.getFacturasCliente(nif), inicio, fin);
+
+			System.out.println();
+			System.out.println("Durante este periodo de tiempo se un total de " + facturas.size() + " factura(s) para este cliente");
+
+			for (Factura factura : facturas)
+				System.out.println(" - " + factura);
+
 		} catch (FechaNoValidaExcepcion e) {
+			System.out.println();
 			System.out.println("El periodo de tiempo especificado no es valido");
-			AdministradorMenus.esperarParaContinuar();
-			return;
-		}
-
-		System.out.println();
-
-		System.out.println("Durante este periodo de tiempo este cliente realizó un total de " + llamadas.size() + " llamada(s)");
-
-		for (Llamada llamada : llamadas) {
-			System.out.println(" - " + llamada);
+		} catch (ObjetoNoExisteException e) {
+			System.out.println();
+			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
 		AdministradorMenus.esperarParaContinuar();
-
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Ver llamadas de un cliente emitidas entre dos fechas";
+		return "Ver faturas de un cliente emitidas entre dos fechas";
 	}
 }

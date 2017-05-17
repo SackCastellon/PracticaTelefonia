@@ -5,9 +5,11 @@
 
 package es.uji.al341823.telefonia.gui.console.llamadas;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
-import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
@@ -19,8 +21,8 @@ import java.time.LocalDateTime;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class AltaLlamada extends Menu {
-	public AltaLlamada(Menu padre) {
+public class MenuAltaLlamada extends Menu {
+	public MenuAltaLlamada(Menu padre) {
 		super(padre);
 	}
 
@@ -28,9 +30,7 @@ public class AltaLlamada extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
-
-		if (cliente == null) return;
+		String nif = AdministradorMenus.leerNIF();
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
@@ -41,9 +41,15 @@ public class AltaLlamada extends Menu {
 
 		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
 
-		cliente.altaLlamada(llamada);
-
-		System.out.println("Llamada añadida con éxito");
+		try {
+			System.out.println();
+			AdministradorDatos.addLlamada(nif, llamada);
+			System.out.println("Llamada añadida con éxito");
+		} catch (ObjetoYaExisteException e) {
+			System.err.println("Ya existe una llamada con el código '" + llamada.getCodigo() + "'");
+		} catch (ObjetoNoExisteException e) {
+			System.err.println("No existe ningún cliente con NIF '" + nif + "'");
+		}
 
 		AdministradorMenus.esperarParaContinuar();
 	}

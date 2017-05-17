@@ -5,20 +5,29 @@
 
 package es.uji.al341823.telefonia.llamadas;
 
+import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
+import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public class Llamada implements IFecha, Serializable {
+public class Llamada implements IFecha, IDatos, Serializable {
 
 	private static final long serialVersionUID = -5491839185929563564L;
 
+	/** Se utiliza para obtener el código unico de cada llamada */
+	private static int codigoUnico;
+
+	/** Codigo identificativo unico de la llamada */
+	private final int codigo;
 	/** Numero desde el que se ha realizado la llamada */
 	private final String numeroOrigen;
 	/** Numero al que se ha realizado la llamada */
@@ -39,10 +48,37 @@ public class Llamada implements IFecha, Serializable {
 	public Llamada(String numeroOrigen, String numeroDestino, LocalDateTime fechaLlamada, int duracionLlamada) {
 		super();
 
+		this.codigo = codigoUnico++;
+
 		this.numeroOrigen = numeroOrigen;
 		this.numeroDestino = numeroDestino;
 		this.fechaLlamada = fechaLlamada;
 		this.duracionLlamada = duracionLlamada;
+	}
+
+	public static void resetCodigo() {
+		codigoUnico = 0;//FIXME
+	}
+
+	public static List<String> getNombreDatos() {
+		List<String> list = new LinkedList<>();
+
+		list.add("Código");
+		list.add("Número de origen");
+		list.add("Número de destino");
+		list.add("Duración de la llamada");
+		list.add("Fecha de la llamada");
+
+		return list;
+	}
+
+	/**
+	 * Devuelve el codigo identificativo unico de la llamada
+	 *
+	 * @return Codigo identificativo
+	 */
+	public int getCodigo() {
+		return this.codigo;
 	}
 
 	/**
@@ -82,6 +118,19 @@ public class Llamada implements IFecha, Serializable {
 		return this.fechaLlamada;
 	}
 
+	@Override
+	public List<Pair<String, Object>> getDatos() {
+		List<Pair<String, Object>> list = new LinkedList<>();
+
+		list.add(new Pair<>("Código", this.getCodigo()));
+		list.add(new Pair<>("Número de origen", this.getNumeroOrigen()));
+		list.add(new Pair<>("Número de destino", this.getNumeroDestino()));
+		list.add(new Pair<>("Duración de la llamada", this.getDuracionLlamada()));
+		list.add(new Pair<>("Fecha de la llamada", this.getFecha()));
+
+		return list;
+	}
+
 	/**
 	 * Devuelve toda la información de la llamada
 	 *
@@ -89,6 +138,7 @@ public class Llamada implements IFecha, Serializable {
 	 */
 	@Override
 	public String toString() {
+		// TODO Hacer que use "getDatos()"
 		return "Llamada{" +
 				"origen='" + this.numeroOrigen + '\'' +
 				", destino='" + this.numeroDestino + '\'' +

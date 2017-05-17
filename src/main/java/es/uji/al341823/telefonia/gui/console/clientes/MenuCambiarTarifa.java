@@ -6,29 +6,28 @@
 package es.uji.al341823.telefonia.gui.console.clientes;
 
 import es.uji.al341823.telefonia.gui.console.Menu;
-import es.uji.al341823.telefonia.gui.console.clientes.alta.AltaClienteEmpresa;
-import es.uji.al341823.telefonia.gui.console.clientes.alta.AltaClienteParticular;
+import es.uji.al341823.telefonia.gui.console.clientes.tarifa.MenuCambiarTarifaBase;
+import es.uji.al341823.telefonia.gui.console.clientes.tarifa.MenuCambiarTarifaExtra;
 
 /**
- * Clase del menu para dar de alta a un cliente
+ * Clase del menu para cambiar la tarifa de un cliente
  *
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class AltaCliente extends Menu {
+public class MenuCambiarTarifa extends Menu {
 
-	public AltaCliente(Menu padre) {
+	public MenuCambiarTarifa(Menu padre) {
 		super(padre);
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Alta cliente";
+		return "Cambiar tarifa";
 	}
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new AltaClienteParticular(this), new AltaClienteEmpresa(this)};
+		return new Menu[] {new MenuCambiarTarifaBase(this), new MenuCambiarTarifaExtra(this)};
 	}
-
 }

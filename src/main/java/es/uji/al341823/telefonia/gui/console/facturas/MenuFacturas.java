@@ -24,7 +24,7 @@ public class MenuFacturas extends Menu {
 
 	@Override
 	public Menu[] getSubmenus() {
-		return new Menu[] {new EmitirFactura(this), new RecuperarDatosFactura(this),
-				new RecuperarFacturasCliente(this), new ExtraerFacturas(this)};
+		return new Menu[] {new MenuEmitirFactura(this), new MenuRecuperarDatosFactura(this),
+				new MenuRecuperarFacturasCliente(this), new MenuExtraerFacturas(this)};
 	}
 }

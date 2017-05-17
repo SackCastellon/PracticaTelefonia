@@ -3,23 +3,22 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.clientes;
+package es.uji.al341823.telefonia.gui.console.llamadas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
-import es.uji.al341823.telefonia.api.TipoDato;
-import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.gui.console.Menu;
+import es.uji.al341823.telefonia.llamadas.Llamada;
+
+import java.util.Collection;
 
 /**
- * Clase del menu para dar de baja un cliente
- *
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class BajaCliente extends Menu {
-
-	public BajaCliente(Menu padre) {
+public class MenuVerLlamadasCliente extends Menu {
+	public MenuVerLlamadasCliente(Menu padre) {
 		super(padre);
 	}
 
@@ -27,14 +26,18 @@ public class BajaCliente extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
-
-		System.out.println();
+		String nif = AdministradorMenus.leerNIF();
 
 		try {
-			AdministradorDatos.bajaCliente(nif);
-			System.out.println("Cliente eliminado con éxito");
-		} catch (ClienteNoExisteExcepcion e) {
+			System.out.println();
+			Collection<Llamada> llamadas = AdministradorDatos.getLlamadasCliente(nif);
+
+			System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
+
+			for (Llamada llamada : llamadas) {
+				System.out.println(" - " + llamada);
+			}
+		} catch (ObjetoNoExisteException e) {
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
@@ -43,6 +46,6 @@ public class BajaCliente extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Baja cliente";
+		return "Ver llamadas cliente";
 	}
 }

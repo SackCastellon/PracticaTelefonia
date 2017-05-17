@@ -9,6 +9,8 @@ import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 
+import java.io.File;
+
 /**
  * Clase del menu para guardar los datos desde un fichero
  *
@@ -27,8 +29,10 @@ public class MenuGuardarDatos extends Menu {
 
 		if (ruta.isEmpty())
 			System.out.println("Se canceló el guardado de datos");
-		else
-			AdministradorDatos.guardarDatos(ruta);
+		else {
+			AdministradorDatos.setFicheroDatos(new File(ruta));
+			AdministradorDatos.guardarDatos();
+		}
 
 		AdministradorMenus.esperarParaContinuar();
 	}

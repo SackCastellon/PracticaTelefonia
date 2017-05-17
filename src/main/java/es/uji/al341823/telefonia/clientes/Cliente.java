@@ -6,24 +6,28 @@
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
-import es.uji.al341823.telefonia.api.excepciones.FacturaNoExisteExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.llamadas.Llamada;
+import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Juanjo González (al341823)
  * @author David Agost (al341819)
  * @since 0.1
  */
-public abstract class Cliente implements IFecha, Serializable {
+public abstract class Cliente implements IFecha, IDatos, Serializable {
 
 	private static final long serialVersionUID = -6698454540590960908L;
 
@@ -39,7 +43,7 @@ public abstract class Cliente implements IFecha, Serializable {
 	private final LocalDateTime fechaAlta;
 
 	/** Lista de llamadas que realizó el cliente */
-	private final LinkedList<Llamada> llamadas = new LinkedList<>(); //TODO cambiar para que sea como la facturas
+	private final HashSet<Integer> codigosLlamadas = new HashSet<>();
 	/** Conjunto de codigos de las facturas correspondientes al cliente */
 	private final HashSet<Integer> codigosFacturas = new HashSet<>();
 
@@ -136,10 +140,10 @@ public abstract class Cliente implements IFecha, Serializable {
 	/**
 	 * Da de alta una nueva llamada para el cliente
 	 *
-	 * @param llamada Nueva llamada
+	 * @param codigoLlamada Código de la nueva llamada
 	 */
-	public void altaLlamada(Llamada llamada) {
-		this.llamadas.add(llamada);
+	public void addLlamada(int codigoLlamada) {
+		this.codigosLlamadas.add(codigoLlamada);
 	}
 
 	/**
@@ -147,8 +151,8 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return Lista de llamadas
 	 */
-	public LinkedList<Llamada> getLlamadas() {
-		return new LinkedList<>(this.llamadas);
+	public HashSet<Integer> getCodigosLlamadas() {
+		return new HashSet<>(this.codigosLlamadas);
 	}
 
 	/**
@@ -157,21 +161,27 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return La factura emitida
 	 */
-	public Factura emitirFactura() throws FechaNoValidaExcepcion {
+	public Factura generarFactura() throws FechaNoValidaExcepcion {
 		LocalDateTime hoy = LocalDateTime.now();
+
 		int duracionLlamadas = 0;
 
-		for (Llamada llamada : this.llamadas) {
-			LocalDateTime fecha = llamada.getFecha();
-			if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
-				duracionLlamadas += llamada.getDuracionLlamada();
+		for (int codigoLlamada : this.codigosLlamadas) {
+			try {
+				Llamada llamada = AdministradorDatos.getLlamada(codigoLlamada);
+				LocalDateTime fecha = llamada.getFecha();
+				if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
+					duracionLlamadas += llamada.getDuracionLlamada();
+			} catch (ObjetoNoExisteException e) {
+				System.err.println("Se intentó acceder a una llamada que no existe");
+			}
 		}
 
 		Factura factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
 
 		this.ultimaFacturacion = hoy;
-
 		this.codigosFacturas.add(factura.getCodigo());
+
 		return factura;
 	}
 
@@ -180,18 +190,22 @@ public abstract class Cliente implements IFecha, Serializable {
 	 *
 	 * @return Lista de codigosFacturas - Vacia si no hay facturas
 	 */
-	public LinkedList<Factura> getFacturas() {
-		LinkedList<Factura> facturas = new LinkedList<>();
+	public Set<Integer> getCodigosFacturas() {
+		return this.codigosFacturas;
+	}
 
-		for (int codigo : this.codigosFacturas) {
-			try {
-				facturas.add(AdministradorDatos.getFactura(codigo));
-			} catch (FacturaNoExisteExcepcion facturaNoExisteExcepcion) {
-				System.out.println("Hay un problema de coerencia en la lista de facturas.");
-			}
-		}
+	@Override
+	public List<Pair<String, Object>> getDatos() {
+		List<Pair<String, Object>> list = new LinkedList<>();
 
-		return facturas;
+		list.add(new Pair<>("NIF", this.getNif()));
+		list.add(new Pair<>("Nombre", this.getNombre()));
+		list.add(new Pair<>("Dirección", this.getDireccion()));
+		list.add(new Pair<>("Email", this.getEmail()));
+		list.add(new Pair<>("Fecha de alta", this.getFecha()));
+		list.add(new Pair<>("Tarifa", this.getTarifa()));
+
+		return list;
 	}
 
 	@Override

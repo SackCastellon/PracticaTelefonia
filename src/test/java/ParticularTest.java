@@ -34,7 +34,7 @@ public class ParticularTest {
 	private static Tarifa tarifa;
 	private static Direccion direccion;
 	private static int duracionLlamadas;
-	private static LinkedList<Llamada> llamadas;
+	private static LinkedList<Integer> llamadas;
 	private static LinkedList<Factura> facturas;
 	private static Particular cliente;
 
@@ -105,20 +105,20 @@ public class ParticularTest {
 	public void altaLlamadaTest() {
 		for (int i = 0; i < 100; i++) {
 			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
-			llamadas.add(llamada);
-			cliente.altaLlamada(llamada);
+			llamadas.add(llamada.getCodigo());
+			cliente.addLlamada(llamada.getCodigo());
 		}
-		Assert.assertEquals(llamadas.size(), cliente.getLlamadas().size());
+		Assert.assertEquals(llamadas.size(), cliente.getCodigosLlamadas().size());
 	}
 
 	@Test
 	public void getLlamadasTest() {
 		for (int i = 0; i < 100; i++) {
 			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
-			llamadas.add(llamada);
-			cliente.altaLlamada(llamada);
+			llamadas.add(llamada.getCodigo());
+			cliente.addLlamada(llamada.getCodigo());
 		}
-		Assert.assertArrayEquals(llamadas.toArray(), cliente.getLlamadas().toArray());
+		Assert.assertArrayEquals(llamadas.toArray(), cliente.getCodigosLlamadas().toArray());
 	}
 
 	//@Test
@@ -126,9 +126,9 @@ public class ParticularTest {
 		for (int i = 0; i < 100; i++) {
 			Factura factura = new Factura(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
 			facturas.add(factura);
-			cliente.emitirFactura();
+			cliente.generarFactura();
 		}
-		Assert.assertEquals(facturas.size(), cliente.getFacturas().size());
+		Assert.assertEquals(facturas.size(), cliente.getCodigosFacturas().size());
 	}
 
 	@Test

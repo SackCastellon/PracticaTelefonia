@@ -10,7 +10,6 @@ import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
-import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
 import es.uji.al341823.telefonia.gui.console.Menu;
 
 /**
@@ -18,8 +17,8 @@ import es.uji.al341823.telefonia.gui.console.Menu;
  * @author David Agost (al341819)
  * @since 0.3
  */
-public class CambiarTarifaExtra extends Menu {
-	public CambiarTarifaExtra(Menu padre) {
+public class MenuCambiarTarifaBase extends Menu {
+	public MenuCambiarTarifaBase(Menu padre) {
 		super(padre);
 	}
 
@@ -31,14 +30,12 @@ public class CambiarTarifaExtra extends Menu {
 
 		if (cliente == null) return;
 
-		Tarifa tarifaBase = cliente.getTarifa();
 		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
-		TarifaExtra[] tarifasExtra = {
-				fabricaTarifas.getTarifaExtra(tarifaBase, TipoTarifa.Extra.TARDES),
-				fabricaTarifas.getTarifaExtra(tarifaBase, TipoTarifa.Extra.DOMINGOS)};
+		Tarifa[] tarifasBase = {
+				fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)};
 
-		Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasExtra);
+		Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasBase);
 
 		cliente.setTarifa(tarifa);
 
@@ -47,7 +44,7 @@ public class CambiarTarifaExtra extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Cambiar tarifa extra";
+		return "Cambiar tarifa base";
 	}
 
 	@Override

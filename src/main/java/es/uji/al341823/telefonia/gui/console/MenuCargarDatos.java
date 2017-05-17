@@ -9,6 +9,8 @@ import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 
+import java.io.File;
+
 /**
  * Clase del menu para cargar los datos desde un fichero
  *
@@ -27,8 +29,10 @@ public class MenuCargarDatos extends Menu {
 
 		if (ruta.isEmpty())
 			System.out.println("Se canceló la carga de datos");
-		else
-			AdministradorDatos.cargarDatos(ruta);
+		else {
+			AdministradorDatos.setFicheroDatos(new File(ruta));
+			AdministradorDatos.cargarDatos();
+		}
 
 		AdministradorMenus.esperarParaContinuar();
 	}

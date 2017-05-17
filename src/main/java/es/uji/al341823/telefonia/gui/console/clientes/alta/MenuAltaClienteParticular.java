@@ -8,7 +8,7 @@ package es.uji.al341823.telefonia.gui.console.clientes.alta;
 import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
-import es.uji.al341823.telefonia.api.excepciones.ClienteYaExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
@@ -18,13 +18,13 @@ import es.uji.al341823.telefonia.gui.console.Menu;
 import java.time.LocalDateTime;
 
 /**
- * Clase del menu para dar de alta una empresa
+ * Clase del menu para dar de alta un particular
  *
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class AltaClienteEmpresa extends Menu {
-	public AltaClienteEmpresa(Menu padre) {
+public class MenuAltaClienteParticular extends Menu {
+	public MenuAltaClienteParticular(Menu padre) {
 		super(padre);
 	}
 
@@ -32,12 +32,13 @@ public class AltaClienteEmpresa extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		System.out.println("Introduce los datos de la empresa:");
+		System.out.println("Introduce los datos del particular:");
 
 		System.out.println();
 
 		String nombre = AdministradorMenus.leerDato(" - Nombre: ", TipoDato.TEXTO);
-		String nif = AdministradorMenus.leerDato(" - NIF: ", TipoDato.NIF_EMPRESA);
+		String apellidos = AdministradorMenus.leerDato(" - Apellidos: ", TipoDato.TEXTO);
+		String nif = AdministradorMenus.leerDato(" - NIF: ", TipoDato.NIF);
 		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección (CP, Provincia, Problación): ");
 		String email = AdministradorMenus.leerDato(" - E-mail: ", TipoDato.EMAIL);
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
@@ -48,9 +49,9 @@ public class AltaClienteEmpresa extends Menu {
 		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
 		try {
-			AdministradorDatos.altaCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
+			AdministradorDatos.addCliente(fabricaClientes.getParticular(nombre, apellidos, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
 			System.out.println("Cliente añadido con éxito");
-		} catch (ClienteYaExisteExcepcion e) {
+		} catch (ObjetoYaExisteException e) {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");
 		}
 
@@ -59,6 +60,6 @@ public class AltaClienteEmpresa extends Menu {
 
 	@Override
 	public String getTitulo() {
-		return "Empresa";
+		return "Particular";
 	}
 }

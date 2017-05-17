@@ -3,21 +3,19 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
-package es.uji.al341823.telefonia.gui.console.llamadas;
+package es.uji.al341823.telefonia.gui.console.clientes;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.Menu;
-import es.uji.al341823.telefonia.llamadas.Llamada;
-
-import java.util.LinkedList;
 
 /**
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class VerLlamadasCliente extends Menu {
-	public VerLlamadasCliente(Menu padre) {
+public class MenuVerDatosCliente extends Menu {
+
+	public MenuVerDatosCliente(Menu padre) {
 		super(padre);
 	}
 
@@ -29,19 +27,15 @@ public class VerLlamadasCliente extends Menu {
 
 		if (cliente == null) return;
 
-		LinkedList<Llamada> llamadas = cliente.getLlamadas();
+		System.out.println("Información del cliente: " + cliente);
 
-		System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
-
-		for (Llamada llamada : llamadas) {
-			System.out.println(" - " + llamada);
-		}
+		System.out.println();
 
 		AdministradorMenus.esperarParaContinuar();
 	}
 
 	@Override
 	public String getTitulo() {
-		return "Ver llamadas cliente";
+		return "Ver datos cliente";
 	}
 }

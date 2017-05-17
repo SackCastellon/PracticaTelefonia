@@ -6,8 +6,11 @@
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import javafx.util.Pair;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
@@ -36,6 +39,20 @@ public class Particular extends Cliente {
 		this.apellidos = apellidos;
 	}
 
+	public static List<String> getNombreDatos() {
+		List<String> list = new LinkedList<>();
+
+		list.add("NIF");
+		list.add("Nombre");
+		list.add("Apellidos");
+		list.add("Dirección");
+		list.add("Email");
+		list.add("Fecha de alta");
+		list.add("Tarifa");
+
+		return list;
+	}
+
 	/**
 	 * Devuelve los apellidos del cliente
 	 *
@@ -52,6 +69,7 @@ public class Particular extends Cliente {
 	 */
 	@Override
 	public String toString() {
+		// TODO Hacer que use "getDatos()"
 		return "Particular:\n" +
 				"\tNombre: " + this.getNombre() + '\n' +
 				"\tApellidos: " + this.getApellidos() + '\n' +
@@ -61,5 +79,14 @@ public class Particular extends Cliente {
 				"\tFecha de Alta: " + this.getFecha() + '\n' +
 				"\tTarifas:\n" +
 				"\t\t" + this.getTarifa();
+	}
+
+	@Override
+	public List<Pair<String, Object>> getDatos() {
+		List<Pair<String, Object>> list = super.getDatos();
+
+		list.add(2, new Pair<>("Apellidos", this.getApellidos()));
+
+		return list;
 	}
 }

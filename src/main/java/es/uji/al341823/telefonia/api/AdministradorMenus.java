@@ -5,7 +5,7 @@
 
 package es.uji.al341823.telefonia.api;
 
-import es.uji.al341823.telefonia.api.excepciones.ClienteNoExisteExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -214,6 +214,18 @@ public class AdministradorMenus {
 	/**
 	 * Espera a que el usuario introduzca el NIF de un cliente
 	 *
+	 * @return El NIF introducido
+	 * cliente
+	 *
+	 * @see AdministradorMenus#leerDato(String, TipoDato)
+	 */
+	public static String leerNIF() {
+		return leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
+	}
+
+	/**
+	 * Espera a que el usuario introduzca el NIF de un cliente
+	 *
 	 * @return El cliente correspondiente al NIF introducido, {@code null} ni el NIF no corresponde a ningún
 	 * cliente
 	 *
@@ -221,11 +233,11 @@ public class AdministradorMenus {
 	 */
 	public static Cliente leerClienteNIF() {
 
-		String nif = leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
+		String nif = leerNIF();
 
 		try {
 			return AdministradorDatos.getCliente(nif);
-		} catch (ClienteNoExisteExcepcion e) {
+		} catch (ObjetoNoExisteException e) {
 			System.out.println();
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 			esperarParaContinuar();

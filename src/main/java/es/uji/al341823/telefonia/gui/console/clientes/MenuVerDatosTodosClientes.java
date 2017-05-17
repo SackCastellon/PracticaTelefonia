@@ -16,9 +16,9 @@ import java.util.LinkedList;
  * @author Juanjo González (al341823)
  * @since 0.2
  */
-public class VerDatosTodosClientes extends Menu {
+public class MenuVerDatosTodosClientes extends Menu {
 
-	public VerDatosTodosClientes(Menu padre) {
+	public MenuVerDatosTodosClientes(Menu padre) {
 		super(padre);
 	}
 
@@ -26,13 +26,12 @@ public class VerDatosTodosClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		LinkedList<Cliente> clientes = AdministradorDatos.getClientes();
+		LinkedList<Cliente> clientes = new LinkedList<>(AdministradorDatos.getClientes());
 
 		System.out.printf("Hay un total de %d clientes\n", clientes.size());
 
-		for (Cliente cliente : clientes) {
+		for (Cliente cliente : clientes)
 			System.out.println("\n - " + cliente);
-		}
 
 		AdministradorMenus.esperarParaContinuar();
 	}
