@@ -44,7 +44,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>es.uji.al341823.telefonia.AppTelefonia</mainClass>
+                                    <mainClass>AppTelefonia</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -87,6 +87,7 @@
             <groupId>es.uji.belfern</groupId>
             <artifactId>GeneradorDatosINE</artifactId>
             <version>0.0.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
