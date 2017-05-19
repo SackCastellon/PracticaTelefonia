@@ -34,6 +34,7 @@ import java.util.Date;
 public class Controlador {
 	private Vista vista;
 
+	@SuppressWarnings("unused")
 	public Vista getVista() {
 		return this.vista;
 	}

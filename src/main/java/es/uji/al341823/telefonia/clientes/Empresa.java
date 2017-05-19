@@ -40,7 +40,7 @@ public class Empresa extends Cliente {
 		list.add("Dirección");
 		list.add("Email");
 		list.add("Fecha de alta");
-		list.add("Tarifa");
+		list.add("Tarifas");
 
 		return list;
 	}

@@ -13,6 +13,7 @@ import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
 import es.uji.al341823.telefonia.gui.swing.Vista;
 
 import javax.swing.JButton;
@@ -192,21 +193,50 @@ public class DialogoEditar extends Vista {
 
 		constraints.gridy++;
 
+		LinkedList<Tarifa> tarifasCliente = new LinkedList<>();
+		if (this.cliente != null) {
+			Tarifa tarifaBase = this.cliente.getTarifa();
+
+			while (tarifaBase instanceof TarifaExtra) {
+				tarifasCliente.addFirst(tarifaBase);
+				tarifaBase = ((TarifaExtra) tarifaBase).getTarifaBase();
+			}
+
+			tarifasCliente.addFirst(tarifaBase);
+		}
+
 		// Selector tarifa basica
 		this.comboBoxTarifas = new JComboBox<>();
 		ArrayList<Tarifa> tarifas = this.getControlador().getTarifasBasicas();
 		for (Tarifa tarifa : tarifas)
 			this.comboBoxTarifas.addItem(tarifa);
+		if (this.cliente != null) {
+			this.comboBoxTarifas.setSelectedItem(tarifasCliente.removeFirst());
+			this.comboBoxTarifas.setEnabled(false);
+		}
 		inputPanel.add(this.comboBoxTarifas, constraints);
 
 		constraints.gridy++;
 
 		if (this.cliente != null) {
+			for (Tarifa tarifa : tarifasCliente) {
+				JComboBox<Tarifa> comboBox = new JComboBox<>();
+				comboBox.addItem(tarifa);
+				comboBox.setSelectedIndex(0);
+				comboBox.setEnabled(false);
+				inputPanel.add(comboBox, constraints);
+				constraints.gridy++;
+			}
+
 			this.comboBoxTarifasExtra = new JComboBox<>();
-			ArrayList<Tarifa> tarifasExtra = this.getControlador().getTarifasExtra((Tarifa) this.comboBoxTarifas.getSelectedItem());
+			ArrayList<Tarifa> tarifasExtra = this.getControlador().getTarifasExtra(this.cliente.getTarifa());
 			this.comboBoxTarifasExtra.addItem(null);
 			for (Tarifa tarifa : tarifasExtra)
 				this.comboBoxTarifasExtra.addItem(tarifa);
+			this.comboBoxTarifasExtra.addItemListener(e -> {
+				boolean isValid = this.comboBoxTarifasExtra.getSelectedItem() != null;
+				this.btnGuardar.setEnabled(isValid);
+			});
 			inputPanel.add(this.comboBoxTarifasExtra, constraints);
 		}
 	}
@@ -216,7 +246,7 @@ public class DialogoEditar extends Vista {
 		this.dialog.add(buttonPanel, BorderLayout.SOUTH);
 
 		this.btnGuardar = new JButton("Guardar");
-		this.btnGuardar.setEnabled(this.cliente != null);
+		this.btnGuardar.setEnabled(false);
 		this.btnGuardar.setActionCommand(DIALOGO_GUARDAR);
 		this.btnGuardar.addActionListener(new EscuchadorDialogoEditar());
 		buttonPanel.add(this.btnGuardar);
@@ -301,8 +331,8 @@ public class DialogoEditar extends Vista {
 			if (DialogoEditar.this.cliente != null) {
 				if (DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem() != null)
 					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, (Tarifa) DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem());
-				else
-					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, (Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
+//				else
+//					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, (Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
 			} else {
 				String[] textos = DialogoEditar.this.inputs.stream().map(JTextComponent::getText).toArray(String[]::new);
 

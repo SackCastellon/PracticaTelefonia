@@ -127,14 +127,14 @@ public class DialogoLlamada extends Vista {
 
 		JLabel lblNumOrigen = new JLabel("Numero de origen:");
 		this.txtNumOrigen.setPreferredSize(new Dimension(250, this.txtNumOrigen.getPreferredSize().height));
-		this.txtNumOrigen.addFocusListener(new ValidadorDatos(TipoDato.TELEFONO, i));
+		this.txtNumOrigen.addFocusListener(new ValidadorDatos(i));
 		this.addLine(lblNumOrigen, this.txtNumOrigen, i);
 
 		i++;
 
 		JLabel lblNumDestino = new JLabel("Numero de destino:");
 		this.txtNumDestino.setPreferredSize(new Dimension(250, this.txtNumDestino.getPreferredSize().height));
-		this.txtNumDestino.addFocusListener(new ValidadorDatos(TipoDato.TELEFONO, i));
+		this.txtNumDestino.addFocusListener(new ValidadorDatos(i));
 		this.addLine(lblNumDestino, this.txtNumDestino, i);
 
 		i++;
@@ -180,9 +180,9 @@ public class DialogoLlamada extends Vista {
 
 		private final Color colorValorIncorrecto = new Color(0xf2dede);
 
-		ValidadorDatos(TipoDato tipoDato, int campo) {
+		ValidadorDatos(int campo) {
 			super();
-			this.tipoDato = tipoDato;
+			this.tipoDato = TipoDato.TELEFONO;
 			this.campo = campo;
 		}
 

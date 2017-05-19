@@ -203,7 +203,7 @@ public abstract class Cliente implements IFecha, IDatos, Serializable {
 		list.add(new Pair<>("Dirección", this.getDireccion()));
 		list.add(new Pair<>("Email", this.getEmail()));
 		list.add(new Pair<>("Fecha de alta", this.getFecha()));
-		list.add(new Pair<>("Tarifa", this.getTarifa()));
+		list.add(new Pair<>("Tarifas", this.getTarifa()));
 
 		return list;
 	}

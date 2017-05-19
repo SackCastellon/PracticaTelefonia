@@ -14,6 +14,7 @@ import javax.swing.table.AbstractTableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Juanjo González (al341823)
@@ -24,11 +25,19 @@ public class ModeloTablaClientes extends AbstractTableModel {
 	private final LinkedList<Cliente> datos = new LinkedList<>();
 
 	private final Class<? extends Cliente> tipoCliente;
+	private final List<String> nombres;
 
 	public ModeloTablaClientes(Class<? extends Cliente> tipoCliente) {
 		super();
 
 		this.tipoCliente = tipoCliente;
+
+		if (this.tipoCliente.equals(Particular.class))
+			this.nombres = Particular.getNombreDatos();
+		else if (this.tipoCliente.equals(Empresa.class))
+			this.nombres = Empresa.getNombreDatos();
+		else
+			this.nombres = new LinkedList<>();
 
 		this.actualizarDatos();
 	}
@@ -40,24 +49,12 @@ public class ModeloTablaClientes extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		if (this.tipoCliente.equals(Particular.class))
-			return Particular.getNombreDatos().size();
-
-		if (this.tipoCliente.equals(Empresa.class))
-			return Empresa.getNombreDatos().size();
-
-		return 0;
+		return this.nombres.size();
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		if (this.tipoCliente.equals(Particular.class))
-			return Particular.getNombreDatos().get(column);
-
-		if (this.tipoCliente.equals(Empresa.class))
-			return Empresa.getNombreDatos().get(column);
-
-		return null;
+		return this.nombres.get(column);
 	}
 
 	@Override

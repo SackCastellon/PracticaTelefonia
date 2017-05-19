@@ -9,6 +9,8 @@ import es.uji.al341823.telefonia.api.AdministradorSwing;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import es.uji.al341823.telefonia.facturacion.tarifas.TarifaExtra;
 import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.gui.swing.controladores.Controlador;
 import es.uji.al341823.telefonia.gui.swing.dialogos.DialogoBuscar;
@@ -46,6 +48,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import static es.uji.al341823.telefonia.gui.swing.ActionCommands.*;
 
@@ -76,6 +79,8 @@ public class VentanaPrincipal extends Vista {
 		this.generarPanelDerecha();
 		this.generarMenusContexto();
 
+		this.adjustComponentsSize();
+
 		this.frame.setTitle("Telefonía");
 		this.frame.setIconImage(AdministradorSwing.getImage("phone_ring"));
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -97,7 +102,7 @@ public class VentanaPrincipal extends Vista {
 		}
 	}
 
-	public void actualizarInfo() {
+	private void actualizarInfo() {
 		// Limpia el panel de información
 		this.panelInfo.removeAll();
 
@@ -128,14 +133,13 @@ public class VentanaPrincipal extends Vista {
 					Cliente cliente = model.getClienteAt(row);
 
 					GridBagConstraints constraints = new GridBagConstraints();
-					constraints.anchor = GridBagConstraints.CENTER;
 					constraints.fill = GridBagConstraints.HORIZONTAL;
 					constraints.gridx = 0;
 					constraints.gridy = -1;
 
 					// Muestra toda la información de la tabla en el panel de información
 					for (Pair<String, Object> pair : cliente.getDatos()) {
-						constraints.insets = new Insets(3, 0, 1, 0);
+						constraints.insets = new Insets(3, 5, 1, 5);
 						constraints.gridy++;
 
 						// Etiqueta con el nombre del dato
@@ -143,21 +147,44 @@ public class VentanaPrincipal extends Vista {
 						label.setText(pair.getKey() + ":");
 						this.panelInfo.add(label, constraints);
 
-						constraints.insets = new Insets(1, 0, 3, 0);
+						constraints.insets = new Insets(1, 5, 3, 5);
 						constraints.gridy++;
 
+
 						// Cuadro de texto con el valor del dato
-						JTextField textField = new JTextField();
-						textField.setEditable(false);
-
 						Object value = pair.getValue();
-						if (value instanceof LocalDateTime)
-							textField.setText(((LocalDateTime) value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-						else
-							textField.setText(value.toString());
+						if (value instanceof TarifaExtra) {
+							Tarifa tarifaBase = (Tarifa) value;
 
-						textField.setPreferredSize(new Dimension(200, textField.getPreferredSize().height));
-						this.panelInfo.add(textField, constraints);
+							LinkedList<Tarifa> tarifas = new LinkedList<>();
+
+							while (tarifaBase instanceof TarifaExtra) {
+								tarifas.addFirst(tarifaBase);
+								tarifaBase = ((TarifaExtra) tarifaBase).getTarifaBase();
+							}
+
+							tarifas.addFirst(tarifaBase);
+
+							for (Tarifa tarifa : tarifas) {
+								JTextField textField = new JTextField();
+								textField.setEditable(false);
+								textField.setText(tarifa.toString());
+								this.panelInfo.add(textField, constraints);
+
+								constraints.gridy++;
+							}
+						} else {
+							JTextField textField = new JTextField();
+							textField.setEditable(false);
+
+							if (value instanceof LocalDateTime)
+								textField.setText(((LocalDateTime) value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+							else
+								textField.setText(value.toString());
+
+							textField.setPreferredSize(new Dimension(300, textField.getPreferredSize().height));
+							this.panelInfo.add(textField, constraints);
+						}
 					}
 				}
 			}
@@ -315,14 +342,14 @@ public class VentanaPrincipal extends Vista {
 		this.frame.add(panelIzquierda, BorderLayout.CENTER);
 
 		// Panel de pestañas para particulares y empresas
-		this.tabbedPaneClientes.setPreferredSize(new Dimension(550, 350));
+		this.tabbedPaneClientes.setPreferredSize(new Dimension(600, 400));
 		this.tabbedPaneClientes.addChangeListener(new EscuchadorTablas());
 		panelIzquierda.add(this.tabbedPaneClientes);
 
-		int[] anchoParticular = {80, 100, 125, 250, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
+		int[] anchoParticular = {80, 100, 125, 200, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
 		this.generarTabla(this.tabbedPaneClientes, "Particulares", Particular.class, anchoParticular);
 
-		int[] anchoEmpresa = {80, 100, 250, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
+		int[] anchoEmpresa = {80, 100, 200, 125, 125, 150}; //TODO Intentar buscar otra forma de establecer los tamaños
 		this.generarTabla(this.tabbedPaneClientes, "Empresas", Empresa.class, anchoEmpresa);
 
 		this.generarBotonesTablas(panelIzquierda);
@@ -422,15 +449,17 @@ public class VentanaPrincipal extends Vista {
 		// Panel con scroll
 		JScrollPane scroll = new JScrollPane();
 		scroll.setBorder(new TitledBorder("Información detallada"));
-		scroll.setPreferredSize(new Dimension(250, 350));
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setPreferredSize(new Dimension(350, scroll.getPreferredSize().height));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		parent.add(scroll);
 
+		// Panel para alinear información a la parte superior
+		JPanel panel = new JPanel();
+		scroll.setViewportView(panel);
+
 		// Panel con la información del cliente selecionado
 		this.panelInfo.setLayout(new GridBagLayout());
-		this.panelInfo.setBorder(new EmptyBorder(3, 3, 3, 3));
-		scroll.setViewportView(this.panelInfo);
+		panel.add(this.panelInfo);
 	}
 
 	/**
@@ -503,8 +532,7 @@ public class VentanaPrincipal extends Vista {
 			UIManager.setLookAndFeel(className);
 			SwingUtilities.updateComponentTreeUI(this.frame);
 
-			for (JComponent component : this.componentsToAdjustSize)
-				component.setMaximumSize(component.getPreferredSize());
+			this.adjustComponentsSize();
 
 			this.frame.pack();
 			this.frame.setLocationRelativeTo(null);
@@ -516,6 +544,11 @@ public class VentanaPrincipal extends Vista {
 		} finally {
 			this.actualizarVista();
 		}
+	}
+
+	private void adjustComponentsSize() {
+		for (JComponent component : this.componentsToAdjustSize)
+			component.setMaximumSize(component.getPreferredSize());
 	}
 
 	/**
@@ -762,12 +795,12 @@ public class VentanaPrincipal extends Vista {
 	 */
 	private class EscuchadorCabeceraTabla extends MouseAdapter {
 
-		private JTable tabla;
-		private JMenuItem itemHideColumn;
-		private TableColumn[] columnToHide;
-		private JMenu menuShowColumn;
-		private ArrayList<TableColumn> hiddenColumns;
-		private JPopupMenu popupTabla;
+		private final JTable tabla;
+		private final JMenuItem itemHideColumn;
+		private final TableColumn[] columnToHide;
+		private final JMenu menuShowColumn;
+		private final ArrayList<TableColumn> hiddenColumns;
+		private final JPopupMenu popupTabla;
 
 		private EscuchadorCabeceraTabla(JTable tabla, JMenuItem itemHideColumn, TableColumn[] columnToHide, JMenu menuShowColumn, ArrayList<TableColumn> hiddenColumns, JPopupMenu popupTabla) {
 			super();

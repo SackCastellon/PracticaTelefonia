@@ -16,6 +16,7 @@ import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +77,12 @@ public class ModeloTablaBusqueda extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		IDatos obj = (IDatos) this.datos.get(rowIndex);
-		return obj.getDatos().get(columnIndex).getValue();
+		Object value = obj.getDatos().get(columnIndex).getValue();
+
+		if (value instanceof LocalDateTime)
+			return ((LocalDateTime) value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		return value;
 	}
 
 	@Override

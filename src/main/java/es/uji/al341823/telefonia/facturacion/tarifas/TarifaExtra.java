@@ -57,6 +57,10 @@ public abstract class TarifaExtra extends Tarifa {
 		return costeBase;
 	}
 
+	public Tarifa getTarifaBase() {
+		return this.tarifaBase;
+	}
+
 	@Override
 	public String toString() {
 		if (this.inicioPeriodo == this.finPeriodo)
