@@ -5,25 +5,14 @@
 
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.gui.swing.tablas.ModeloTablaBusqueda;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SpinnerDateModel;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -32,11 +21,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -61,6 +53,8 @@ public class DialogoBuscar extends Vista {
 	private final JSpinner spinnerFechaFinal = new JSpinner(new SpinnerDateModel());
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private final JTable tabla = new JTable();
+	private final JTextField txtNif = new JTextField();
+	private final JButton btnBuscar = new JButton();
 
 	public DialogoBuscar(Window owner) {
 		super();
@@ -72,9 +66,6 @@ public class DialogoBuscar extends Vista {
 		this.generarPanelBusqueda();
 		this.generarPanelResultado();
 
-//		inputPanel.setPreferredSize(inputPanel.getPreferredSize());
-//		buttonPanel.setPreferredSize(buttonPanel.getPreferredSize());
-
 		this.dialog.setTitle("Buscar");
 		this.dialog.setIconImage(AdministradorSwing.getImage("find"));
 		this.dialog.setPreferredSize(new Dimension(500, 500));
@@ -84,6 +75,93 @@ public class DialogoBuscar extends Vista {
 
 		this.dialog.setLocationRelativeTo(this.dialog.getOwner());
 		this.dialog.setVisible(true);
+	}
+
+	private void generarPanelBusqueda() {
+		JPanel inputPanel = new JPanel();
+		Border border = new CompoundBorder(new EmptyBorder(5, 5, 0, 5), new TitledBorder("Extraer"));
+		inputPanel.setBorder(border);
+		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		this.dialog.add(inputPanel, BorderLayout.NORTH);
+
+		JRadioButton radioClientes = new JRadioButton();
+		radioClientes.setText("Clientes dados de alta ...");
+		radioClientes.setSelected(true);
+		radioClientes.setAlignmentX(CENTER_ALIGNMENT);
+		radioClientes.setActionCommand(BUSCAR_CLIENTES);
+		radioClientes.addActionListener(new EscuchadorRadio());
+		inputPanel.add(radioClientes);
+		this.buttonGroup.add(radioClientes);
+
+		JRadioButton radioLlamadas = new JRadioButton();
+		radioLlamadas.setText("Llamadas realizadas ...");
+		radioLlamadas.setAlignmentX(CENTER_ALIGNMENT);
+		radioLlamadas.setActionCommand(BUSCAR_LLAMADAS);
+		radioLlamadas.addActionListener(new EscuchadorRadio());
+		inputPanel.add(radioLlamadas);
+		this.buttonGroup.add(radioLlamadas);
+
+		JRadioButton radioFacturas = new JRadioButton();
+		radioFacturas.setText("Facturas emitidas ...");
+		radioFacturas.setAlignmentX(CENTER_ALIGNMENT);
+		radioFacturas.setActionCommand(BUSCAR_FACTURAS);
+		radioFacturas.addActionListener(new EscuchadorRadio());
+		inputPanel.add(radioFacturas);
+		this.buttonGroup.add(radioFacturas);
+
+
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+
+		JPanel panelNif = new JPanel();
+		panelNif.setLayout(new BoxLayout(panelNif, BoxLayout.X_AXIS));
+		inputPanel.add(panelNif);
+
+		panelNif.add(Box.createRigidArea(new Dimension(50, 0)));
+
+		panelNif.add(new JLabel("... por el cliente con NIF "));
+
+		this.txtNif.setEnabled(false);
+		this.txtNif.addFocusListener(new Validador());
+		panelNif.add(this.txtNif);
+
+		panelNif.add(Box.createRigidArea(new Dimension(50, 0)));
+
+
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+
+		JPanel datePanel = new JPanel();
+		datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
+		inputPanel.add(datePanel);
+
+		datePanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
+		datePanel.add(new JLabel("... entre "));
+
+		this.spinnerFechaInicio.setEditor(new JSpinner.DateEditor(this.spinnerFechaInicio, "yyyy-MM-dd HH:mm:ss"));
+		this.spinnerFechaInicio.addChangeListener(new EscuchadorFechas());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		Date result = cal.getTime();
+		this.spinnerFechaInicio.setValue(result);
+		datePanel.add(this.spinnerFechaInicio);
+
+		datePanel.add(new JLabel(" y "));
+
+		this.spinnerFechaFinal.setEditor(new JSpinner.DateEditor(this.spinnerFechaFinal, "yyyy-MM-dd HH:mm:ss"));
+		this.spinnerFechaFinal.addChangeListener(new EscuchadorFechas());
+		datePanel.add(this.spinnerFechaFinal);
+
+		datePanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+		this.btnBuscar.setText("Buscar");
+		this.btnBuscar.setActionCommand(DIALOGO_BUSCAR);
+		this.btnBuscar.setAlignmentX(CENTER_ALIGNMENT);
+		this.btnBuscar.addActionListener(new EscuchadorDialogoBuscar());
+		inputPanel.add(this.btnBuscar);
 	}
 
 	private void generarPanelResultado() {
@@ -114,6 +192,8 @@ public class DialogoBuscar extends Vista {
 
 		String actionCommand = this.buttonGroup.getSelection().getActionCommand();
 
+		String nif = this.txtNif.getText();
+
 		Date inicio = (Date) this.spinnerFechaInicio.getValue();
 		Date fin = (Date) this.spinnerFechaFinal.getValue();
 
@@ -121,80 +201,13 @@ public class DialogoBuscar extends Vista {
 		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
 
 		try {
-			this.tabla.setModel(new ModeloTablaBusqueda(actionCommand, inicioLocal, finLocal));
+			this.tabla.setModel(new ModeloTablaBusqueda(actionCommand, nif, inicioLocal, finLocal));
 		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
 			JOptionPane.showMessageDialog(this.dialog,
 					"El intervalo de busqueda selecionado es incorrecto",
 					"Error al buscar",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	private void generarPanelBusqueda() {
-		JPanel inputPanel = new JPanel();
-		Border border = new CompoundBorder(new EmptyBorder(5, 5, 0, 5), new TitledBorder("Extraer"));
-		inputPanel.setBorder(border);
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
-		this.dialog.add(inputPanel, BorderLayout.NORTH);
-
-		JRadioButton radioClientes = new JRadioButton();
-		radioClientes.setText("Clientes dados de alta ...");
-		radioClientes.setSelected(true);
-		radioClientes.setAlignmentX(CENTER_ALIGNMENT);
-		radioClientes.setActionCommand(BUSCAR_CLIENTES);
-		inputPanel.add(radioClientes);
-		this.buttonGroup.add(radioClientes);
-
-		JRadioButton radioLlamadas = new JRadioButton();
-		radioLlamadas.setText("Llamadas realizadas ...");
-		radioLlamadas.setAlignmentX(CENTER_ALIGNMENT);
-		radioLlamadas.setActionCommand(BUSCAR_LLAMADAS);
-		inputPanel.add(radioLlamadas);
-		this.buttonGroup.add(radioLlamadas);
-
-		JRadioButton radioFacturas = new JRadioButton();
-		radioFacturas.setText("Facturas emitidas ...");
-		radioFacturas.setAlignmentX(CENTER_ALIGNMENT);
-		radioFacturas.setActionCommand(BUSCAR_FACTURAS);
-		inputPanel.add(radioFacturas);
-		this.buttonGroup.add(radioFacturas);
-
-
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-
-
-		JPanel datePanel = new JPanel();
-		datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
-		inputPanel.add(datePanel);
-
-		datePanel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-		datePanel.add(new JLabel("... entre "));
-
-		this.spinnerFechaInicio.setEditor(new JSpinner.DateEditor(this.spinnerFechaInicio, "yyyy-MM-dd HH:mm:ss"));
-		this.spinnerFechaInicio.addChangeListener(new EcuchadorFechas());
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -1);
-		Date result = cal.getTime();
-		this.spinnerFechaInicio.setValue(result);
-		datePanel.add(this.spinnerFechaInicio);
-
-		datePanel.add(new JLabel(" y "));
-
-		this.spinnerFechaFinal.setEditor(new JSpinner.DateEditor(this.spinnerFechaFinal, "yyyy-MM-dd HH:mm:ss"));
-		this.spinnerFechaFinal.addChangeListener(new EcuchadorFechas());
-		datePanel.add(this.spinnerFechaFinal);
-
-		datePanel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-
-		JButton btnBuscar = new JButton();
-		btnBuscar.setText("Buscar");
-		btnBuscar.setActionCommand(DIALOGO_BUSCAR);
-		btnBuscar.setAlignmentX(CENTER_ALIGNMENT);
-		btnBuscar.addActionListener(new EscuchadorDialogoBuscar());
-		inputPanel.add(btnBuscar);
 	}
 
 	/**
@@ -222,7 +235,7 @@ public class DialogoBuscar extends Vista {
 	 * @author Juanjo González (al341823)
 	 * @since 0.4
 	 */
-	private class EcuchadorFechas implements ChangeListener {
+	private class EscuchadorFechas implements ChangeListener {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			SpinnerDateModel modeloInicio = (SpinnerDateModel) DialogoBuscar.this.spinnerFechaInicio.getModel();
@@ -230,6 +243,50 @@ public class DialogoBuscar extends Vista {
 
 			modeloInicio.setEnd((Date) modeloFin.getValue());
 			modeloFin.setStart((Date) modeloInicio.getValue());
+		}
+	}
+
+	/**
+	 * @author Juanjo González (al341823)
+	 * @since 0.4
+	 */
+	private class EscuchadorRadio implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String actionCommand = e.getActionCommand();
+			boolean enabled = !actionCommand.equals(BUSCAR_CLIENTES);
+
+			if (enabled)
+				DialogoBuscar.this.txtNif.setText(null);
+
+			DialogoBuscar.this.txtNif.setEnabled(enabled);
+			DialogoBuscar.this.txtNif.setBackground(UIManager.getColor("TextField.background"));
+			DialogoBuscar.this.btnBuscar.setEnabled(!enabled);
+		}
+	}
+
+	/**
+	 * @author Juanjo González (al341823)
+	 * @since 0.4
+	 */
+	private class Validador implements FocusListener {
+
+		private final Color colorValorIncorrecto = new Color(0xea7070);
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			DialogoBuscar.this.txtNif.setBackground(UIManager.getColor("TextField.background"));
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+
+			if (AdministradorDatos.esDatoValido(DialogoBuscar.this.txtNif.getText(), TipoDato.NIF))
+				DialogoBuscar.this.btnBuscar.setEnabled(true);
+			else {
+				DialogoBuscar.this.txtNif.setBackground(this.colorValorIncorrecto);
+				DialogoBuscar.this.btnBuscar.setEnabled(false);
+			}
 		}
 	}
 }

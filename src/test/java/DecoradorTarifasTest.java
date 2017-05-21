@@ -48,13 +48,13 @@ public class DecoradorTarifasTest {
 	@Test
 	public void getTarifaBaseTest() {
 		TarifaExtra tarifaTardes = fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.TARDES);
-		Assert.assertEquals(0.15f * 20, tarifaTardes.getCosteLlamada(llamada1), 0);
-		Assert.assertEquals(0.05f * 20, tarifaTardes.getCosteLlamada(llamada2), 0);
-		Assert.assertEquals(0.15f * 20, tarifaTardes.getCosteLlamada(llamada3), 0);
+		Assert.assertEquals((0.15f * 20) / 60, tarifaTardes.getCosteLlamada(llamada1), 0);
+		Assert.assertEquals((0.05f * 20) / 60, tarifaTardes.getCosteLlamada(llamada2), 0);
+		Assert.assertEquals((0.15f * 20) / 60, tarifaTardes.getCosteLlamada(llamada3), 0);
 
 		TarifaExtra tarifaDomingos = fabricaTarifas.getTarifaExtra(new TarifaBasica(0.15f), TipoTarifa.Extra.DOMINGOS);
-		Assert.assertEquals(0.15f * 20, tarifaDomingos.getCosteLlamada(llamada1), 0);
-		Assert.assertEquals(0.15f * 20, tarifaDomingos.getCosteLlamada(llamada2), 0);
+		Assert.assertEquals((0.15f * 20) / 60, tarifaDomingos.getCosteLlamada(llamada1), 0);
+		Assert.assertEquals((0.15f * 20) / 60, tarifaDomingos.getCosteLlamada(llamada2), 0);
 		Assert.assertEquals(0, tarifaDomingos.getCosteLlamada(llamada3), 0);
 	}
 

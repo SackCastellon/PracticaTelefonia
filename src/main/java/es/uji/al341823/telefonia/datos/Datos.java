@@ -26,7 +26,7 @@ public class Datos implements Serializable {
 	public final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 
 	/** Almacena todas las llamadas realizadas hasta el momento */
-	public final HashMap<Integer, Llamada> LLAMADAS = new HashMap<>(); // TODO Implementar
+	public final HashMap<Integer, Llamada> LLAMADAS = new HashMap<>();
 
 	/** Almacena todas las facturas emitidas hasta el momento */
 	public final HashMap<Integer, Factura> FACTURAS = new HashMap<>();

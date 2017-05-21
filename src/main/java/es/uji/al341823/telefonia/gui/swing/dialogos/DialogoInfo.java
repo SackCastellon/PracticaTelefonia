@@ -104,6 +104,7 @@ public class DialogoInfo extends Vista {
 		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+		modelo.addColumn("Código");
 		modelo.addColumn("Nº origen");
 		modelo.addColumn("Nº destino");
 		modelo.addColumn("Fecha de llamada");
@@ -114,6 +115,7 @@ public class DialogoInfo extends Vista {
 
 			for (Llamada llamada : llamadas) {
 				modelo.addRow(new Object[] {
+						llamada.getCodigo(),
 						llamada.getNumeroOrigen(),
 						llamada.getNumeroDestino(),
 						llamada.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),

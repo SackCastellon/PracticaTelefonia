@@ -5,6 +5,7 @@
 
 package es.uji.al341823.telefonia.llamadas;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
 import javafx.util.Pair;
@@ -22,9 +23,6 @@ import java.util.List;
 public class Llamada implements IFecha, IDatos, Serializable {
 
 	private static final long serialVersionUID = -5491839185929563564L;
-
-	/** Se utiliza para obtener el código unico de cada llamada */
-	private static int codigoUnico;
 
 	/** Codigo identificativo unico de la llamada */
 	private final int codigo;
@@ -48,16 +46,12 @@ public class Llamada implements IFecha, IDatos, Serializable {
 	public Llamada(String numeroOrigen, String numeroDestino, LocalDateTime fechaLlamada, int duracionLlamada) {
 		super();
 
-		this.codigo = codigoUnico++;
+		this.codigo = AdministradorDatos.getNextCodigoLlamada();
 
 		this.numeroOrigen = numeroOrigen;
 		this.numeroDestino = numeroDestino;
 		this.fechaLlamada = fechaLlamada;
 		this.duracionLlamada = duracionLlamada;
-	}
-
-	public static void resetCodigo() {
-		codigoUnico = 0;//FIXME
 	}
 
 	public static List<String> getNombreDatos() {

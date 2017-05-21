@@ -52,7 +52,7 @@ public abstract class Tarifa implements Serializable {
 	 */
 	@SuppressWarnings("unused")
 	float getCosteLlamada(Llamada llamada) {
-		return this.precio * llamada.getDuracionLlamada();
+		return (this.getPrecio() * llamada.getDuracionLlamada()) / 60f;
 	}
 
 	/**

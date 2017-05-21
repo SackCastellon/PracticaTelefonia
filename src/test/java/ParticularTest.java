@@ -3,7 +3,10 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Direccion;
 import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
@@ -40,7 +43,7 @@ public class ParticularTest {
 
 
 	@BeforeClass
-	public static void first() {
+	public static void first() throws ObjetoYaExisteException {
 		GeneradorDatosINE generador = new GeneradorDatosINE();
 		rand = new Random();
 
@@ -61,6 +64,8 @@ public class ParticularTest {
 		facturas = new LinkedList<>();
 
 		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
+
+		AdministradorDatos.addCliente(cliente);
 	}
 
 	@Test
@@ -102,31 +107,31 @@ public class ParticularTest {
 	}
 
 	@Test
-	public void altaLlamadaTest() {
+	public void altaLlamadaTest() throws ObjetoYaExisteException, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
 			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
 			llamadas.add(llamada.getCodigo());
-			cliente.addLlamada(llamada.getCodigo());
+			AdministradorDatos.addLlamada(cliente.getNif(),llamada);
 		}
 		Assert.assertEquals(llamadas.size(), cliente.getCodigosLlamadas().size());
 	}
 
 	@Test
-	public void getLlamadasTest() {
+	public void getLlamadasTest() throws ObjetoYaExisteException, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
 			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
 			llamadas.add(llamada.getCodigo());
-			cliente.addLlamada(llamada.getCodigo());
+			AdministradorDatos.addLlamada(cliente.getNif(),llamada);
 		}
 		Assert.assertArrayEquals(llamadas.toArray(), cliente.getCodigosLlamadas().toArray());
 	}
 
-	//@Test
-	public void emitirFacturaTest() throws FechaNoValidaExcepcion {
+	@Test
+	public void emitirFacturaTest() throws FechaNoValidaExcepcion, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
 			Factura factura = new Factura(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
 			facturas.add(factura);
-			cliente.generarFactura();
+			AdministradorDatos.addFactura(cliente.getNif());
 		}
 		Assert.assertEquals(facturas.size(), cliente.getCodigosFacturas().size());
 	}

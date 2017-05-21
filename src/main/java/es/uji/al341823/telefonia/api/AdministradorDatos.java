@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Clase que se encarga de administrar todas la operaciónes
@@ -92,6 +94,13 @@ public class AdministradorDatos {
 		return datos.CLIENTES.values();
 	}
 
+	public static int getNextCodigoLlamada() {
+		Set<Integer> set = datos.LLAMADAS.keySet();
+		if (!set.isEmpty())
+			return Collections.max(set) + 1;
+		return 0;
+	}
+
 	public static void addLlamada(String nif, Llamada llamada) throws ObjetoYaExisteException, ObjetoNoExisteException {
 		if (datos.LLAMADAS.containsKey(llamada.getCodigo()))
 			throw new ObjetoYaExisteException("Llamada");
@@ -128,6 +137,13 @@ public class AdministradorDatos {
 			llamadas.add(getLlamada(codigo));
 
 		return llamadas;
+	}
+
+	public static int getNextCodigoFactura() {
+		Set<Integer> set = datos.FACTURAS.keySet();
+		if (!set.isEmpty())
+			return Collections.max(set) + 1;
+		return 0;
 	}
 
 	/**
@@ -231,7 +247,7 @@ public class AdministradorDatos {
 	 *
 	 * @return {@code true} si existe o {@code false} en caso contrario
 	 */
-	public static boolean exixteCliente(String nif) {
+	private static boolean exixteCliente(String nif) {
 		return datos.CLIENTES.containsKey(nif);
 	}
 
@@ -280,9 +296,7 @@ public class AdministradorDatos {
 	public static void limpiarDatos() { //FIXME Problema con los codigos
 		datos.CLIENTES.clear();
 		datos.LLAMADAS.clear();
-		Llamada.resetCodigo();
 		datos.FACTURAS.clear();
-		Factura.resetCodigo();
 	}
 
 	/**

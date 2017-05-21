@@ -48,7 +48,7 @@ public abstract class TarifaExtra extends Tarifa {
 
 		if ((fecha.get(this.unidadTemporal) >= this.inicioPeriodo) &&
 				(fecha.get(this.unidadTemporal) <= this.finPeriodo)) {
-			float costeExtra = this.getPrecio() * llamada.getDuracionLlamada();
+			float costeExtra = (this.getPrecio() * llamada.getDuracionLlamada()) / 60f;
 
 			if (costeExtra < costeBase)
 				return costeExtra;
@@ -81,13 +81,12 @@ public abstract class TarifaExtra extends Tarifa {
 		TarifaExtra that = (TarifaExtra) o;
 
 		return (this.inicioPeriodo == that.inicioPeriodo) && (this.finPeriodo == that.finPeriodo) &&
-				this.tarifaBase.equals(that.tarifaBase) && this.unidadTemporal.equals(that.unidadTemporal);
+				this.unidadTemporal.equals(that.unidadTemporal);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = (31 * result) + this.tarifaBase.hashCode();
 		result = (31 * result) + this.unidadTemporal.hashCode();
 		result = (31 * result) + this.inicioPeriodo;
 		result = (31 * result) + this.finPeriodo;

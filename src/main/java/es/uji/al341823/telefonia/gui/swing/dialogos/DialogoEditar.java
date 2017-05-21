@@ -71,8 +71,9 @@ public class DialogoEditar extends Vista {
 
 	private JSpinner spinnerFecha;
 	private JComboBox<Tarifa> comboBoxTarifas;
-	private JComboBox<Tarifa> comboBoxTarifasExtra;
+	private JComboBox<Object> comboBoxTarifasExtra;
 	private JButton btnGuardar;
+	private String ELIMINAR;
 
 	private DialogoEditar(Window owner, Cliente cliente, Class<? extends Cliente> tipoCliente) {
 		super();
@@ -218,6 +219,7 @@ public class DialogoEditar extends Vista {
 
 		constraints.gridy++;
 
+		// Selector tarifa extra
 		if (this.cliente != null) {
 			for (Tarifa tarifa : tarifasCliente) {
 				JComboBox<Tarifa> comboBox = new JComboBox<>();
@@ -230,13 +232,22 @@ public class DialogoEditar extends Vista {
 
 			this.comboBoxTarifasExtra = new JComboBox<>();
 			ArrayList<Tarifa> tarifasExtra = this.getControlador().getTarifasExtra(this.cliente.getTarifa());
-			this.comboBoxTarifasExtra.addItem(null);
+			tarifasExtra.removeIf(tarifasCliente::contains);
+			this.comboBoxTarifasExtra.addItem("Selecciona una nueva tarifa extra...");
+
+			if (!tarifasCliente.isEmpty()) {
+				this.ELIMINAR = "Eliminar: \"" + tarifasCliente.getLast() + "\"";
+				this.comboBoxTarifasExtra.addItem(this.ELIMINAR);
+			}
+
 			for (Tarifa tarifa : tarifasExtra)
 				this.comboBoxTarifasExtra.addItem(tarifa);
+
 			this.comboBoxTarifasExtra.addItemListener(e -> {
-				boolean isValid = this.comboBoxTarifasExtra.getSelectedItem() != null;
+				boolean isValid = this.comboBoxTarifasExtra.getSelectedIndex() != 0;
 				this.btnGuardar.setEnabled(isValid);
 			});
+
 			inputPanel.add(this.comboBoxTarifasExtra, constraints);
 		}
 	}
@@ -329,10 +340,10 @@ public class DialogoEditar extends Vista {
 		// FIXME Revisar
 		private void guardar() {
 			if (DialogoEditar.this.cliente != null) {
-				if (DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem() != null)
+				if (DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem().equals(DialogoEditar.this.ELIMINAR))
+					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, ((TarifaExtra) DialogoEditar.this.cliente.getTarifa()).getTarifaBase());
+				else if (DialogoEditar.this.comboBoxTarifasExtra.getSelectedIndex() != 0)
 					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, (Tarifa) DialogoEditar.this.comboBoxTarifasExtra.getSelectedItem());
-//				else
-//					DialogoEditar.this.getControlador().setTarifa(DialogoEditar.this.cliente, (Tarifa) DialogoEditar.this.comboBoxTarifas.getSelectedItem());
 			} else {
 				String[] textos = DialogoEditar.this.inputs.stream().map(JTextComponent::getText).toArray(String[]::new);
 

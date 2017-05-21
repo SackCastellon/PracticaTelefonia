@@ -5,6 +5,7 @@
 
 package es.uji.al341823.telefonia.facturacion;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
@@ -25,9 +26,6 @@ import java.util.List;
 public class Factura implements IFecha, IDatos, Serializable {
 
 	private static final long serialVersionUID = -7711276290283216630L;
-
-	/** Se utiliza para obtener el código unico de cada factura */
-	private static int codigoUnico;
 
 	/** Codigo identificativo unico de la factura */
 	private final int codigo;
@@ -56,16 +54,12 @@ public class Factura implements IFecha, IDatos, Serializable {
 		if (fechaEmision.isBefore(fechaUltimaEmision))
 			throw new FechaNoValidaExcepcion();
 
-		this.codigo = codigoUnico++;
+		this.codigo = AdministradorDatos.getNextCodigoFactura();
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
 		Duration periodo = Duration.between(fechaUltimaEmision, fechaEmision);
 		this.periodoFactuacion = periodo.toDays();
 		this.importe = tarifa.getPrecio() * duracionLlamadas;
-	}
-
-	public static void resetCodigo() {
-		codigoUnico = 0;// FIXME
 	}
 
 	public static List<String> getNombreDatos() {

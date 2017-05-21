@@ -64,7 +64,7 @@ public class DialogoLlamada extends Vista {
 	private final JTextField txtNumDestino = new JTextField();
 	private final JSpinner spinnerFecha = new JSpinner(new SpinnerDateModel());
 
-	private final JSpinner spinnerDuracion = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+	private final JSpinner spinnerDuracion = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 
 	private final JButton btnGuardar = new JButton();
 
