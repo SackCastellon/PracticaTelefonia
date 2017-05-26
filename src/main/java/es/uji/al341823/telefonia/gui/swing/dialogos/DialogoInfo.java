@@ -5,7 +5,7 @@
 
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
-import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.SwingUtils;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.facturacion.Factura;
@@ -70,10 +70,10 @@ public class DialogoInfo extends Vista {
 
 		if (this.actionCommand.equals(INFO_VER_LLAMADAS)) {
 			this.dialog.setTitle("Llamadas del cliente: " + this.cliente.getNif());
-			this.dialog.setIconImage(AdministradorSwing.getImage("phone"));
+			this.dialog.setIconImage(SwingUtils.getImage("phone"));
 		} else if (this.actionCommand.equals(INFO_VER_FACTURAS)) {
 			this.dialog.setTitle("Facturas del cliente: " + this.cliente.getNif());
-			this.dialog.setIconImage(AdministradorSwing.getImage("receipt"));
+			this.dialog.setIconImage(SwingUtils.getImage("receipt"));
 		}
 
 		this.dialog.setMinimumSize(new Dimension(300, 200));

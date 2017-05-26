@@ -5,6 +5,7 @@
 
 package es.uji.al341823.telefonia.gui.console;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 
 import java.util.Scanner;
@@ -20,6 +21,12 @@ public abstract class Menu {
 
 	/** El menú padre de este menú */
 	private final Menu padre;
+
+	/** El administrador de datos que se encarga de añadir o borrar; clientes, llamadas o facturas, etc */
+	private AdministradorDatos administradorDatos;
+
+	/** El administrador de los menus que se encarga de pedir datos por pantalla */
+	private AdministradorMenus administradorMenus;
 
 	protected Menu(Menu padre) {
 		super();
@@ -60,5 +67,21 @@ public abstract class Menu {
 	 */
 	public Menu[] getSubmenus() {
 		return new Menu[0];
+	}
+
+	public AdministradorDatos getAdministradorDatos() {
+		return this.administradorDatos;
+	}
+
+	public void setAdministradorDatos(AdministradorDatos administradorDatos) {
+		this.administradorDatos = administradorDatos;
+	}
+
+	public AdministradorMenus getAdministradorMenus() {
+		return this.administradorMenus;
+	}
+
+	public void setAdministradorMenus(AdministradorMenus administradorMenus) {
+		this.administradorMenus = administradorMenus;
 	}
 }

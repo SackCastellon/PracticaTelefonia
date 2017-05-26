@@ -5,6 +5,7 @@
 
 package es.uji.al341823.telefonia.gui.swing;
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.gui.swing.controladores.Controlador;
 
 /**
@@ -14,6 +15,7 @@ import es.uji.al341823.telefonia.gui.swing.controladores.Controlador;
 public abstract class Vista {
 
 	private Controlador controlador;
+	private AdministradorDatos modelo;
 
 	public abstract void generarVista();
 
@@ -25,5 +27,13 @@ public abstract class Vista {
 
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
+	}
+
+	public AdministradorDatos getModelo() {
+		return this.modelo;
+	}
+
+	public void setModelo(AdministradorDatos modelo) {
+		this.modelo = modelo;
 	}
 }

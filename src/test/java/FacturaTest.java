@@ -3,6 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
@@ -20,6 +21,8 @@ import java.util.Random;
  * @since 0.1
  */
 public class FacturaTest {
+
+	private static final AdministradorDatos admin = new AdministradorDatos();
 
 	private static int codigo;
 	private static Tarifa tarifa;
@@ -44,7 +47,7 @@ public class FacturaTest {
 		int duracionLlamadas = rand.nextInt();
 		importe = tarifa.getPrecio() * duracionLlamadas;
 
-		factura = new Factura(tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);
+		factura = new Factura(admin.getNextCodigoFactura(), tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);
 	}
 
 	//@Test

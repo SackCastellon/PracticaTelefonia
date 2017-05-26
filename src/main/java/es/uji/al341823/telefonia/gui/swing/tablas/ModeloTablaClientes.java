@@ -25,12 +25,14 @@ public class ModeloTablaClientes extends AbstractTableModel {
 	private final LinkedList<Cliente> datos = new LinkedList<>();
 
 	private final Class<? extends Cliente> tipoCliente;
+	private final AdministradorDatos admin;
 	private final List<String> nombres;
 
-	public ModeloTablaClientes(Class<? extends Cliente> tipoCliente) {
+	public ModeloTablaClientes(Class<? extends Cliente> tipoCliente, AdministradorDatos admin) {
 		super();
 
 		this.tipoCliente = tipoCliente;
+		this.admin = admin;
 
 		if (this.tipoCliente.equals(Particular.class))
 			this.nombres = Particular.getNombreDatos();
@@ -80,7 +82,7 @@ public class ModeloTablaClientes extends AbstractTableModel {
 	public void actualizarDatos() {
 		this.datos.clear();
 
-		for (Cliente cliente : AdministradorDatos.getClientes())
+		for (Cliente cliente : this.admin.getClientes())
 			if (this.tipoCliente.isInstance(cliente))
 				this.datos.add(cliente);
 	}

@@ -29,10 +29,14 @@ import java.util.List;
 public class ModeloTablaBusqueda extends AbstractTableModel {
 
 	private final LinkedList<IFecha> datos = new LinkedList<>();
+	private final AdministradorDatos admin;
+
 	private List<String> nombres;
 
-	public ModeloTablaBusqueda(String actionCommand, String nif, LocalDateTime inicio, LocalDateTime fin) throws FechaNoValidaExcepcion {
+	public ModeloTablaBusqueda(String actionCommand, String nif, LocalDateTime inicio, LocalDateTime fin, AdministradorDatos admin) throws FechaNoValidaExcepcion {
 		super();
+
+		this.admin = admin;
 
 		Collection<? extends IFecha> conjunto;
 
@@ -42,7 +46,7 @@ public class ModeloTablaBusqueda extends AbstractTableModel {
 			conjunto = new LinkedList<>();
 		}
 
-		Collection<? extends IFecha> subConjunto = AdministradorDatos.extraerConjunto(conjunto, inicio, fin);
+		Collection<? extends IFecha> subConjunto = admin.extraerConjunto(conjunto, inicio, fin);
 		this.datos.addAll(subConjunto);
 	}
 
@@ -81,15 +85,15 @@ public class ModeloTablaBusqueda extends AbstractTableModel {
 		switch (actionCommand) {
 			case ActionCommands.BUSCAR_CLIENTES:
 				this.nombres = Particular.getNombreDatos();
-				return AdministradorDatos.getClientes();
+				return this.admin.getClientes();
 
 			case ActionCommands.BUSCAR_LLAMADAS:
 				this.nombres = Llamada.getNombreDatos();
-				return AdministradorDatos.getLlamadasCliente(nif);
+				return this.admin.getLlamadasCliente(nif);
 
 			case ActionCommands.BUSCAR_FACTURAS:
 				this.nombres = Factura.getNombreDatos();
-				return AdministradorDatos.getFacturasCliente(nif);
+				return this.admin.getFacturasCliente(nif);
 
 			default:
 				this.nombres = new LinkedList<>();

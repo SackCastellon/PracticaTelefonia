@@ -6,7 +6,7 @@
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
-import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.SwingUtils;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.gui.swing.Vista;
@@ -67,7 +67,7 @@ public class DialogoBuscar extends Vista {
 		this.generarPanelResultado();
 
 		this.dialog.setTitle("Buscar");
-		this.dialog.setIconImage(AdministradorSwing.getImage("find"));
+		this.dialog.setIconImage(SwingUtils.getImage("find"));
 		this.dialog.setPreferredSize(new Dimension(500, 500));
 		this.dialog.setMinimumSize(new Dimension(450, 300));
 
@@ -201,7 +201,7 @@ public class DialogoBuscar extends Vista {
 		LocalDateTime finLocal = LocalDateTime.ofInstant(fin.toInstant(), ZoneId.systemDefault());
 
 		try {
-			this.tabla.setModel(new ModeloTablaBusqueda(actionCommand, nif, inicioLocal, finLocal));
+			this.tabla.setModel(new ModeloTablaBusqueda(actionCommand, nif, inicioLocal, finLocal, this.getModelo()));
 		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {
 			JOptionPane.showMessageDialog(this.dialog,
 					"El intervalo de busqueda selecionado es incorrecto",

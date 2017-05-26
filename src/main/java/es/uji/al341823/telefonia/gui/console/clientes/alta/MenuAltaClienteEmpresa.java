@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes.alta;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
@@ -48,7 +47,7 @@ public class MenuAltaClienteEmpresa extends Menu {
 		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
 		try {
-			AdministradorDatos.addCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
+			getAdministradorDatos().addCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
 			System.out.println("Cliente añadido con éxito");
 		} catch (ObjetoYaExisteException e) {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");

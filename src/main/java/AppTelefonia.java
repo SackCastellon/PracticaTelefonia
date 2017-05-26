@@ -3,6 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
@@ -41,23 +42,33 @@ public class AppTelefonia {
 				System.err.printf("Cannot load look and feel '%s'. Using cross platform look and feel", UIManager.getSystemLookAndFeelClassName());
 			}
 
-			VentanaPrincipal ventana = new VentanaPrincipal();
+			AdministradorDatos modelo = new AdministradorDatos();
+			VentanaPrincipal vista = new VentanaPrincipal();
 			Controlador controlador = new Controlador();
 
-			ventana.setControlador(controlador);
-			controlador.setVista(ventana);
-			ventana.generarVista();
+			modelo.setVista(vista);
+			vista.setModelo(modelo);
+			vista.setControlador(controlador);
+			controlador.setModelo(modelo);
+			controlador.setVista(vista);
+
+			vista.generarVista();
 		});
 	}
 
 	private static void cargarInterfazConsola() {
+		AdministradorDatos administradorDatos = new AdministradorDatos();
+
 		Menu menuCargar = new MenuCargarDatos();
+		menuCargar.setAdministradorDatos(administradorDatos);
 		menuCargar.mostrar();
 
 		Menu menuPrincipal = new MenuPrincipal();
+		menuPrincipal.setAdministradorDatos(administradorDatos);
 		menuPrincipal.mostrar();
 
 		Menu menuGuardar = new MenuGuardarDatos();
+		menuGuardar.setAdministradorDatos(administradorDatos);
 		menuGuardar.mostrar();
 	}
 }

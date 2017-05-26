@@ -6,10 +6,11 @@
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
-import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.SwingUtils;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.swing.Vista;
+import es.uji.al341823.telefonia.gui.swing.controladores.Controlador;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import javax.swing.JButton;
@@ -85,7 +86,7 @@ public class DialogoLlamada extends Vista {
 
 
 		this.dialog.setTitle("Nueva llamada");
-		this.dialog.setIconImage(AdministradorSwing.getImage("phone_add"));
+		this.dialog.setIconImage(SwingUtils.getImage("phone_add"));
 
 		this.dialog.setResizable(false);
 
@@ -224,8 +225,11 @@ public class DialogoLlamada extends Vista {
 					int duracion = (int) DialogoLlamada.this.spinnerDuracion.getValue();
 
 					try {
-						Llamada llamada = new Llamada(origen, destino, fechaLocal, duracion);
-						DialogoLlamada.this.getControlador().altaLlamada(DialogoLlamada.this.cliente, llamada);
+						AdministradorDatos modelo = DialogoLlamada.this.getModelo();
+						Llamada llamada = new Llamada(modelo.getNextCodigoLlamada(), origen, destino, fechaLocal, duracion);
+
+						Controlador controlador = DialogoLlamada.this.getControlador();
+						controlador.altaLlamada(DialogoLlamada.this.cliente, llamada);
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(DialogoLlamada.this.dialog,
 								"No se pudo añadir la llamada al cliente especificado",

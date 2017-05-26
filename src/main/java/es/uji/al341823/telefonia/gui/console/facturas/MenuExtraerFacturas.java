@@ -34,7 +34,7 @@ public class MenuExtraerFacturas extends Menu {
 		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		try {
-			Collection<Factura> facturas = AdministradorDatos.extraerConjunto(AdministradorDatos.getFacturasCliente(nif), inicio, fin);
+			Collection<Factura> facturas = getAdministradorDatos().extraerConjunto(getAdministradorDatos().getFacturasCliente(nif), inicio, fin);
 
 			System.out.println();
 			System.out.println("Durante este periodo de tiempo se un total de " + facturas.size() + " factura(s) para este cliente");

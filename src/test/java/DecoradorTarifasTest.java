@@ -3,6 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.facturacion.tarifas.TarifaBasica;
@@ -19,6 +20,8 @@ import java.util.Random;
  * Created by al341819 on 11/04/17.
  */
 public class DecoradorTarifasTest {
+
+	private static final AdministradorDatos admin = new AdministradorDatos();
 
 	private static FabricaTarifas fabricaTarifas;
 	private static Llamada llamada1;
@@ -38,9 +41,9 @@ public class DecoradorTarifasTest {
 		LocalDateTime fechaLlamada3 = LocalDateTime.of(2017, 4, 9, 2, 30);
 		int duracionLlamada = 20;
 
-		llamada1 = new Llamada(numeroOrigen, numeroDestino, fechaLlamada1, duracionLlamada);
-		llamada2 = new Llamada(numeroOrigen, numeroDestino, fechaLlamada2, duracionLlamada);
-		llamada3 = new Llamada(numeroOrigen, numeroDestino, fechaLlamada3, duracionLlamada);
+		llamada1 = new Llamada(admin.getNextCodigoLlamada(), numeroOrigen, numeroDestino, fechaLlamada1, duracionLlamada);
+		llamada2 = new Llamada(admin.getNextCodigoLlamada(), numeroOrigen, numeroDestino, fechaLlamada2, duracionLlamada);
+		llamada3 = new Llamada(admin.getNextCodigoLlamada(), numeroOrigen, numeroDestino, fechaLlamada3, duracionLlamada);
 
 	}
 

@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -33,7 +32,7 @@ public class MenuExtraerClientes extends Menu {
 		Collection<Cliente> clientes;
 
 		try {
-			clientes = AdministradorDatos.extraerConjunto(AdministradorDatos.getClientes(), inicio, fin);
+			clientes = getAdministradorDatos().extraerConjunto(getAdministradorDatos().getClientes(), inicio, fin);
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
 			AdministradorMenus.esperarParaContinuar();

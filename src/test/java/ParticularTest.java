@@ -27,6 +27,9 @@ import java.util.Random;
  * @since 0.1
  */
 public class ParticularTest {
+
+	private static final AdministradorDatos admin = new AdministradorDatos();
+
 	private static Random rand;
 	private static String nombre;
 	private static String apellidos;
@@ -65,7 +68,7 @@ public class ParticularTest {
 
 		cliente = new Particular(nombre, apellidos, NIF, direccion, email, fecha, tarifa);
 
-		AdministradorDatos.addCliente(cliente);
+		admin.addCliente(cliente);
 	}
 
 	@Test
@@ -109,9 +112,9 @@ public class ParticularTest {
 	@Test
 	public void altaLlamadaTest() throws ObjetoYaExisteException, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
-			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
+			Llamada llamada = new Llamada(admin.getNextCodigoLlamada(), Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
 			llamadas.add(llamada.getCodigo());
-			AdministradorDatos.addLlamada(cliente.getNif(),llamada);
+			admin.addLlamada(cliente.getNif(), llamada);
 		}
 		Assert.assertEquals(llamadas.size(), cliente.getCodigosLlamadas().size());
 	}
@@ -119,9 +122,9 @@ public class ParticularTest {
 	@Test
 	public void getLlamadasTest() throws ObjetoYaExisteException, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
-			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
+			Llamada llamada = new Llamada(admin.getNextCodigoLlamada(), Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
 			llamadas.add(llamada.getCodigo());
-			AdministradorDatos.addLlamada(cliente.getNif(),llamada);
+			admin.addLlamada(cliente.getNif(), llamada);
 		}
 		Assert.assertArrayEquals(llamadas.toArray(), cliente.getCodigosLlamadas().toArray());
 	}
@@ -129,9 +132,9 @@ public class ParticularTest {
 	@Test
 	public void emitirFacturaTest() throws FechaNoValidaExcepcion, ObjetoNoExisteException {
 		for (int i = 0; i < 100; i++) {
-			Factura factura = new Factura(tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
+			Factura factura = new Factura(admin.getNextCodigoFactura(), tarifa, fechaUltimaEmision, fecha, duracionLlamadas);
 			facturas.add(factura);
-			AdministradorDatos.addFactura(cliente.getNif());
+			admin.addFactura(cliente.getNif());
 		}
 		Assert.assertEquals(facturas.size(), cliente.getCodigosFacturas().size());
 	}

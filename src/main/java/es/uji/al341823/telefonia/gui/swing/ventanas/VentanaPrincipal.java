@@ -5,7 +5,7 @@
 
 package es.uji.al341823.telefonia.gui.swing.ventanas;
 
-import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.SwingUtils;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.clientes.Empresa;
 import es.uji.al341823.telefonia.clientes.Particular;
@@ -82,7 +82,7 @@ public class VentanaPrincipal extends Vista {
 		this.adjustComponentsSize();
 
 		this.frame.setTitle("Telefonía");
-		this.frame.setIconImage(AdministradorSwing.getImage("phone_ring"));
+		this.frame.setIconImage(SwingUtils.getImage("phone_ring"));
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.frame.setMinimumSize(new Dimension(650, 400));
 		this.frame.setResizable(true);
@@ -213,7 +213,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Nuevo
 		JMenuItem itemNuevo = new JMenuItem("Nuevo...");
-		itemNuevo.setIcon(AdministradorSwing.getIcon("new"));
+		itemNuevo.setIcon(SwingUtils.getIcon("new"));
 		itemNuevo.setMnemonic('N');
 		itemNuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK)); // Ctrl + N
 		itemNuevo.setActionCommand(ARCHIVO_NUEVO);
@@ -222,7 +222,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Cargar
 		JMenuItem itemCargar = new JMenuItem("Abrir...");
-		itemCargar.setIcon(AdministradorSwing.getIcon("open"));
+		itemCargar.setIcon(SwingUtils.getIcon("open"));
 		itemCargar.setMnemonic('B');
 		itemCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK)); // Ctrl + O
 		itemCargar.setActionCommand(ARCHIVO_ABRIR);
@@ -231,7 +231,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Guardar
 		JMenuItem itemGuardar = new JMenuItem("Guardar");
-		itemGuardar.setIcon(AdministradorSwing.getIcon("save"));
+		itemGuardar.setIcon(SwingUtils.getIcon("save"));
 		itemGuardar.setMnemonic('G');
 		itemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK)); // Ctrl + S
 		itemGuardar.setActionCommand(ARCHIVO_GUARDAR);
@@ -252,7 +252,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Salir
 		JMenuItem itemSalir = new JMenuItem("Salir");
-		itemSalir.setIcon(AdministradorSwing.getIcon("exit"));
+		itemSalir.setIcon(SwingUtils.getIcon("exit"));
 		itemSalir.setMnemonic('S');
 		itemSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK)); // Alt + F4
 		itemSalir.setActionCommand(ARCHIVO_SALIR);
@@ -268,7 +268,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Buscar
 		JMenuItem itemBuscar = new JMenuItem("Buscar...");
-		itemBuscar.setIcon(AdministradorSwing.getIcon("find"));
+		itemBuscar.setIcon(SwingUtils.getIcon("find"));
 		itemBuscar.setMnemonic('B');
 		itemBuscar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK)); // Ctrl + N
 		itemBuscar.setActionCommand(EDITAR_BUSCAR);
@@ -285,7 +285,7 @@ public class VentanaPrincipal extends Vista {
 		// Submenú temas
 		JMenu submenuTema = new JMenu("Tema");
 		submenuTema.setMnemonic('T');
-		submenuTema.setIcon(AdministradorSwing.getIcon("theme"));
+		submenuTema.setIcon(SwingUtils.getIcon("theme"));
 		submenuTema.addActionListener(new EscuchadorVentanaPrincipal());
 		menuVer.add(submenuTema);
 
@@ -324,7 +324,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Item Sobre telefonía
 		JMenuItem itemSobre = new JMenuItem("Sobre Telefonía...");
-		itemSobre.setIcon(AdministradorSwing.getIcon("info"));
+		itemSobre.setIcon(SwingUtils.getIcon("info"));
 		itemSobre.setMnemonic('S');
 		itemSobre.setActionCommand(AYUDA_SOBRE);
 		itemSobre.addActionListener(new EscuchadorVentanaPrincipal());
@@ -369,7 +369,7 @@ public class VentanaPrincipal extends Vista {
 
 		// Configuración de la Tabla de Particulares
 		JTable tabla = new JTable();
-		tabla.setModel(new ModeloTablaClientes(claseCliente));
+		tabla.setModel(new ModeloTablaClientes(claseCliente, this.getModelo()));
 		tabla.setAutoCreateRowSorter(true);
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -602,7 +602,7 @@ public class VentanaPrincipal extends Vista {
 		private void abrir() {
 			DialogoFileChooser chooser = new DialogoFileChooser();
 			chooser.setDialogTitle("Abrir...");
-			chooser.setIcon(AdministradorSwing.getImage("open"));
+			chooser.setIcon(SwingUtils.getImage("open"));
 			chooser.setSelectedFile(this.controlador.getFicheroDatos());
 
 			int option = chooser.showOpenDialog(VentanaPrincipal.this.frame);
@@ -631,7 +631,7 @@ public class VentanaPrincipal extends Vista {
 		private void guardarComo() {
 			DialogoFileChooser chooser = new DialogoFileChooser();
 			chooser.setDialogTitle("Guardar como...");
-			chooser.setIcon(AdministradorSwing.getImage("save"));
+			chooser.setIcon(SwingUtils.getImage("save"));
 			chooser.setSelectedFile(this.controlador.getFicheroDatos());
 
 			int option = chooser.showSaveDialog(VentanaPrincipal.this.frame);

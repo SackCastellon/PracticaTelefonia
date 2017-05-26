@@ -6,6 +6,7 @@
 package es.uji.al341823.telefonia.gui.console.clientes.tarifa;
 
 import es.uji.al341823.telefonia.api.AdministradorMenus;
+import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -25,21 +26,24 @@ public class MenuCambiarTarifaBase extends Menu {
 	@Override
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
+		String nif = this.getAdministradorMenus().leerNIF();
 
-		Cliente cliente = AdministradorMenus.leerClienteNIF();
+		try {
+			Cliente cliente = this.getAdministradorDatos().getCliente(nif);
+			FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
-		if (cliente == null) return;
+			Tarifa[] tarifasBase = {
+					fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)};
 
-		FabricaTarifas fabricaTarifas = new FabricaTarifas();
+			Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasBase);
 
-		Tarifa[] tarifasBase = {
-				fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)};
-
-		Tarifa tarifa = AdministradorMenus.seleccionarOpciones(tarifasBase);
-
-		cliente.setTarifa(tarifa);
-
-		AdministradorMenus.esperarParaContinuar();
+			cliente.setTarifa(tarifa);
+		} catch (ObjetoNoExisteException e) {
+			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
+		} finally {
+			System.out.println();
+			AdministradorMenus.esperarParaContinuar();
+		}
 	}
 
 	@Override

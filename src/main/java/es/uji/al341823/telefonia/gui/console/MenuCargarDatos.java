@@ -30,8 +30,8 @@ public class MenuCargarDatos extends Menu {
 		if (ruta.isEmpty())
 			System.out.println("Se canceló la carga de datos");
 		else {
-			AdministradorDatos.setFicheroDatos(new File(ruta));
-			AdministradorDatos.cargarDatos();
+			getAdministradorDatos().setFicheroDatos(new File(ruta));
+			getAdministradorDatos().cargarDatos();
 		}
 
 		AdministradorMenus.esperarParaContinuar();

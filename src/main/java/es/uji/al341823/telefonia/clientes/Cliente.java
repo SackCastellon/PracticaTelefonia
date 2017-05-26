@@ -5,14 +5,9 @@
 
 package es.uji.al341823.telefonia.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
-import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
-import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
-import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
-import es.uji.al341823.telefonia.llamadas.Llamada;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -156,33 +151,50 @@ public abstract class Cliente implements IFecha, IDatos, Serializable {
 	}
 
 	/**
-	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas
-	 * realizadas
+	 * Añade una nueva factura para el cliente
 	 *
-	 * @return La factura emitida
+	 * @param codigoFactura Código de la nueva factura
 	 */
-	public Factura generarFactura() throws FechaNoValidaExcepcion {
-		LocalDateTime hoy = LocalDateTime.now();
+	public void addFactura(int codigoFactura) {
+		this.codigosFacturas.add(codigoFactura);
+	}
 
-		int duracionLlamadas = 0;
+//	/**
+//	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas
+//	 * realizadas
+//	 *
+//	 * @return La factura emitida
+//	 */
+//	public Factura generarFactura() throws FechaNoValidaExcepcion {
+//		LocalDateTime hoy = LocalDateTime.now();
+//
+//		int duracionLlamadas = 0;
+//
+//		for (int codigoLlamada : this.codigosLlamadas) {
+//			try {
+//				Llamada llamada = AdministradorDatos.getLlamada(codigoLlamada);
+//				LocalDateTime fecha = llamada.getFecha();
+//				if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
+//					duracionLlamadas += llamada.getDuracionLlamada();
+//			} catch (ObjetoNoExisteException e) {
+//				System.err.println("Se intentó acceder a una llamada que no existe");
+//			}
+//		}
+//
+//		Factura factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
+//
+//		this.ultimaFacturacion = hoy;
+//		this.codigosFacturas.add(factura.getCodigo());
+//
+//		return factura;
+//	}
 
-		for (int codigoLlamada : this.codigosLlamadas) {
-			try {
-				Llamada llamada = AdministradorDatos.getLlamada(codigoLlamada);
-				LocalDateTime fecha = llamada.getFecha();
-				if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
-					duracionLlamadas += llamada.getDuracionLlamada();
-			} catch (ObjetoNoExisteException e) {
-				System.err.println("Se intentó acceder a una llamada que no existe");
-			}
-		}
+	public LocalDateTime getUltimaFacturacion() {
+		return this.ultimaFacturacion;
+	}
 
-		Factura factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
-
-		this.ultimaFacturacion = hoy;
-		this.codigosFacturas.add(factura.getCodigo());
-
-		return factura;
+	public void updateUltimaFaturacion() {
+		this.ultimaFacturacion = LocalDateTime.now();
 	}
 
 	/**

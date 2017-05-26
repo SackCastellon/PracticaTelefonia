@@ -11,6 +11,7 @@ import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.File;
@@ -35,9 +36,18 @@ import java.util.Set;
  */
 public class AdministradorDatos {
 
-	private static Datos datos = new Datos();
+	private Datos datos = new Datos();
+	private File ficheroDatos;
 
-	private static File ficheroDatos;
+	private Vista vista;
+
+	public Vista getVista() {
+		return this.vista;
+	}
+
+	public void setVista(Vista vista) {
+		this.vista = vista;
+	}
 
 	/**
 	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
@@ -47,11 +57,13 @@ public class AdministradorDatos {
 	 *
 	 * @throws ObjetoYaExisteException En caso de que el cliente ya existiese
 	 */
-	public static void addCliente(Cliente cliente) throws ObjetoYaExisteException {
-		if (exixteCliente(cliente.getNif()))
+	public void addCliente(Cliente cliente) throws ObjetoYaExisteException {
+		if (this.exixteCliente(cliente.getNif()))
 			throw new ObjetoYaExisteException("Cliente");
 
-		datos.CLIENTES.put(cliente.getNif(), cliente);
+		this.datos.CLIENTES.put(cliente.getNif(), cliente);
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
 	/**
@@ -62,11 +74,13 @@ public class AdministradorDatos {
 	 *
 	 * @throws ObjetoNoExisteException En caso de que el cliente no exista
 	 */
-	public static void removeCliente(String nif) throws ObjetoNoExisteException {
-		if (!exixteCliente(nif))
+	public void removeCliente(String nif) throws ObjetoNoExisteException {
+		if (!this.exixteCliente(nif))
 			throw new ObjetoNoExisteException("Cliente");
 
-		datos.CLIENTES.remove(nif);
+		this.datos.CLIENTES.remove(nif);
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
 	/**
@@ -78,11 +92,11 @@ public class AdministradorDatos {
 	 *
 	 * @throws ObjetoNoExisteException En caso de que el NIF no corresponda a ningún cliente
 	 */
-	public static Cliente getCliente(String nif) throws ObjetoNoExisteException {
-		if (!exixteCliente(nif))
+	public Cliente getCliente(String nif) throws ObjetoNoExisteException {
+		if (!this.exixteCliente(nif))
 			throw new ObjetoNoExisteException("Cliente");
 
-		return datos.CLIENTES.get(nif);
+		return this.datos.CLIENTES.get(nif);
 	}
 
 	/**
@@ -90,29 +104,31 @@ public class AdministradorDatos {
 	 *
 	 * @return Lista de clientes
 	 */
-	public static Collection<Cliente> getClientes() {
-		return datos.CLIENTES.values();
+	public Collection<Cliente> getClientes() {
+		return this.datos.CLIENTES.values();
 	}
 
-	public static int getNextCodigoLlamada() {
-		Set<Integer> set = datos.LLAMADAS.keySet();
+	public int getNextCodigoLlamada() {
+		Set<Integer> set = this.datos.LLAMADAS.keySet();
 		if (!set.isEmpty())
 			return Collections.max(set) + 1;
 		return 0;
 	}
 
-	public static void addLlamada(String nif, Llamada llamada) throws ObjetoYaExisteException, ObjetoNoExisteException {
-		if (datos.LLAMADAS.containsKey(llamada.getCodigo()))
+	public void addLlamada(String nif, Llamada llamada) throws ObjetoYaExisteException, ObjetoNoExisteException {
+		if (this.datos.LLAMADAS.containsKey(llamada.getCodigo()))
 			throw new ObjetoYaExisteException("Llamada");
 
-		Cliente cliente = getCliente(nif);
+		Cliente cliente = this.getCliente(nif);
 		cliente.addLlamada(llamada.getCodigo());
 
-		datos.LLAMADAS.put(llamada.getCodigo(), llamada);
+		this.datos.LLAMADAS.put(llamada.getCodigo(), llamada);
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
-	public static Llamada getLlamada(int codigo) throws ObjetoNoExisteException {
-		Llamada llamada = datos.LLAMADAS.get(codigo);
+	public Llamada getLlamada(int codigo) throws ObjetoNoExisteException {
+		Llamada llamada = this.datos.LLAMADAS.get(codigo);
 
 		if (llamada == null)
 			throw new ObjetoNoExisteException("Llamada");
@@ -125,22 +141,22 @@ public class AdministradorDatos {
 	 *
 	 * @return Lista de facturas
 	 */
-	public static Collection<Llamada> getLlamadas() {
-		return datos.LLAMADAS.values();
+	public Collection<Llamada> getLlamadas() {
+		return this.datos.LLAMADAS.values();
 	}
 
-	public static Collection<Llamada> getLlamadasCliente(String nif) throws ObjetoNoExisteException {
-		Cliente cliente = getCliente(nif);
+	public Collection<Llamada> getLlamadasCliente(String nif) throws ObjetoNoExisteException {
+		Cliente cliente = this.getCliente(nif);
 		Collection<Llamada> llamadas = new LinkedList<>();
 
 		for (Integer codigo : cliente.getCodigosLlamadas())
-			llamadas.add(getLlamada(codigo));
+			llamadas.add(this.getLlamada(codigo));
 
 		return llamadas;
 	}
 
-	public static int getNextCodigoFactura() {
-		Set<Integer> set = datos.FACTURAS.keySet();
+	public int getNextCodigoFactura() {
+		Set<Integer> set = this.datos.FACTURAS.keySet();
 		if (!set.isEmpty())
 			return Collections.max(set) + 1;
 		return 0;
@@ -153,11 +169,33 @@ public class AdministradorDatos {
 	 *
 	 * @return La factura emitida, {@code null} si no se pudo emitir
 	 */
-	public static Factura addFactura(String nif) throws ObjetoNoExisteException, FechaNoValidaExcepcion {
-		Cliente cliente = getCliente(nif);
-		Factura factura = cliente.generarFactura();
+	public Factura addFactura(String nif) throws ObjetoNoExisteException, FechaNoValidaExcepcion {
+		Cliente cliente = this.getCliente(nif);
 
-		datos.FACTURAS.put(factura.getCodigo(), factura);
+		LocalDateTime ultimaFacturacion = cliente.getUltimaFacturacion();
+		cliente.updateUltimaFaturacion();
+		LocalDateTime hoy = cliente.getUltimaFacturacion();
+
+		int duracionLlamadas = 0;
+
+		for (int codigoLlamada : cliente.getCodigosLlamadas()) {
+			try {
+				Llamada llamada = this.getLlamada(codigoLlamada);
+				LocalDateTime fecha = llamada.getFecha();
+				if (fecha.isBefore(hoy) && fecha.isAfter(ultimaFacturacion))
+					duracionLlamadas += llamada.getDuracionLlamada();
+			} catch (ObjetoNoExisteException e) {
+				System.err.println("Se intentó acceder a una llamada que no existe");
+			}
+		}
+
+		Factura factura = new Factura(this.getNextCodigoFactura(), cliente.getTarifa(), ultimaFacturacion, hoy, duracionLlamadas);
+
+		cliente.addFactura(factura.getCodigo());
+
+		this.datos.FACTURAS.put(factura.getCodigo(), factura);
+
+		if (this.vista != null) this.vista.actualizarVista();
 
 		return factura;
 	}
@@ -171,8 +209,8 @@ public class AdministradorDatos {
 	 *
 	 * @throws ObjetoNoExisteException Si el codigo no corresponde a ninguna factura
 	 */
-	public static Factura getFactura(int codigo) throws ObjetoNoExisteException {
-		Factura factura = datos.FACTURAS.get(codigo);
+	public Factura getFactura(int codigo) throws ObjetoNoExisteException {
+		Factura factura = this.datos.FACTURAS.get(codigo);
 
 		if (factura == null)
 			throw new ObjetoNoExisteException("Factura");
@@ -185,16 +223,16 @@ public class AdministradorDatos {
 	 *
 	 * @return Lista de facturas
 	 */
-	public static Collection<Factura> getFacturas() {
-		return datos.FACTURAS.values();
+	public Collection<Factura> getFacturas() {
+		return this.datos.FACTURAS.values();
 	}
 
-	public static Collection<Factura> getFacturasCliente(String nif) throws ObjetoNoExisteException {
-		Cliente cliente = getCliente(nif);
+	public Collection<Factura> getFacturasCliente(String nif) throws ObjetoNoExisteException {
+		Cliente cliente = this.getCliente(nif);
 		Collection<Factura> facturas = new LinkedList<>();
 
 		for (Integer codigo : cliente.getCodigosFacturas())
-			facturas.add(getFactura(codigo));
+			facturas.add(this.getFactura(codigo));
 
 		return facturas;
 	}
@@ -213,7 +251,7 @@ public class AdministradorDatos {
 	 * @throws FechaNoValidaExcepcion Si inicio es posterior a fin
 	 * @see IFecha#getFecha()
 	 */
-	public static <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
+	public <T extends IFecha> Collection<T> extraerConjunto(Collection<T> conjunto, LocalDateTime inico, LocalDateTime fin) throws FechaNoValidaExcepcion {
 		if (inico.isAfter(fin))
 			throw new FechaNoValidaExcepcion();
 
@@ -229,38 +267,51 @@ public class AdministradorDatos {
 	}
 
 	/**
-	 * Comprueba si un dato es valido, comprovando que el coincide con el patron del tipo de dato
-	 *
-	 * @param dato     El dato
-	 * @param tipoDato El tipo de dato
-	 *
-	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
-	 */
-	public static boolean esDatoValido(String dato, TipoDato tipoDato) {
-		return dato.matches(tipoDato.getFormato());
-	}
-
-	/**
 	 * Comprueba si existe un cliente con el NIF especificado
 	 *
 	 * @param nif NIF a comprobar
 	 *
 	 * @return {@code true} si existe o {@code false} en caso contrario
 	 */
-	private static boolean exixteCliente(String nif) {
-		return datos.CLIENTES.containsKey(nif);
+	private boolean exixteCliente(String nif) {
+		return this.datos.CLIENTES.containsKey(nif);
+	}
+
+	/**
+	 * Devuelve el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 *
+	 * @return El fichero de datos
+	 */
+	public File getFicheroDatos() {
+		return this.ficheroDatos;
+	}
+
+	/**
+	 * Establece el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 *
+	 * @param file El fichero de datos
+	 */
+	public void setFicheroDatos(File file) {
+		if (file != null) {
+			String name = file.getName();
+
+			if (!name.endsWith(".data"))
+				file = new File(file.getParent(), name + ".data");
+		}
+
+		this.ficheroDatos = file;
 	}
 
 	/**
 	 * Carga los datos de clientes, llamadas y facturas
 	 */
-	public static void cargarDatos() {
+	public void cargarDatos() {
 		try {
-			FileInputStream fis = new FileInputStream(ficheroDatos);
+			FileInputStream fis = new FileInputStream(this.ficheroDatos);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			datos = (Datos) ois.readObject();
+			this.datos = (Datos) ois.readObject();
 
-			System.out.println("Datos cargados con éxito desde: " + ficheroDatos.getAbsolutePath());
+			System.out.println("Datos cargados con éxito desde: " + this.ficheroDatos.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
@@ -268,21 +319,23 @@ public class AdministradorDatos {
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error al cargar datos: No se encontro la clase");
 		}
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
 	/**
 	 * Guarda los datos de clientes, llamadas y facturas
 	 */
-	public static void guardarDatos() {
+	public void guardarDatos() {
 		try {
-			if (ficheroDatos.createNewFile())
+			if (this.ficheroDatos.createNewFile())
 				System.out.println("El fichero de datos no existia y se ha creado\n");
 
-			FileOutputStream fos = new FileOutputStream(ficheroDatos);
+			FileOutputStream fos = new FileOutputStream(this.ficheroDatos);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(datos);
+			oos.writeObject(this.datos);
 
-			System.out.println("Datos guardados con éxito en: " + ficheroDatos.getAbsolutePath());
+			System.out.println("Datos guardados con éxito en: " + this.ficheroDatos.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			System.out.println("Error al guardar datos: No se encontro el fichero de datos");
 		} catch (IOException e) {
@@ -293,34 +346,21 @@ public class AdministradorDatos {
 	/**
 	 * Borra todos los datos existentes
 	 */
-	public static void limpiarDatos() { //FIXME Problema con los codigos
-		datos.CLIENTES.clear();
-		datos.LLAMADAS.clear();
-		datos.FACTURAS.clear();
+	public void limpiarDatos() { //FIXME Problema con los codigos
+		this.datos = new Datos();
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
 	/**
-	 * Devuelve el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 * Comprueba si un dato es valido, comprovando que el coincide con el patron del tipo de dato
 	 *
-	 * @return El fichero de datos
-	 */
-	public static File getFicheroDatos() {
-		return ficheroDatos;
-	}
-
-	/**
-	 * Establece el fichero de datos desde donde se cargan y a donde se guardan los datos
+	 * @param dato     El dato
+	 * @param tipoDato El tipo de dato
 	 *
-	 * @param file El fichero de datos
+	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
 	 */
-	public static void setFicheroDatos(File file) {
-		if (file != null) {
-			String name = file.getName();
-
-			if (!name.endsWith(".data"))
-				file = new File(file.getParent(), name + ".data");
-		}
-
-		ficheroDatos = file; // FIXME
+	public static boolean esDatoValido(String dato, TipoDato tipoDato) {
+		return dato.matches(tipoDato.getFormato());
 	}
 }

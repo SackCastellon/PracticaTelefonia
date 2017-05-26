@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.facturacion;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
@@ -48,13 +47,13 @@ public class Factura implements IFecha, IDatos, Serializable {
 	 *
 	 * @throws FechaNoValidaExcepcion Si la fecha de emision es anterior a la fecha de la última emisión
 	 */
-	public Factura(Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
+	public Factura(int codigo, Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
 		super();
 
 		if (fechaEmision.isBefore(fechaUltimaEmision))
 			throw new FechaNoValidaExcepcion();
 
-		this.codigo = AdministradorDatos.getNextCodigoFactura();
+		this.codigo = codigo;
 		this.tarifa = tarifa;
 		this.fechaEmision = fechaEmision;
 		Duration periodo = Duration.between(fechaUltimaEmision, fechaEmision);

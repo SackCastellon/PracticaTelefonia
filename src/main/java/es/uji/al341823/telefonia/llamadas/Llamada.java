@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.llamadas;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.IDatos;
 import es.uji.al341823.telefonia.api.IFecha;
 import javafx.util.Pair;
@@ -43,11 +42,10 @@ public class Llamada implements IFecha, IDatos, Serializable {
 	 * @param fechaLlamada    Dia y hora de la llamada
 	 * @param duracionLlamada Duración de la llamada en segundos
 	 */
-	public Llamada(String numeroOrigen, String numeroDestino, LocalDateTime fechaLlamada, int duracionLlamada) {
+	public Llamada(int codigo, String numeroOrigen, String numeroDestino, LocalDateTime fechaLlamada, int duracionLlamada) {
 		super();
 
-		this.codigo = AdministradorDatos.getNextCodigoLlamada();
-
+		this.codigo = codigo;
 		this.numeroOrigen = numeroOrigen;
 		this.numeroDestino = numeroDestino;
 		this.fechaLlamada = fechaLlamada;

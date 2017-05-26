@@ -13,15 +13,15 @@ import java.net.URL;
  * @author Juanjo González (al341823)
  * @since 0.4
  */
-public class AdministradorSwing {
+public class SwingUtils {
 	public static ImageIcon getIcon(String icon) {
 		String name = String.format("/icons/%s.png", icon);
 
-		URL url = AdministradorSwing.class.getResource(name);
+		URL url = SwingUtils.class.getResource(name);
 
 		if (url == null) {
 			System.err.println("Missing icon: " + icon);
-			url = AdministradorSwing.class.getResource("/icons/missing.png");
+			url = SwingUtils.class.getResource("/icons/missing.png");
 		}
 
 		return new ImageIcon(url);
@@ -30,11 +30,11 @@ public class AdministradorSwing {
 	public static Image getImage(String image) {
 		String name = String.format("/images/%s.png", image);
 
-		URL url = AdministradorSwing.class.getResource(name);
+		URL url = SwingUtils.class.getResource(name);
 
 		if (url == null) {
 			System.err.println("Missing image: " + image);
-			url = AdministradorSwing.class.getResource("/images/missing.png");
+			url = SwingUtils.class.getResource("/images/missing.png");
 		}
 
 		return new ImageIcon(url).getImage();

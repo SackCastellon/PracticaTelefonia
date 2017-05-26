@@ -32,9 +32,10 @@ import java.util.Date;
  * @since 0.4
  */
 public class Controlador {
-	private Vista vista;
 
-	@SuppressWarnings("unused")
+	private Vista vista;
+	private AdministradorDatos modelo;
+
 	public Vista getVista() {
 		return this.vista;
 	}
@@ -43,29 +44,33 @@ public class Controlador {
 		this.vista = vista;
 	}
 
-	public void nuevosDatos() {
-		AdministradorDatos.setFicheroDatos(null);
-		AdministradorDatos.limpiarDatos();
+	public AdministradorDatos getModelo() {
+		return this.modelo;
+	}
 
-		this.vista.actualizarVista();
+	public void setModelo(AdministradorDatos modelo) {
+		this.modelo = modelo;
+	}
+
+	public void nuevosDatos() {
+		this.modelo.setFicheroDatos(null);
+		this.modelo.limpiarDatos();
 	}
 
 	public File getFicheroDatos() {
-		return AdministradorDatos.getFicheroDatos();
+		return this.modelo.getFicheroDatos();
 	}
 
 	public void setFicheroDatos(File file) {
-		AdministradorDatos.setFicheroDatos(file);
+		this.modelo.setFicheroDatos(file);
 	}
 
 	public void cargarDatos() {
-		AdministradorDatos.cargarDatos();
-
-		this.vista.actualizarVista();
+		this.modelo.cargarDatos();
 	}
 
 	public void guardarDatos() {
-		AdministradorDatos.guardarDatos();
+		this.modelo.guardarDatos();
 	}
 
 	public ArrayList<Tarifa> getTarifasBasicas() {
@@ -94,8 +99,6 @@ public class Controlador {
 
 	public void setTarifa(Cliente cliente, Tarifa tarifa) {
 		cliente.setTarifa(tarifa);
-
-		this.vista.actualizarVista();
 	}
 
 	public void guardarCliente(String[] textos, Date fecha, Tarifa tarifa) throws ObjetoYaExisteException {
@@ -106,38 +109,34 @@ public class Controlador {
 			Integer i = Integer.parseInt(split[0]);
 			Direccion direccion = new Direccion(i, split[1], split[2]);
 
-			AdministradorDatos.addCliente(new Particular(textos[1], textos[2], textos[0], direccion, textos[4], fechaLocal, tarifa));
+			this.modelo.addCliente(new Particular(textos[1], textos[2], textos[0], direccion, textos[4], fechaLocal, tarifa));
 		} else {
 			String[] split = textos[2].split(",", 3);
 			Integer i = Integer.parseInt(split[0]);
 			Direccion direccion = new Direccion(i, split[1], split[2]);
 
-			AdministradorDatos.addCliente(new Empresa(textos[1], textos[0], direccion, textos[3], fechaLocal, tarifa));
+			this.modelo.addCliente(new Empresa(textos[1], textos[0], direccion, textos[3], fechaLocal, tarifa));
 		}
-
-		this.vista.actualizarVista();
 	}
 
 	public void borrarCliente(Cliente cliente) throws ObjetoNoExisteException {
-		AdministradorDatos.removeCliente(cliente.getNif());
-
-		this.vista.actualizarVista();
+		this.modelo.removeCliente(cliente.getNif());
 	}
 
 	public void altaLlamada(Cliente cliente, Llamada llamada) throws ObjetoNoExisteException, ObjetoYaExisteException {
-		AdministradorDatos.addLlamada(cliente.getNif(), llamada);
+		this.modelo.addLlamada(cliente.getNif(), llamada);
 	}
 
 	public Collection<Llamada> getLlamadas(Cliente cliente) throws ObjetoNoExisteException {
-		return AdministradorDatos.getLlamadasCliente(cliente.getNif());
+		return this.modelo.getLlamadasCliente(cliente.getNif());
 	}
 
 	public void emitirFactura(Cliente cliente) throws ObjetoNoExisteException, FechaNoValidaExcepcion {
-		AdministradorDatos.addFactura(cliente.getNif());
+		this.modelo.addFactura(cliente.getNif());
 	}
 
 	public Collection<Factura> getFacturas(Cliente cliente) throws ObjetoNoExisteException {
-		return AdministradorDatos.getFacturasCliente(cliente.getNif());
+		return this.modelo.getFacturasCliente(cliente.getNif());
 	}
 
 }

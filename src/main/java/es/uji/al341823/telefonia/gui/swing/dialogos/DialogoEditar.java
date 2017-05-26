@@ -6,7 +6,7 @@
 package es.uji.al341823.telefonia.gui.swing.dialogos;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
-import es.uji.al341823.telefonia.api.AdministradorSwing;
+import es.uji.al341823.telefonia.api.SwingUtils;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
@@ -117,10 +117,10 @@ public class DialogoEditar extends Vista {
 
 		if (this.cliente == null) {
 			this.dialog.setTitle("Nuevo cliente");
-			this.dialog.setIconImage(AdministradorSwing.getImage("add"));
+			this.dialog.setIconImage(SwingUtils.getImage("add"));
 		} else {
 			this.dialog.setTitle("Editar tarifa");
-			this.dialog.setIconImage(AdministradorSwing.getImage("edit"));
+			this.dialog.setIconImage(SwingUtils.getImage("edit"));
 		}
 
 		this.dialog.setResizable(false);

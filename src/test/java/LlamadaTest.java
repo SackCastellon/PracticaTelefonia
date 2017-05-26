@@ -3,6 +3,7 @@
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
 
+import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -27,12 +28,14 @@ public class LlamadaTest {
 	public static void first() {
 		Random rand = new Random();
 
+		AdministradorDatos admin = new AdministradorDatos();
+
 		numeroOrigen = Integer.toString(rand.nextInt(5));
 		numeroDestino = Integer.toString(rand.nextInt(5));
 		fechaLlamada = LocalDateTime.now();
 		duracionLlamada = rand.nextInt(5);
 
-		llamada = new Llamada(numeroOrigen, numeroDestino, fechaLlamada, duracionLlamada);
+		llamada = new Llamada(admin.getNextCodigoLlamada(), numeroOrigen, numeroDestino, fechaLlamada, duracionLlamada);
 	}
 
 	@Test

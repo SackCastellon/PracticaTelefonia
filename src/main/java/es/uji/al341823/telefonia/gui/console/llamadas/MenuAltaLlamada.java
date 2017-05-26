@@ -39,11 +39,12 @@ public class MenuAltaLlamada extends Menu {
 		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de la llamada (AAAA-MM-DD hh:mm:ss | hoy): ");
 		int duracion = AdministradorMenus.leerEntero(" - Duracion de la llamada en segundos: ");
 
-		Llamada llamada = new Llamada(origen, destino, fecha, duracion);
+		AdministradorDatos administradorDatos = this.getAdministradorDatos();
+		Llamada llamada = new Llamada(administradorDatos.getNextCodigoLlamada(), origen, destino, fecha, duracion);
 
 		try {
 			System.out.println();
-			AdministradorDatos.addLlamada(nif, llamada);
+			administradorDatos.addLlamada(nif, llamada);
 			System.out.println("Llamada añadida con éxito");
 		} catch (ObjetoYaExisteException e) {
 			System.err.println("Ya existe una llamada con el código '" + llamada.getCodigo() + "'");

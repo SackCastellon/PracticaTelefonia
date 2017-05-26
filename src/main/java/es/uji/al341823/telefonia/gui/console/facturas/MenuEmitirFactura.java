@@ -28,7 +28,7 @@ public class MenuEmitirFactura extends Menu {
 		String nif = AdministradorMenus.leerNIF();
 
 		try {
-			Factura factura = AdministradorDatos.addFactura(nif);
+			Factura factura = getAdministradorDatos().addFactura(nif);
 			System.out.println();
 			System.out.println("Información de la factura emitida: " + factura);
 		} catch (FechaNoValidaExcepcion fechaNoValidaExcepcion) {

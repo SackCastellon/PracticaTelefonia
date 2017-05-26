@@ -29,17 +29,14 @@ public class AdministradorDatosTest {
 	private static LocalDateTime fechaInicio;
 	private static LocalDateTime fechaFinal;
 	private final GeneradorDatosINE generador = new GeneradorDatosINE();
+	private final AdministradorDatos admin = new AdministradorDatos();
 
 	@BeforeClass
 	public static void first() {
-
 		rand = new Random();
-
-		AdministradorDatos admin = new AdministradorDatos();
 
 		fechaInicio = LocalDateTime.of(2013, 1, 1, 1, 1);
 		fechaFinal = LocalDateTime.of(2016, 12, 31, 4, 30);
-
 	}
 
 	@Test
@@ -74,21 +71,21 @@ public class AdministradorDatosTest {
 			if (cliente.getFecha().isAfter(fechaInicio) && cliente.getFecha().isBefore(fechaFinal))
 				clientesExtraidos.add(cliente);
 
-			Llamada llamada = new Llamada(Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
+			Llamada llamada = new Llamada(admin.getNextCodigoLlamada(), Integer.toString(rand.nextInt(5)), Integer.toString(rand.nextInt(5)), fecha, rand.nextInt(5));
 			llamadas.add(llamada);
 
 			if (llamada.getFecha().isAfter(fechaInicio) && llamada.getFecha().isBefore(fechaFinal))
 				llamadasExtraidas.add(llamada);
 
-			Factura factura = new Factura(new TarifaBasica(rand.nextFloat()), fecha, LocalDateTime.of(2021, 12, 28, 2, 32), rand.nextInt());
+			Factura factura = new Factura(admin.getNextCodigoFactura(), new TarifaBasica(rand.nextFloat()), fecha, LocalDateTime.of(2021, 12, 28, 2, 32), rand.nextInt());
 			facturas.add(factura);
 
 			if (factura.getFecha().isAfter(fechaInicio) && factura.getFecha().isBefore(fechaFinal))
 				facturasExtraidas.add(factura);
 		}
 
-		Assert.assertEquals(AdministradorDatos.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
-		Assert.assertEquals(AdministradorDatos.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
-		Assert.assertEquals(AdministradorDatos.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
+		Assert.assertEquals(admin.extraerConjunto(clientes, fechaInicio, fechaFinal), clientesExtraidos);
+		Assert.assertEquals(admin.extraerConjunto(llamadas, fechaInicio, fechaFinal), llamadasExtraidas);
+		Assert.assertEquals(admin.extraerConjunto(facturas, fechaInicio, fechaFinal), facturasExtraidas);
 	}
 }

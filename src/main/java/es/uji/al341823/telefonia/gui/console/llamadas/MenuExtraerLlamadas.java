@@ -35,7 +35,7 @@ public class MenuExtraerLlamadas extends Menu {
 
 		try {
 			System.out.println();
-			Collection<Llamada> llamadas = AdministradorDatos.extraerConjunto(AdministradorDatos.getLlamadasCliente(nif), inicio, fin);
+			Collection<Llamada> llamadas = getAdministradorDatos().extraerConjunto(getAdministradorDatos().getLlamadasCliente(nif), inicio, fin);
 
 			System.out.println("Durante este periodo de tiempo se un total de " + llamadas.size() + " llamada(s) para este cliente");
 

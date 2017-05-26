@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -26,7 +25,7 @@ public class MenuVerDatosTodosClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		LinkedList<Cliente> clientes = new LinkedList<>(AdministradorDatos.getClientes());
+		LinkedList<Cliente> clientes = new LinkedList<>(getAdministradorDatos().getClientes());
 
 		System.out.printf("Hay un total de %d clientes\n", clientes.size());
 
