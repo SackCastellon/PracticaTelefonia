@@ -41,6 +41,18 @@ public class AdministradorDatos {
 
 	private Vista vista;
 
+	/**
+	 * Comprueba si un dato es valido, comprovando que el coincide con el patron del tipo de dato
+	 *
+	 * @param dato     El dato
+	 * @param tipoDato El tipo de dato
+	 *
+	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
+	 */
+	public static boolean esDatoValido(String dato, TipoDato tipoDato) {
+		return dato.matches(tipoDato.getFormato());
+	}
+
 	public Vista getVista() {
 		return this.vista;
 	}
@@ -350,17 +362,5 @@ public class AdministradorDatos {
 		this.datos = new Datos();
 
 		if (this.vista != null) this.vista.actualizarVista();
-	}
-
-	/**
-	 * Comprueba si un dato es valido, comprovando que el coincide con el patron del tipo de dato
-	 *
-	 * @param dato     El dato
-	 * @param tipoDato El tipo de dato
-	 *
-	 * @return {@code true} si coincide con el patron de tipo de dato, {@code false} en caso contrario
-	 */
-	public static boolean esDatoValido(String dato, TipoDato tipoDato) {
-		return dato.matches(tipoDato.getFormato());
 	}
 }

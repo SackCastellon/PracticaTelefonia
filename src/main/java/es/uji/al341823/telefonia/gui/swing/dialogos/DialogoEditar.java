@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
@@ -176,6 +176,26 @@ public class DialogoEditar extends Vista {
 			textField.addFocusListener(new ValidadorDatos(this.tipoDatos.get(col), col));
 			inputPanel.add(textField, constraints);
 			this.inputs.add(textField);
+
+			if ((col == (nombres.size() - 4)) && (this.cliente == null)) {
+				String placeholder = "CP, Provincia, Población";
+				textField.setText(placeholder);
+				textField.setForeground(Color.GRAY);
+				textField.addFocusListener(new FocusListener() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						if (textField.getText().equals(placeholder)) {
+							textField.setText(null);
+							textField.setForeground(Color.BLACK);
+						}
+					}
+
+					@Override
+					public void focusLost(FocusEvent e) {
+
+					}
+				});
+			}
 		}
 
 		constraints.gridy--;

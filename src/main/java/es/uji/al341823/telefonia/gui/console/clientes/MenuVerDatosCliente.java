@@ -24,7 +24,7 @@ public class MenuVerDatosCliente extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		String nif =  this.getAdministradorMenus().leerNIF();
+		String nif = this.getAdministradorMenus().leerNIF();
 
 		try {
 			Cliente cliente = this.getAdministradorDatos().getCliente(nif);

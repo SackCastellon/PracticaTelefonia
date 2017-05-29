@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console;
 
-import es.uji.al341823.telefonia.api.AdministradorDatos;
 import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 
