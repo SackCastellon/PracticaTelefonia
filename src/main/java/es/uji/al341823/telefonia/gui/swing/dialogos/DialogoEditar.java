@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2017. Esta obra está sujeta a la licencia Reconocimiento 4.0 Internacional de Creative Commons.
  * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/.
  */
@@ -192,7 +192,10 @@ public class DialogoEditar extends Vista {
 
 					@Override
 					public void focusLost(FocusEvent e) {
-
+						if (textField.getText().isEmpty()) {
+							textField.setText(placeholder);
+							textField.setForeground(Color.GRAY);
+						}
 					}
 				});
 			}
