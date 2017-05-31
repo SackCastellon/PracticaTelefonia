@@ -18,8 +18,8 @@ import java.util.Locale;
  */
 public abstract class TarifaExtra extends Tarifa {
 
-	private static final long serialVersionUID = -8478572940082399433L;
 
+	private static final long serialVersionUID = 1342648655796628938L;
 	private final Tarifa tarifaBase;
 	private final TemporalField unidadTemporal;
 	private final int inicioPeriodo;

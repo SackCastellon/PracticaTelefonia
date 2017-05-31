@@ -31,7 +31,7 @@ public class MenuBajaCliente extends Menu {
 		System.out.println();
 
 		try {
-			getAdministradorDatos().removeCliente(nif);
+			this.getAdministradorDatos().removeCliente(nif);
 			System.out.println("Cliente eliminado con éxito");
 		} catch (ObjetoNoExisteException e) {
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");

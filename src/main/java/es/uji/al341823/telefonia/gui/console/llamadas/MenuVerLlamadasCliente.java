@@ -29,7 +29,7 @@ public class MenuVerLlamadasCliente extends Menu {
 
 		try {
 			System.out.println();
-			Collection<Llamada> llamadas = getAdministradorDatos().getLlamadasCliente(nif);
+			Collection<Llamada> llamadas = this.getAdministradorDatos().getLlamadasCliente(nif);
 
 			System.out.println("Este cliente ha  " + llamadas.size() + " llamadas para este cliente:");
 

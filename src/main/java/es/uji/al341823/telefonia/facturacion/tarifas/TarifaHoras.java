@@ -14,7 +14,8 @@ import java.time.temporal.ChronoField;
  */
 public class TarifaHoras extends TarifaExtra {
 
-	private static final long serialVersionUID = -4769818361637738499L;
+
+	private static final long serialVersionUID = 8877298626852066178L;
 
 	public TarifaHoras(Tarifa tarifaBase, float precio, int inicioPeriodo, int finPeriodo) {
 		super(tarifaBase, precio, ChronoField.HOUR_OF_DAY, inicioPeriodo, finPeriodo);

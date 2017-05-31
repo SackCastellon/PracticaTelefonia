@@ -12,6 +12,7 @@ package es.uji.al341823.telefonia.facturacion.tarifas;
  */
 public class TarifaBasica extends Tarifa {
 
+
 	private static final long serialVersionUID = 2220349570647412451L;
 
 	public TarifaBasica(float precio) {

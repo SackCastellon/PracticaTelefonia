@@ -661,9 +661,10 @@ public class VentanaPrincipal extends Vista {
 		}
 
 		private void buscar() {
-			Vista dialogo = new DialogoBuscar(VentanaPrincipal.this.frame);
-			dialogo.setControlador(this.controlador);
-			dialogo.generarVista();
+			Vista vista = new DialogoBuscar(VentanaPrincipal.this.frame);
+			vista.setControlador(VentanaPrincipal.this.getControlador());
+			vista.setModelo(VentanaPrincipal.this.getModelo());
+			vista.generarVista();
 		}
 
 		private void sobre() {
@@ -718,17 +719,19 @@ public class VentanaPrincipal extends Vista {
 
 			switch (accion) {
 				case TABLA_NUEVO: {
-					Vista dialogo = new DialogoEditar(owner, modelo.getTipoCliente());
-					dialogo.setControlador(this.controlador);
-					dialogo.generarVista();
+					Vista vista = new DialogoEditar(owner, modelo.getTipoCliente());
+					vista.setControlador(VentanaPrincipal.this.getControlador());
+					vista.setModelo(VentanaPrincipal.this.getModelo());
+					vista.generarVista();
 					break;
 				}
 				case TABLA_EDITAR_TARIFA: {
 					int row = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 
-					Vista dialogo = new DialogoEditar(owner, modelo.getClienteAt(row));
-					dialogo.setControlador(this.controlador);
-					dialogo.generarVista();
+					Vista vista = new DialogoEditar(owner, modelo.getClienteAt(row));
+					vista.setControlador(VentanaPrincipal.this.getControlador());
+					vista.setModelo(VentanaPrincipal.this.getModelo());
+					vista.generarVista();
 					break;
 				}
 				case TABLA_BORRAR:
@@ -770,9 +773,10 @@ public class VentanaPrincipal extends Vista {
 				int row = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 				Cliente cliente = modelo.getClienteAt(row);
 
-				Vista dialogo = new DialogoInfo(VentanaPrincipal.this.frame, cliente, e.getActionCommand());
-				dialogo.setControlador(VentanaPrincipal.this.getControlador());
-				dialogo.generarVista();
+				Vista vista = new DialogoInfo(VentanaPrincipal.this.frame, cliente, e.getActionCommand());
+				vista.setControlador(VentanaPrincipal.this.getControlador());
+				vista.setModelo(VentanaPrincipal.this.getModelo());
+				vista.generarVista();
 
 			} catch (Exception exception) {
 				if (e.getActionCommand().equals(INFO_VER_LLAMADAS))

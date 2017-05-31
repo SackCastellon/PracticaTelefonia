@@ -28,7 +28,7 @@ public class MenuRecuperarFacturasCliente extends Menu {
 		String nif = AdministradorMenus.leerNIF();
 
 		try {
-			Collection<Factura> facturas = getAdministradorDatos().getFacturasCliente(nif);
+			Collection<Factura> facturas = this.getAdministradorDatos().getFacturasCliente(nif);
 
 			System.out.println();
 			System.out.println("Se han emitido un total de " + facturas.size() + " facturas para el cliente con NIF '" + nif + "':");

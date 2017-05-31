@@ -16,8 +16,8 @@ import java.io.Serializable;
  */
 public abstract class Tarifa implements Serializable {
 
-	private static final long serialVersionUID = 2027121994743403669L;
 
+	private static final long serialVersionUID = -8903195202482262057L;
 	/**
 	 * Precio por minuto de la tarifa (€/min)
 	 */
@@ -50,8 +50,7 @@ public abstract class Tarifa implements Serializable {
 	 *
 	 * @return Coste de la llamada
 	 */
-	@SuppressWarnings("unused")
-	float getCosteLlamada(Llamada llamada) {
+	public float getCosteLlamada(Llamada llamada) {
 		return (this.getPrecio() * llamada.getDuracionLlamada()) / 60f;
 	}
 

@@ -32,7 +32,7 @@ public class MenuExtraerClientes extends Menu {
 		Collection<Cliente> clientes;
 
 		try {
-			clientes = getAdministradorDatos().extraerConjunto(getAdministradorDatos().getClientes(), inicio, fin);
+			clientes = this.getAdministradorDatos().extraerConjunto(this.getAdministradorDatos().getClientes(), inicio, fin);
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
 			AdministradorMenus.esperarParaContinuar();

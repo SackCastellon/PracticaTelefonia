@@ -47,7 +47,7 @@ public class MenuAltaClienteEmpresa extends Menu {
 		FabricaTarifas fabricaTarifas = new FabricaTarifas();
 
 		try {
-			getAdministradorDatos().addCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
+			this.getAdministradorDatos().addCliente(fabricaClientes.getEmpresa(nombre, nif, direccion, email, fecha, fabricaTarifas.getTarifaBase(TipoTarifa.Base.BASICA)));
 			System.out.println("Cliente añadido con éxito");
 		} catch (ObjetoYaExisteException e) {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");

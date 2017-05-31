@@ -20,8 +20,8 @@ import java.util.HashMap;
  */
 public class Datos implements Serializable {
 
-	private static final long serialVersionUID = -5886315231049338254L;
 
+	private static final long serialVersionUID = -5781118305793535170L;
 	/** Almacena todos los clientes que hay en el momento */
 	public final HashMap<String, Cliente> CLIENTES = new HashMap<>();
 

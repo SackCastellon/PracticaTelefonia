@@ -25,7 +25,7 @@ public class MenuVerDatosTodosClientes extends Menu {
 	public void mostrar() {
 		AdministradorMenus.imprimeTitulo(this);
 
-		LinkedList<Cliente> clientes = new LinkedList<>(getAdministradorDatos().getClientes());
+		LinkedList<Cliente> clientes = new LinkedList<>(this.getAdministradorDatos().getClientes());
 
 		System.out.printf("Hay un total de %d clientes\n", clientes.size());
 

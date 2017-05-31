@@ -219,9 +219,10 @@ public class DialogoInfo extends Vista {
 					break;
 
 				case DIALOGO_NUEVA_LLAMADA:
-					Vista dialogo = new DialogoLlamada(DialogoInfo.this.dialog, DialogoInfo.this.cliente);
-					dialogo.setControlador(DialogoInfo.this.getControlador());
-					dialogo.generarVista();
+					Vista vista = new DialogoLlamada(DialogoInfo.this.dialog, DialogoInfo.this.cliente);
+					vista.setControlador(DialogoInfo.this.getControlador());
+					vista.setModelo(DialogoInfo.this.getModelo());
+					vista.generarVista();
 
 					DialogoInfo.this.actualizarVista();
 					break;

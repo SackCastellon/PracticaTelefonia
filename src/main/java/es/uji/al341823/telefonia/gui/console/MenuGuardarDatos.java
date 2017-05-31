@@ -29,8 +29,8 @@ public class MenuGuardarDatos extends Menu {
 		if (ruta.isEmpty())
 			System.out.println("Se canceló el guardado de datos");
 		else {
-			getAdministradorDatos().setFicheroDatos(new File(ruta));
-			getAdministradorDatos().guardarDatos();
+			this.getAdministradorDatos().setFicheroDatos(new File(ruta));
+			this.getAdministradorDatos().guardarDatos();
 		}
 
 		AdministradorMenus.esperarParaContinuar();

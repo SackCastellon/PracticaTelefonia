@@ -28,7 +28,7 @@ public class MenuRecuperarDatosFactura extends Menu {
 		System.out.println();
 
 		try {
-			Factura factura = getAdministradorDatos().getFactura(codigo);
+			Factura factura = this.getAdministradorDatos().getFactura(codigo);
 			System.out.println("Información de la factura: " + factura);
 		} catch (ObjetoNoExisteException e) {
 			System.out.println("No existe ninguna factura con ese codigo");

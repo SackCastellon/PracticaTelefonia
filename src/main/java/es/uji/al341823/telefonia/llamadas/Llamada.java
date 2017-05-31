@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class Llamada implements IFecha, IDatos, Serializable {
 
-	private static final long serialVersionUID = -5491839185929563564L;
 
+	private static final long serialVersionUID = -1626366870225463595L;
 	/** Codigo identificativo unico de la llamada */
 	private final int codigo;
 	/** Numero desde el que se ha realizado la llamada */

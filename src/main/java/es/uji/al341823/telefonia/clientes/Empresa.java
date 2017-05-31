@@ -18,7 +18,8 @@ import java.util.List;
  */
 public class Empresa extends Cliente {
 
-	private static final long serialVersionUID = -5040781096494997665L;
+
+	private static final long serialVersionUID = -2596901756813162732L;
 
 	/**
 	 * @param nombre     Nombre de la empresa

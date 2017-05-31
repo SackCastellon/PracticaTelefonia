@@ -11,6 +11,7 @@ import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
+import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
@@ -188,20 +189,22 @@ public class AdministradorDatos {
 		cliente.updateUltimaFaturacion();
 		LocalDateTime hoy = cliente.getUltimaFacturacion();
 
-		int duracionLlamadas = 0;
+		Tarifa tarifa = cliente.getTarifa();
+
+		float coste = 0;
 
 		for (int codigoLlamada : cliente.getCodigosLlamadas()) {
 			try {
 				Llamada llamada = this.getLlamada(codigoLlamada);
 				LocalDateTime fecha = llamada.getFecha();
 				if (fecha.isBefore(hoy) && fecha.isAfter(ultimaFacturacion))
-					duracionLlamadas += llamada.getDuracionLlamada();
+					coste += tarifa.getCosteLlamada(llamada);
 			} catch (ObjetoNoExisteException e) {
 				System.err.println("Se intentó acceder a una llamada que no existe");
 			}
 		}
 
-		Factura factura = new Factura(this.getNextCodigoFactura(), cliente.getTarifa(), ultimaFacturacion, hoy, duracionLlamadas);
+		Factura factura = new Factura(this.getNextCodigoFactura(), cliente.getTarifa(), ultimaFacturacion, hoy, coste);
 
 		cliente.addFactura(factura.getCodigo());
 

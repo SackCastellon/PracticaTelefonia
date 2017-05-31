@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class Particular extends Cliente {
 
-	private static final long serialVersionUID = 6968740004850893790L;
 
+	private static final long serialVersionUID = 1888737854811115694L;
 	/** Los apellidos del cliente */
 	private final String apellidos;
 

@@ -24,8 +24,8 @@ import java.util.Set;
  */
 public abstract class Cliente implements IFecha, IDatos, Serializable {
 
-	private static final long serialVersionUID = -6698454540590960908L;
 
+	private static final long serialVersionUID = -6127121366791120199L;
 	/** Nombre del cliente */
 	private final String nombre;
 	/** NIF del cliente */

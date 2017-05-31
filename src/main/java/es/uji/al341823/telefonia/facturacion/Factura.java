@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class Factura implements IFecha, IDatos, Serializable {
 
-	private static final long serialVersionUID = -7711276290283216630L;
 
+	private static final long serialVersionUID = 3166571932991303159L;
 	/** Codigo identificativo unico de la factura */
 	private final int codigo;
 	/** La tarifa usada para calcular la factura */
@@ -43,11 +43,11 @@ public class Factura implements IFecha, IDatos, Serializable {
 	 * @param tarifa             La tarifa que se aplica
 	 * @param fechaUltimaEmision La fecha de emisión de la ultima fsctura
 	 * @param fechaEmision       La decha de emisión de la nueva factura (normalmente el dia actual)
-	 * @param duracionLlamadas   La duración total en segundos de las llamadas
+	 * @param coste              El coste total de las llamadas relizadas durante el periodo de facturación
 	 *
 	 * @throws FechaNoValidaExcepcion Si la fecha de emision es anterior a la fecha de la última emisión
 	 */
-	public Factura(int codigo, Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, int duracionLlamadas) throws FechaNoValidaExcepcion {
+	public Factura(int codigo, Tarifa tarifa, LocalDateTime fechaUltimaEmision, LocalDateTime fechaEmision, float coste) throws FechaNoValidaExcepcion {
 		super();
 
 		if (fechaEmision.isBefore(fechaUltimaEmision))
@@ -58,7 +58,7 @@ public class Factura implements IFecha, IDatos, Serializable {
 		this.fechaEmision = fechaEmision;
 		Duration periodo = Duration.between(fechaUltimaEmision, fechaEmision);
 		this.periodoFactuacion = periodo.toDays();
-		this.importe = tarifa.getPrecio() * duracionLlamadas;
+		this.importe = coste;
 	}
 
 	public static List<String> getNombreDatos() {
