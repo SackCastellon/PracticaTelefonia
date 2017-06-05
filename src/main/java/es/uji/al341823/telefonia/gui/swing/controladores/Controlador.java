@@ -12,20 +12,15 @@ import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.api.fabricas.FabricaTarifas;
 import es.uji.al341823.telefonia.api.fabricas.TipoTarifa;
 import es.uji.al341823.telefonia.clientes.Cliente;
-import es.uji.al341823.telefonia.clientes.Direccion;
-import es.uji.al341823.telefonia.clientes.Empresa;
-import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
 import es.uji.al341823.telefonia.gui.swing.Vista;
 import es.uji.al341823.telefonia.llamadas.Llamada;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @author Juanjo González (al341823)
@@ -98,25 +93,11 @@ public class Controlador {
 	}
 
 	public void setTarifa(Cliente cliente, Tarifa tarifa) {
-		cliente.setTarifa(tarifa);
+		this.modelo.setTarifa(cliente, tarifa);
 	}
 
-	public void guardarCliente(String[] textos, Date fecha, Tarifa tarifa) throws ObjetoYaExisteException {
-		LocalDateTime fechaLocal = LocalDateTime.ofInstant(fecha.toInstant(), ZoneId.systemDefault());
-
-		if (textos.length == 5) {
-			String[] split = textos[3].split(",", 3);
-			Integer i = Integer.parseInt(split[0]);
-			Direccion direccion = new Direccion(i, split[1], split[2]);
-
-			this.modelo.addCliente(new Particular(textos[1], textos[2], textos[0], direccion, textos[4], fechaLocal, tarifa));
-		} else {
-			String[] split = textos[2].split(",", 3);
-			Integer i = Integer.parseInt(split[0]);
-			Direccion direccion = new Direccion(i, split[1], split[2]);
-
-			this.modelo.addCliente(new Empresa(textos[1], textos[0], direccion, textos[3], fechaLocal, tarifa));
-		}
+	public void guardarCliente(HashMap<String, Object> datos) throws ObjetoYaExisteException {
+		this.modelo.addCliente(datos);
 	}
 
 	public void borrarCliente(Cliente cliente) throws ObjetoNoExisteException {

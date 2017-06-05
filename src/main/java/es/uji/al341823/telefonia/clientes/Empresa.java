@@ -6,6 +6,7 @@
 package es.uji.al341823.telefonia.clientes;
 
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
+import javafx.util.Pair;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -33,29 +34,29 @@ public class Empresa extends Cliente {
 		super(nombre, nif, direccion, email, fechaAlta, tarifaBase);
 	}
 
-	public static List<String> getNombreDatos() {
+	public static List<String> getIdDatos() {
 		List<String> list = new LinkedList<>();
 
-		list.add("NIF");
-		list.add("Nombre");
-		list.add("Dirección");
-		list.add("Email");
-		list.add("Fecha de alta");
-		list.add("Tarifas");
+		list.add(ID_NIF);
+		list.add(ID_NOMBRE);
+		list.add(ID_DIRECCION);
+		list.add(ID_EMAIL);
+		list.add(ID_FECHA);
+		list.add(ID_TARIFA);
 
 		return list;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Hacer que use "getDatos()"
-		return "Empresa:\n" +
-				"\tNombre: " + this.getNombre() + '\n' +
-				"\tNIF: " + this.getNif() + '\n' +
-				"\tDirección: " + this.getDireccion() + '\n' +
-				"\tEmail: " + this.getEmail() + '\n' +
-				"\tFecha de Alta: " + this.getFecha() + '\n' +
-				"\tTarifa:\n" +
-				"\t\t" + this.getTarifa();
+		StringBuilder builder = new StringBuilder("Empresa:\n");
+
+		for (Pair<String, Object> pair : this.getDatos()) {
+			builder.append(pair.getKey());
+			builder.append(": ");
+			builder.append(pair.getValue());
+		}
+
+		return builder.toString();
 	}
 }

@@ -6,7 +6,6 @@
 package es.uji.al341823.telefonia.gui.console.llamadas;
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
@@ -28,16 +27,16 @@ public class MenuAltaLlamada extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerNIF();
+		String nif = this.getAdministradorMenus().leerNIF();
 
 		System.out.println("Introduce los siguientes datos de la llamada:");
 
-		String origen = AdministradorMenus.leerDato(" - Numero de origen: ", TipoDato.TELEFONO);
-		String destino = AdministradorMenus.leerDato(" - Numero de destino: ", TipoDato.TELEFONO);
-		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de la llamada (AAAA-MM-DD hh:mm:ss | hoy): ");
-		int duracion = AdministradorMenus.leerEntero(" - Duracion de la llamada en segundos: ");
+		String origen = this.getAdministradorMenus().leerDato(" - Numero de origen: ", TipoDato.TELEFONO);
+		String destino = this.getAdministradorMenus().leerDato(" - Numero de destino: ", TipoDato.TELEFONO);
+		LocalDateTime fecha = this.getAdministradorMenus().leerFecha(" - Fecha de la llamada (AAAA-MM-DD hh:mm:ss | hoy): ");
+		int duracion = this.getAdministradorMenus().leerEntero(" - Duracion de la llamada en segundos: ");
 
 		AdministradorDatos administradorDatos = this.getAdministradorDatos();
 		Llamada llamada = new Llamada(administradorDatos.getNextCodigoLlamada(), origen, destino, fecha, duracion);
@@ -52,7 +51,7 @@ public class MenuAltaLlamada extends Menu {
 			System.err.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

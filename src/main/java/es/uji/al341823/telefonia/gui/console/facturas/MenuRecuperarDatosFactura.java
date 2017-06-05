@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.facturas;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -21,9 +20,9 @@ public class MenuRecuperarDatosFactura extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		int codigo = AdministradorMenus.leerEntero("Introduce el codigo de la factura: ");
+		int codigo = this.getAdministradorMenus().leerEntero("Introduce el codigo de la factura: ");
 
 		System.out.println();
 
@@ -34,7 +33,7 @@ public class MenuRecuperarDatosFactura extends Menu {
 			System.out.println("No existe ninguna factura con ese codigo");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

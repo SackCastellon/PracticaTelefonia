@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.facturas;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
@@ -22,9 +21,9 @@ public class MenuEmitirFactura extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerNIF();
+		String nif = this.getAdministradorMenus().leerNIF();
 
 		try {
 			Factura factura = this.getAdministradorDatos().addFactura(nif);
@@ -36,7 +35,7 @@ public class MenuEmitirFactura extends Menu {
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

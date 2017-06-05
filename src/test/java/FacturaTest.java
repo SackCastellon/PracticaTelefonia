@@ -47,7 +47,7 @@ public class FacturaTest {
 		int duracionLlamadas = rand.nextInt();
 		importe = tarifa.getPrecio() * duracionLlamadas;
 
-		factura = new Factura(admin.getNextCodigoFactura(), tarifa, fechaUltimaEmision, fechaEmision, duracionLlamadas);
+		factura = new Factura(admin.getNextCodigoFactura(), tarifa, fechaUltimaEmision, fechaEmision, importe);
 	}
 
 	//@Test

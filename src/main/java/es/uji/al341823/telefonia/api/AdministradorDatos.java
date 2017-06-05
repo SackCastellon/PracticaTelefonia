@@ -9,6 +9,9 @@ import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.clientes.Cliente;
+import es.uji.al341823.telefonia.clientes.Direccion;
+import es.uji.al341823.telefonia.clientes.Empresa;
+import es.uji.al341823.telefonia.clientes.Particular;
 import es.uji.al341823.telefonia.datos.Datos;
 import es.uji.al341823.telefonia.facturacion.Factura;
 import es.uji.al341823.telefonia.facturacion.tarifas.Tarifa;
@@ -23,8 +26,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -77,6 +83,35 @@ public class AdministradorDatos {
 		this.datos.CLIENTES.put(cliente.getNif(), cliente);
 
 		if (this.vista != null) this.vista.actualizarVista();
+	}
+
+	/**
+	 * Da de alta un nuevo cliente siempre y cuado no esté dado ya de alta.<br>
+	 * El cliente se crea a partir de un mapa con pares (ID Campo, Valor Campo)
+	 *
+	 * @param datos El mapa con los datos del cliente
+	 *
+	 * @throws ObjetoYaExisteException En caso de que el cliente ya existiese
+	 * @see Particular#getIdDatos()
+	 * @see Empresa#getIdDatos()
+	 */
+	public void addCliente(HashMap<String, Object> datos) throws ObjetoYaExisteException {
+		String nif = (String) datos.get(Cliente.ID_NIF);
+		String nombre = (String) datos.get(Cliente.ID_NOMBRE);
+		String[] dir = ((String) datos.get(Cliente.ID_DIRECCION)).split(", ", 3);
+		int cp = Integer.parseInt(dir[0]);
+		Direccion direccion = new Direccion(cp, dir[1], dir[2]);
+		String email = (String) datos.get(Cliente.ID_EMAIL);
+		Date date = (Date) datos.get(Cliente.ID_FECHA);
+		LocalDateTime fecha = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+		Tarifa tarifa = (Tarifa) datos.get(Cliente.ID_TARIFA);
+
+
+		if (datos.containsKey(Particular.ID_APELLIDOS)) {
+			String apellidos = (String) datos.get(Particular.ID_APELLIDOS);
+			this.addCliente(new Particular(nombre, apellidos, nif, direccion, email, fecha, tarifa));
+		} else
+			this.addCliente(new Empresa(nombre, nif, direccion, email, fecha, tarifa));
 	}
 
 	/**
@@ -166,6 +201,12 @@ public class AdministradorDatos {
 			llamadas.add(this.getLlamada(codigo));
 
 		return llamadas;
+	}
+
+	public void setTarifa(Cliente cliente, Tarifa tarifa) {
+		cliente.setTarifa(tarifa);
+
+		if (this.vista != null) this.vista.actualizarVista();
 	}
 
 	public int getNextCodigoFactura() {

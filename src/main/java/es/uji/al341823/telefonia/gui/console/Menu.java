@@ -50,7 +50,7 @@ public abstract class Menu {
 	 * El metodo que se ejecuta para mostrar información por pantalla
 	 */
 	public void mostrar() {
-		AdministradorMenus.seleccionarSubmenu(this);
+		this.getAdministradorMenus().seleccionarSubmenu(this);
 	}
 
 	/**

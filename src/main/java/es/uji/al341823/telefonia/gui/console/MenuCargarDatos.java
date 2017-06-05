@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 
 import java.io.File;
@@ -20,9 +19,9 @@ public class MenuCargarDatos extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		String ruta = AdministradorMenus.leerDato("Introduce la ruta al fichero de datos: ", TipoDato.FICHERO_O_NINGUNO);
+		String ruta = this.getAdministradorMenus().leerDato("Introduce la ruta al fichero de datos: ", TipoDato.FICHERO_O_NINGUNO);
 
 		System.out.println();
 
@@ -33,7 +32,7 @@ public class MenuCargarDatos extends Menu {
 			this.getAdministradorDatos().cargarDatos();
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

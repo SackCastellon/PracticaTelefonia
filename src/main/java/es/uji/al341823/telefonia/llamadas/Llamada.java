@@ -130,12 +130,14 @@ public class Llamada implements IFecha, IDatos, Serializable {
 	 */
 	@Override
 	public String toString() {
-		// TODO Hacer que use "getDatos()"
-		return "Llamada{" +
-				"origen='" + this.numeroOrigen + '\'' +
-				", destino='" + this.numeroDestino + '\'' +
-				", fecha=" + this.fechaLlamada +
-				", duracion=" + this.duracionLlamada +
-				'}';
+		StringBuilder builder = new StringBuilder("Llamada:\n");
+
+		for (Pair<String, Object> pair : this.getDatos()) {
+			builder.append(pair.getKey());
+			builder.append(": ");
+			builder.append(pair.getValue());
+		}
+
+		return builder.toString();
 	}
 }

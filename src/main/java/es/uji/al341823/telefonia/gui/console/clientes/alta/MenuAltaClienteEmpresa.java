@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes.alta;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoYaExisteException;
 import es.uji.al341823.telefonia.api.fabricas.FabricaClientes;
@@ -29,17 +28,17 @@ public class MenuAltaClienteEmpresa extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
 		System.out.println("Introduce los datos de la empresa:");
 
 		System.out.println();
 
-		String nombre = AdministradorMenus.leerDato(" - Nombre: ", TipoDato.TEXTO);
-		String nif = AdministradorMenus.leerDato(" - NIF: ", TipoDato.NIF);
-		Direccion direccion = AdministradorMenus.leerDireccion(" - Dirección (CP, Provincia, Problación): ");
-		String email = AdministradorMenus.leerDato(" - E-mail: ", TipoDato.EMAIL);
-		LocalDateTime fecha = AdministradorMenus.leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
+		String nombre = this.getAdministradorMenus().leerDato(" - Nombre: ", TipoDato.TEXTO);
+		String nif = this.getAdministradorMenus().leerDato(" - NIF: ", TipoDato.NIF);
+		Direccion direccion = this.getAdministradorMenus().leerDireccion(" - Dirección (CP, Provincia, Problación): ");
+		String email = this.getAdministradorMenus().leerDato(" - E-mail: ", TipoDato.EMAIL);
+		LocalDateTime fecha = this.getAdministradorMenus().leerFecha(" - Fecha de alta (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		System.out.println();
 
@@ -53,7 +52,7 @@ public class MenuAltaClienteEmpresa extends Menu {
 			System.out.println("Ya existe un cliente con NIF '" + nif + "'");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

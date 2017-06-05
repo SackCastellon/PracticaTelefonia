@@ -43,6 +43,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -80,6 +82,22 @@ public class VentanaPrincipal extends Vista {
 		this.generarMenusContexto();
 
 		this.adjustComponentsSize();
+
+		this.frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int option = JOptionPane.showConfirmDialog(VentanaPrincipal.this.frame,
+						"Está seguro de que desea salir de programa?",
+						"Salir de programa",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (option == JOptionPane.YES_OPTION) {
+					VentanaPrincipal.this.frame.dispose();
+					System.exit(0);
+				}
+			}
+		});
 
 		this.frame.setTitle("Telefonía");
 		this.frame.setIconImage(SwingUtils.getImage("phone_ring"));
@@ -322,8 +340,8 @@ public class VentanaPrincipal extends Vista {
 		menuAyuda.setMnemonic('Y');
 		menu.add(menuAyuda);
 
-		// Item Sobre telefonía
-		JMenuItem itemSobre = new JMenuItem("Sobre Telefonía...");
+		// Item Acerca de
+		JMenuItem itemSobre = new JMenuItem("Acerca de");
 		itemSobre.setIcon(SwingUtils.getIcon("info"));
 		itemSobre.setMnemonic('S');
 		itemSobre.setActionCommand(AYUDA_SOBRE);
@@ -584,7 +602,7 @@ public class VentanaPrincipal extends Vista {
 					break;
 
 				case AYUDA_SOBRE:
-					this.sobre();
+					this.acercaDe();
 					break;
 			}
 		}
@@ -667,8 +685,8 @@ public class VentanaPrincipal extends Vista {
 			vista.generarVista();
 		}
 
-		private void sobre() {
-			String message = "<html><center><h1>Telefonía</h1>" +
+		private void acercaDe() {
+			String message = "<html><center><h1>Telefonía v0.5</h1>" +
 					"Proyecto en lenguaje Java desarrollado para la asignatura de Programación Avanzada en la UJI<br>" +
 					"<br><hr><br>" +
 					"Copyright © 2017 Juan José González y David Agost<br>" +
@@ -678,7 +696,7 @@ public class VentanaPrincipal extends Vista {
 
 			JOptionPane.showMessageDialog(VentanaPrincipal.this.frame,
 					message,
-					"Sobre Telefonía",
+					"Acerca de Telefonía",
 					JOptionPane.PLAIN_MESSAGE);
 		}
 	}
@@ -830,7 +848,7 @@ public class VentanaPrincipal extends Vista {
 			// Detecta si es un click derecho
 			if (!event.isPopupTrigger()) return;
 
-			// Columna sobre la que se hizo click
+			// Columna acercaDe la que se hizo click
 			int col = this.tabla.columnAtPoint(event.getPoint());
 
 			// Actualiza la opción de ocultar columna

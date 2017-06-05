@@ -139,13 +139,14 @@ public class Factura implements IFecha, IDatos, Serializable {
 	 */
 	@Override
 	public String toString() {
-		// TODO Hacer que use "getDatos()"
-		return "Factura{" +
-				"cod=" + this.codigo +
-				", tarifa=" + this.tarifa +
-				", emision=" + this.fechaEmision +
-				", periodo=" + this.periodoFactuacion +
-				", importe=" + this.importe +
-				'}';
+		StringBuilder builder = new StringBuilder("Factura:\n");
+
+		for (Pair<String, Object> pair : this.getDatos()) {
+			builder.append(pair.getKey());
+			builder.append(": ");
+			builder.append(pair.getValue());
+		}
+
+		return builder.toString();
 	}
 }

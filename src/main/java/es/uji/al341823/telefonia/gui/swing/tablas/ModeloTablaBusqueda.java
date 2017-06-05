@@ -84,7 +84,7 @@ public class ModeloTablaBusqueda extends AbstractTableModel {
 	private Collection<? extends IFecha> getConjuntos(String actionCommand, String nif) throws ObjetoNoExisteException {
 		switch (actionCommand) {
 			case ActionCommands.BUSCAR_CLIENTES:
-				this.nombres = Particular.getNombreDatos();
+				this.nombres = Particular.getIdDatos();
 				return this.admin.getClientes();
 
 			case ActionCommands.BUSCAR_LLAMADAS:

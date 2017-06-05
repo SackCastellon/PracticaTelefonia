@@ -35,9 +35,9 @@ public class ModeloTablaClientes extends AbstractTableModel {
 		this.admin = admin;
 
 		if (this.tipoCliente.equals(Particular.class))
-			this.nombres = Particular.getNombreDatos();
+			this.nombres = Particular.getIdDatos();
 		else if (this.tipoCliente.equals(Empresa.class))
-			this.nombres = Empresa.getNombreDatos();
+			this.nombres = Empresa.getIdDatos();
 		else
 			this.nombres = new LinkedList<>();
 

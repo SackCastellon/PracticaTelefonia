@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -24,10 +23,10 @@ public class MenuExtraerClientes extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
-		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime inicio = this.getAdministradorMenus().leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime fin = this.getAdministradorMenus().leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		Collection<Cliente> clientes;
 
@@ -35,7 +34,7 @@ public class MenuExtraerClientes extends Menu {
 			clientes = this.getAdministradorDatos().extraerConjunto(this.getAdministradorDatos().getClientes(), inicio, fin);
 		} catch (FechaNoValidaExcepcion e) {
 			System.out.println("El periodo de tiempo especificado no es valido");
-			AdministradorMenus.esperarParaContinuar();
+			this.getAdministradorMenus().esperarParaContinuar();
 			return;
 		}
 
@@ -47,7 +46,7 @@ public class MenuExtraerClientes extends Menu {
 			System.out.println(" - " + cliente);
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 
 	}
 

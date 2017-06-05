@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.TipoDato;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.gui.console.Menu;
@@ -24,9 +23,9 @@ public class MenuBajaCliente extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
+		String nif = this.getAdministradorMenus().leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
 
 		System.out.println();
 
@@ -37,7 +36,7 @@ public class MenuBajaCliente extends Menu {
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

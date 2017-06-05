@@ -24,7 +24,12 @@ import java.util.Set;
  */
 public abstract class Cliente implements IFecha, IDatos, Serializable {
 
-
+	public static final String ID_NIF = "NIF";
+	public static final String ID_NOMBRE = "Nombre";
+	public static final String ID_DIRECCION = "Dirección";
+	public static final String ID_EMAIL = "Email";
+	public static final String ID_FECHA = "Fecha de alta";
+	public static final String ID_TARIFA = "Tarifa";
 	private static final long serialVersionUID = -6127121366791120199L;
 	/** Nombre del cliente */
 	private final String nombre;
@@ -36,12 +41,10 @@ public abstract class Cliente implements IFecha, IDatos, Serializable {
 	private final String email;
 	/** Fecha en la que se dió de alta el cliente */
 	private final LocalDateTime fechaAlta;
-
 	/** Lista de llamadas que realizó el cliente */
 	private final HashSet<Integer> codigosLlamadas = new HashSet<>();
 	/** Conjunto de codigos de las facturas correspondientes al cliente */
 	private final HashSet<Integer> codigosFacturas = new HashSet<>();
-
 	/** Tarifa que tiene contratada el cliente */
 	private Tarifa tarifa;
 	/** El ultimo dia que se emitió una factura, se usa para calcular el preiodo de facturación */
@@ -159,36 +162,6 @@ public abstract class Cliente implements IFecha, IDatos, Serializable {
 		this.codigosFacturas.add(codigoFactura);
 	}
 
-//	/**
-//	 * Emite una nueva factura para el cliente teniendo en cuenta la tarifa contatada en el momento y las llamadas
-//	 * realizadas
-//	 *
-//	 * @return La factura emitida
-//	 */
-//	public Factura generarFactura() throws FechaNoValidaExcepcion {
-//		LocalDateTime hoy = LocalDateTime.now();
-//
-//		int duracionLlamadas = 0;
-//
-//		for (int codigoLlamada : this.codigosLlamadas) {
-//			try {
-//				Llamada llamada = AdministradorDatos.getLlamada(codigoLlamada);
-//				LocalDateTime fecha = llamada.getFecha();
-//				if (fecha.isBefore(hoy) && fecha.isAfter(this.ultimaFacturacion))
-//					duracionLlamadas += llamada.getDuracionLlamada();
-//			} catch (ObjetoNoExisteException e) {
-//				System.err.println("Se intentó acceder a una llamada que no existe");
-//			}
-//		}
-//
-//		Factura factura = new Factura(this.tarifa, this.ultimaFacturacion, hoy, duracionLlamadas);
-//
-//		this.ultimaFacturacion = hoy;
-//		this.codigosFacturas.add(factura.getCodigo());
-//
-//		return factura;
-//	}
-
 	public LocalDateTime getUltimaFacturacion() {
 		return this.ultimaFacturacion;
 	}
@@ -210,12 +183,12 @@ public abstract class Cliente implements IFecha, IDatos, Serializable {
 	public List<Pair<String, Object>> getDatos() {
 		List<Pair<String, Object>> list = new LinkedList<>();
 
-		list.add(new Pair<>("NIF", this.getNif()));
-		list.add(new Pair<>("Nombre", this.getNombre()));
-		list.add(new Pair<>("Dirección", this.getDireccion()));
-		list.add(new Pair<>("Email", this.getEmail()));
-		list.add(new Pair<>("Fecha de alta", this.getFecha()));
-		list.add(new Pair<>("Tarifas", this.getTarifa()));
+		list.add(new Pair<>(ID_NIF, this.getNif()));
+		list.add(new Pair<>(ID_NOMBRE, this.getNombre()));
+		list.add(new Pair<>(ID_DIRECCION, this.getDireccion()));
+		list.add(new Pair<>(ID_EMAIL, this.getEmail()));
+		list.add(new Pair<>(ID_FECHA, this.getFecha()));
+		list.add(new Pair<>(ID_TARIFA, this.getTarifa()));
 
 		return list;
 	}

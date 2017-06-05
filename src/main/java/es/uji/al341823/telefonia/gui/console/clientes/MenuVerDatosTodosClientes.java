@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.clientes;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.clientes.Cliente;
 import es.uji.al341823.telefonia.gui.console.Menu;
 
@@ -23,7 +22,7 @@ public class MenuVerDatosTodosClientes extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
 		LinkedList<Cliente> clientes = new LinkedList<>(this.getAdministradorDatos().getClientes());
 
@@ -32,7 +31,7 @@ public class MenuVerDatosTodosClientes extends Menu {
 		for (Cliente cliente : clientes)
 			System.out.println("\n - " + cliente);
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

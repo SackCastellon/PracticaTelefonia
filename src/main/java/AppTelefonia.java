@@ -4,6 +4,7 @@
  */
 
 import es.uji.al341823.telefonia.api.AdministradorDatos;
+import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.gui.console.Menu;
 import es.uji.al341823.telefonia.gui.console.MenuCargarDatos;
 import es.uji.al341823.telefonia.gui.console.MenuGuardarDatos;
@@ -58,17 +59,21 @@ public class AppTelefonia {
 
 	private static void cargarInterfazConsola() {
 		AdministradorDatos administradorDatos = new AdministradorDatos();
+		AdministradorMenus administradorMenus = new AdministradorMenus();
 
 		Menu menuCargar = new MenuCargarDatos();
 		menuCargar.setAdministradorDatos(administradorDatos);
+		menuCargar.setAdministradorMenus(administradorMenus);
 		menuCargar.mostrar();
 
 		Menu menuPrincipal = new MenuPrincipal();
 		menuPrincipal.setAdministradorDatos(administradorDatos);
+		menuPrincipal.setAdministradorMenus(administradorMenus);
 		menuPrincipal.mostrar();
 
 		Menu menuGuardar = new MenuGuardarDatos();
 		menuGuardar.setAdministradorDatos(administradorDatos);
+		menuGuardar.setAdministradorMenus(administradorMenus);
 		menuGuardar.mostrar();
 	}
 }

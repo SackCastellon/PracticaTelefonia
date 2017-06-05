@@ -5,7 +5,6 @@
 
 package es.uji.al341823.telefonia.gui.console.facturas;
 
-import es.uji.al341823.telefonia.api.AdministradorMenus;
 import es.uji.al341823.telefonia.api.excepciones.FechaNoValidaExcepcion;
 import es.uji.al341823.telefonia.api.excepciones.ObjetoNoExisteException;
 import es.uji.al341823.telefonia.facturacion.Factura;
@@ -25,12 +24,12 @@ public class MenuExtraerFacturas extends Menu {
 
 	@Override
 	public void mostrar() {
-		AdministradorMenus.imprimeTitulo(this);
+		this.getAdministradorMenus().imprimeTitulo(this);
 
-		String nif = AdministradorMenus.leerNIF();
+		String nif = this.getAdministradorMenus().leerNIF();
 
-		LocalDateTime inicio = AdministradorMenus.leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
-		LocalDateTime fin = AdministradorMenus.leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime inicio = this.getAdministradorMenus().leerFecha("Introcuce la fecha de inicio (AAAA-MM-DD hh:mm:ss | hoy): ");
+		LocalDateTime fin = this.getAdministradorMenus().leerFecha("Introcuce la fecha de fin (AAAA-MM-DD hh:mm:ss | hoy): ");
 
 		try {
 			Collection<Factura> facturas = this.getAdministradorDatos().extraerConjunto(this.getAdministradorDatos().getFacturasCliente(nif), inicio, fin);
@@ -49,7 +48,7 @@ public class MenuExtraerFacturas extends Menu {
 			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
 		}
 
-		AdministradorMenus.esperarParaContinuar();
+		this.getAdministradorMenus().esperarParaContinuar();
 	}
 
 	@Override

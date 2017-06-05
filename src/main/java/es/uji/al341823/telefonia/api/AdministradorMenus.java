@@ -29,7 +29,7 @@ public class AdministradorMenus {
 	 *
 	 * @param menu El menú actual
 	 */
-	public static void imprimeTitulo(Menu menu) {
+	public void imprimeTitulo(Menu menu) {
 		String spaceOrigninal = "                              ";
 		LinkedList<String> titulos = new LinkedList<>();
 
@@ -64,10 +64,10 @@ public class AdministradorMenus {
 	 *
 	 * @param menu El menú actual
 	 */
-	public static void seleccionarSubmenu(Menu menu) { // TODO Actualizar para que use seleccionarOpciones()
+	public void seleccionarSubmenu(Menu menu) { // TODO Actualizar para que use seleccionarOpciones()
 		while (true) {
-			AdministradorMenus.clearScreen();
-			AdministradorMenus.imprimeTitulo(menu);
+			this.clearScreen();
+			this.imprimeTitulo(menu);
 
 			System.out.println("Elige una opción:");
 
@@ -111,7 +111,7 @@ public class AdministradorMenus {
 	 *
 	 * @return La opción seleccionada
 	 */
-	public static <T> T seleccionarOpciones(T[] opciones) {
+	public <T> T seleccionarOpciones(T[] opciones) {
 		System.out.println("Elige una opción:");
 
 		for (int i = 0; i < opciones.length; i++)
@@ -138,7 +138,7 @@ public class AdministradorMenus {
 	 *
 	 * @return El dato introducido
 	 */
-	public static String leerDato(String mensaje, TipoDato tipoDato) {
+	public String leerDato(String mensaje, TipoDato tipoDato) {
 
 		System.out.print(mensaje);
 		String line = Menu.scanner.nextLine();
@@ -161,7 +161,7 @@ public class AdministradorMenus {
 	 *
 	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
-	public static int leerEntero(String mensaje) {
+	public int leerEntero(String mensaje) {
 
 		String line = leerDato(mensaje, TipoDato.ENTERO);
 
@@ -177,7 +177,7 @@ public class AdministradorMenus {
 	 *
 	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
-	public static Direccion leerDireccion(String mensaje) {
+	public Direccion leerDireccion(String mensaje) {
 
 		String line = leerDato(mensaje, TipoDato.DIRECCION);
 		String[] direccion = line.split(", ");
@@ -195,7 +195,7 @@ public class AdministradorMenus {
 	 *
 	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
-	public static LocalDateTime leerFecha(String mensaje) {
+	public LocalDateTime leerFecha(String mensaje) {
 
 		LocalDateTime date = null;
 
@@ -217,37 +217,15 @@ public class AdministradorMenus {
 	 *
 	 * @see AdministradorMenus#leerDato(String, TipoDato)
 	 */
-	public static String leerNIF() {
+	public String leerNIF() {
 		return leerDato("Introduce el NIF del cliente: ", TipoDato.NIF);
 	}
-
-//	/**
-//	 * Espera a que el usuario introduzca el NIF de un cliente
-//	 *
-//	 * @return El cliente correspondiente al NIF introducido, {@code null} ni el NIF no corresponde a ningún
-//	 * cliente
-//	 *
-//	 * @see AdministradorMenus#leerDato(String, TipoDato)
-//	 */
-//	public static Cliente leerClienteNIF() {
-//
-//		String nif = leerNIF();
-//
-//		try {
-//			return AdministradorDatos.getCliente(nif);
-//		} catch (ObjetoNoExisteException e) {
-//			System.out.println();
-//			System.out.println("No existe ningún cliente con NIF '" + nif + "'");
-//			esperarParaContinuar();
-//			return null;
-//		}
-//	}
 
 	/**
 	 * Muestra el mensaje {@code Pulsa 'Enter' para continuar...} y espera a que el usuario pulse
 	 * {@code Enter}
 	 */
-	public static void esperarParaContinuar() {
+	public void esperarParaContinuar() {
 		System.out.println();
 		System.out.print("Pulsa 'Enter' para continuar...");
 		Menu.scanner.nextLine();
@@ -256,14 +234,14 @@ public class AdministradorMenus {
 	/**
 	 * Limpia toda la pantalla de la consola y posiciona el cursor en la esquina superior izquierda
 	 */
-	private static void clearScreen() {
+	private void clearScreen() {
 		System.out.print("\033[2J\033[H");
 	}
 
 	/**
 	 * Borra la linea anterior y posiciona el cursor al principio de esa linea
 	 */
-	private static void clearLine() {
+	private void clearLine() {
 		System.out.print("\033[F\033[J");
 	}
 }
