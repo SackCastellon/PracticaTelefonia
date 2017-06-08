@@ -259,8 +259,8 @@ public class DialogoBuscar extends Vista {
 			if (enabled)
 				DialogoBuscar.this.txtNif.setText(null);
 
-			DialogoBuscar.this.txtNif.setEnabled(enabled);
 			DialogoBuscar.this.txtNif.setBackground(UIManager.getColor("TextField.background"));
+			DialogoBuscar.this.txtNif.setEnabled(enabled);
 			DialogoBuscar.this.btnBuscar.setEnabled(!enabled);
 		}
 	}
