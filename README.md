@@ -7,7 +7,7 @@
 - Juan José González ([al341823](mailto:al341823@uji.es "al341823@uji.es"))
 - David Agost ([al341819](mailto:al341819@uji.es "al341819@uji.es"))
 
-## Copyright
+## Licencia
 
 <p align='center'><img src="https://i.creativecommons.org/l/by/4.0/88x31.png"><br>
 Esta obra creada por Juan José González y David Agost<br>
