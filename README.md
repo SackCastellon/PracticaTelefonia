@@ -4,8 +4,8 @@
 
 ### Autores
 
-- Juan José González ([al341823](mailto:al341823@uji.es "al341823@uji.es"))
-- David Agost ([al341819](mailto:al341819@uji.es "al341819@uji.es"))
+- Juan José González Abril ([@SackCastellon](https://github.com/SackCastellon))
+- David Agost Monte ([@DavidAgost](https://github.com/DavidAgost))
 
 ## Licencia
 
